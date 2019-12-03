@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files\widgets">
+      <UniqueIdentifier>{8acb9e5d-ed53-4a38-a57b-384cb7d1eed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\parents">
+      <UniqueIdentifier>{b926c140-421f-4fef-84c9-7a113d66d86a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\Elements">
+      <UniqueIdentifier>{3ae7a0c8-846b-4a81-a370-f806c108c4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Networking">
+      <UniqueIdentifier>{a3ed7747-b685-4c03-a403-ca9cd57a4301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{32854e69-7eb1-4a40-8b4b-a9fcd3afffa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets">
+      <UniqueIdentifier>{b2ba575c-48ba-4431-838a-104b388ee5a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\Elements">
+      <UniqueIdentifier>{0841c1bd-ce75-48e9-adc0-8d822324a848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\parents">
+      <UniqueIdentifier>{b916ce1b-1bea-498a-bfdf-52635d3beeb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Networking">
+      <UniqueIdentifier>{73003b7e-06c5-4ab1-b004-45ab31eb14b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{4824b2f4-0a6d-4f40-b6f5-728bafe0564f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\ModeDefining">
+      <UniqueIdentifier>{8046594a-b036-4139-b66f-892c5cb1f47d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\Multibranch">
+      <UniqueIdentifier>{237a1e0d-c686-4770-b033-89556ce6786b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\LogBranch">
+      <UniqueIdentifier>{cfb3258c-5620-44d3-bb8b-c45e5f804019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Networking\Parsers">
+      <UniqueIdentifier>{8adfe0ee-6e87-4e6c-a6af-c588ea16e4e9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MMOffline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ElementWidgets\BigButtonsSpinbox.cpp">
+      <Filter>Source Files\widgets\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ElementWidgets\MegaIconButton.cpp">
+      <Filter>Source Files\widgets\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ElementWidgets\ProcessingOverlay.cpp">
+      <Filter>Source Files\widgets\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ElementWidgets\ZebraListItemDelegate.cpp">
+      <Filter>Source Files\widgets\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\parents\AbstractVariantSelectionWidget.cpp">
+      <Filter>Source Files\widgets\parents</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp">
+      <Filter>Source Files\widgets\parents</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\parents\AbstractListSelectionWidget.cpp">
+      <Filter>Source Files\widgets\parents</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\parents\abstractNodeInterface.cpp">
+      <Filter>Source Files\widgets\parents</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\parents\inframedWidget.cpp">
+      <Filter>Source Files\widgets\parents</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\dataupdateengine.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\dataupdateengine-http.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\RequestAwaiter.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\utils\SpecializedWidgets.cpp">
+      <Filter>Source Files\widgets\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\utils\ElementsStyles.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\utils\EventsAndFilters.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\utils\GlobalAppSettings.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="debugtrace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\utils\ApplicationDataWorkset.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\queryTemplates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="MMOffline.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Widgets\parents\abstractNodeInterface.h">
+      <Filter>Header Files\widgets\parents</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h">
+      <Filter>Header Files\widgets\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\utils\ElementsStyles.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\utils\GlobalAppSettings.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="debugtrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\LogBranch\LogsWidget.h">
+      <Filter>Header Files\widgets\LogBranch</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\queryTemplates.h">
+      <Filter>Header Files\Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Parsers\RequestParser.h">
+      <Filter>Header Files\Networking\Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Parsers\ErrorParser.h">
+      <Filter>Header Files\Networking\Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Parsers\abs_parser.h">
+      <Filter>Header Files\Networking\Parsers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Widgets\parents\AbstractCheckboxSelection.h">
+      <Filter>Header Files\widgets\parents</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\parents\AbstractListSelectionWidget.h">
+      <Filter>Header Files\widgets\parents</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\parents\AbstractVariantSelectionWidget.h">
+      <Filter>Header Files\widgets\parents</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\parents\inframedWidget.h">
+      <Filter>Header Files\widgets\parents</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ElementWidgets\BigButtonsSpinbox.h">
+      <Filter>Header Files\widgets\Elements</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ElementWidgets\MegaIconButton.h">
+      <Filter>Header Files\widgets\Elements</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ElementWidgets\ProcessingOverlay.h">
+      <Filter>Header Files\widgets\Elements</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\utils\SpecializedWidgets.h">
+      <Filter>Header Files\widgets\Elements</Filter>
+    </QtMoc>
+    <QtMoc Include="Networking\dataupdateengine.h">
+      <Filter>Header Files\Networking</Filter>
+    </QtMoc>
+    <QtMoc Include="Networking\dataupdateengine-http.h">
+      <Filter>Header Files\Networking</Filter>
+    </QtMoc>
+    <QtMoc Include="Networking\RequestAwaiter.h">
+      <Filter>Header Files\Networking</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\utils\EventsAndFilters.h">
+      <Filter>Header Files\util</Filter>
+    </QtMoc>
+    <QtMoc Include="MMOffline.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ModeDefining\StartingScreen.h">
+      <Filter>Header Files\widgets\ModeDefining</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ModeDefining\OnlineLoginWidget.h">
+      <Filter>Header Files\widgets\ModeDefining</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ModeDefining\SettingsScreen.h">
+      <Filter>Header Files\widgets\ModeDefining</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>

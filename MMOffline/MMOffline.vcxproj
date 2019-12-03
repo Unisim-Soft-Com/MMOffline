@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>QtVS_v301</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <QtInstall>msvc17x32</QtInstall>
+    <QtModules>core;gui;network;widgets;xml</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <QtInstall>msvc17x32</QtInstall>
+    <QtModules>core;gui;network;widgets;xml</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="debugtrace.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MMOffline.cpp" />
+    <ClCompile Include="Networking\dataupdateengine-http.cpp" />
+    <ClCompile Include="Networking\dataupdateengine.cpp" />
+    <ClCompile Include="Networking\queryTemplates.cpp" />
+    <ClCompile Include="Networking\RequestAwaiter.cpp" />
+    <ClCompile Include="Widgets\ElementWidgets\BigButtonsSpinbox.cpp" />
+    <ClCompile Include="Widgets\ElementWidgets\MegaIconButton.cpp" />
+    <ClCompile Include="Widgets\ElementWidgets\ProcessingOverlay.cpp" />
+    <ClCompile Include="Widgets\ElementWidgets\ZebraListItemDelegate.cpp" />
+    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp" />
+    <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp" />
+    <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp" />
+    <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp" />
+    <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp" />
+    <ClCompile Include="Widgets\parents\AbstractListSelectionWidget.cpp" />
+    <ClCompile Include="Widgets\parents\abstractNodeInterface.cpp" />
+    <ClCompile Include="Widgets\parents\AbstractVariantSelectionWidget.cpp" />
+    <ClCompile Include="Widgets\parents\inframedWidget.cpp" />
+    <ClCompile Include="Widgets\utils\ApplicationDataWorkset.cpp" />
+    <ClCompile Include="Widgets\utils\ElementsStyles.cpp" />
+    <ClCompile Include="Widgets\utils\EventsAndFilters.cpp" />
+    <ClCompile Include="Widgets\utils\GlobalAppSettings.cpp" />
+    <ClCompile Include="Widgets\utils\SpecializedWidgets.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="debugtrace.h" />
+    <QtMoc Include="MMOffline.h" />
+    <ClInclude Include="Networking\Parsers\abs_parser.h" />
+    <ClInclude Include="Networking\Parsers\ErrorParser.h" />
+    <ClInclude Include="Networking\Parsers\RequestParser.h" />
+    <ClInclude Include="Networking\queryTemplates.h" />
+    <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h" />
+    <QtMoc Include="Widgets\ModeDefining\OnlineLoginWidget.h" />
+    <QtMoc Include="Widgets\ModeDefining\StartingScreen.h" />
+    <QtMoc Include="Widgets\ModeDefining\SettingsScreen.h" />
+    <ClInclude Include="Widgets\LogBranch\LogsWidget.h" />
+    <ClInclude Include="Widgets\parents\abstractNodeInterface.h" />
+    <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h" />
+    <ClInclude Include="Widgets\utils\ElementsStyles.h" />
+    <ClInclude Include="Widgets\utils\GlobalAppSettings.h" />
+    <QtMoc Include="Widgets\utils\SpecializedWidgets.h" />
+    <QtMoc Include="Widgets\utils\EventsAndFilters.h" />
+    <QtMoc Include="Widgets\parents\inframedWidget.h" />
+    <QtMoc Include="Widgets\parents\AbstractVariantSelectionWidget.h" />
+    <QtMoc Include="Widgets\parents\AbstractListSelectionWidget.h" />
+    <QtMoc Include="Widgets\parents\AbstractCheckboxSelection.h" />
+    <QtMoc Include="Widgets\ElementWidgets\ProcessingOverlay.h" />
+    <QtMoc Include="Widgets\ElementWidgets\MegaIconButton.h" />
+    <QtMoc Include="Widgets\ElementWidgets\BigButtonsSpinbox.h" />
+    <QtMoc Include="Networking\RequestAwaiter.h" />
+    <QtMoc Include="Networking\dataupdateengine-http.h" />
+    <QtMoc Include="Networking\dataupdateengine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="MMOffline.qrc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

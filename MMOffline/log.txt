@@ -1,0 +1,10 @@
+
+
+->Method called: do_action
+in method sendQuery state of variables url was http://www.una.md:3323/milkmark/pg_web_base.login_user?r=0&a=orders&u=Agen&p=23&p_only_session=1
+in method requestFinish state of variables session, res, err was rse.run(0,{
+ error:"Logina \"Agen\" este incorect!"
+,error_full:"ORA-20000: Logina \"Agen\" este incorect!\nORA-06512: на  \"UN4PUBLIC.MSG\", line 4\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2660\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2867\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2952\nORA-01403: данные не найдены"
+,trace:"ORA-06512: на  \"UN4PUBLIC.MSG\", line 4\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2660\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2867\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2952\nORA-06512: на  line 1\nORA-06512: на  \"UN4PUBLIC.UN$USERPARAMS\", line 1111\nORA-06512: на  \"MILKMARK.PG_ORDERS_WEB\", line 840\nORA-06512: на  \"MILKMARKWEB.PG_WEB_BASE\", line 470"
+,lng:1
+});
