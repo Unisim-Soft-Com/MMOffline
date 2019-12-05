@@ -2,6 +2,9 @@
 
 #include "networking/dataupdateengine-http.h"
 #include <QtCore/QTranslator>
+#include <memory>
+
+#define AppSettings GlobalAppSettings::instance()
 
 const float VERSION = 0.001;
 const char SUFFIX[] = "alpha";
@@ -14,6 +17,8 @@ public:
 	QStringList alternativeUrls;
 	QString language;
 	QString localLogin;
+	QDate lastSyncDate;
+
 	QTranslator translator;
 	int timeoutint;
 
@@ -23,14 +28,13 @@ public:
 	
 
 	// utility
-	void setDefaultsToEmpty();
 	void setTranslator();
 	void dump();
 	void  switchLaunchArgument(int arg);
 	void parseLaunchArgs(int argc, char** argv);
-	static GlobalAppSettings* instance();
+	static std::shared_ptr<GlobalAppSettings> instance();
 
 	explicit GlobalAppSettings();
 	~GlobalAppSettings();
 };
-extern GlobalAppSettings GlobalSettings;
+void allocateGlobalSettings();

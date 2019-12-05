@@ -111,6 +111,8 @@
 
 #define detrace_FAIL detrace << detr_supply::methodDataSnapshot << "Operation failed!" << '\n'
 
+#define detrace_NETRESPREC(_RESTEXT_, _ERRTEXT_)  detrace << detr_supply::methodDataSnapshot	\
+<< "Request finished yielding result |" << _RESTEXT_ << "| and errtext |" << _ERRTEXT_ << '\n'
 
 namespace detr_supply { // Holds enums for defining output method and priorities
 	enum OutputMode { toall, file, qDeb, qStr, Cons, some_united, buffConsole };

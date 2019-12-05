@@ -64,8 +64,9 @@ bool _checkArgQuantity(queryIDs id, int argc)
 	case GetOrders:
 		return argc == 3;
 	case GetShipOrders:
-	case GetProducts:
 		return argc == 5;
+	case GetProducts:
+		return argc == 6;
 	default:
 		return false;
 	}

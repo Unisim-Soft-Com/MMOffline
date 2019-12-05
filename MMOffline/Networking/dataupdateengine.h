@@ -16,11 +16,12 @@ class DataUpdateEngine : public QObject
 	Q_OBJECT
 protected:
     int class_id;
-	virtual void sendQuery(const QString& urlpath, RequestAwaiter* awaiter, AttributesToParse attr = None) = 0;
+	virtual void sendQuery(const QString& urlpath, RequestAwaiter* awaiter) = 0;
 public:
 	explicit DataUpdateEngine(QObject* parent = 0);
     int myType(){return class_id;}
 	virtual void setUrl(QString& url) = 0;
+	virtual void setSession(QString& session, QString& uid)=0;
 	virtual void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter = nullptr) =0;
 	virtual void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter = nullptr)=0;
 	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter = nullptr)=0;

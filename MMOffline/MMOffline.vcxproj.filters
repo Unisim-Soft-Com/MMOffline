@@ -65,6 +65,15 @@
     <Filter Include="Header Files\Networking\Parsers">
       <UniqueIdentifier>{8adfe0ee-6e87-4e6c-a6af-c588ea16e4e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Networking\Parsers\Linear">
+      <UniqueIdentifier>{71e196c7-eccf-4466-9f57-28b832991559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LocalDataProviders">
+      <UniqueIdentifier>{54d09268-8be5-45c2-b939-428f6da637c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\Syncing">
+      <UniqueIdentifier>{9ffa0000-62c8-4655-a1bd-a33111f70352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -142,6 +151,33 @@
     <ClCompile Include="Networking\queryTemplates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Networking\Parsers\ErrorParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\abs_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\LinearParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\JsonUniresult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\DataEntities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\TableHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\SqliteDataProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Syncing\SyncInfoWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\Syncing\SyncMenuWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MMOffline.qrc">
@@ -181,6 +217,21 @@
     </ClInclude>
     <ClInclude Include="Networking\Parsers\abs_parser.h">
       <Filter>Header Files\Networking\Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Parsers\LinearParser.h">
+      <Filter>Header Files\Networking\Parsers\Linear</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\SqliteDataProvider.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\DataEntities.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\Parsers\JsonUniresult.h">
+      <Filter>Header Files\Networking\Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\TableHandlers.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +282,12 @@
     </QtMoc>
     <QtMoc Include="Widgets\ModeDefining\SettingsScreen.h">
       <Filter>Header Files\widgets\ModeDefining</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\Syncing\SyncMenuWidget.h">
+      <Filter>Header Files\widgets\Syncing</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\Syncing\SyncInfoWidget.h">
+      <Filter>Header Files\widgets\Syncing</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

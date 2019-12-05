@@ -10,6 +10,7 @@ SettingsScreen::SettingsScreen(QWidget* parent)
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(urlBaseInfo);
 	mainLayout->addWidget(urlBaseField);
+	mainLayout->addStretch(0);
 	mainLayout->addLayout(buttonsLayout);
 	buttonsLayout->addWidget(backButton);
 	buttonsLayout->addWidget(okButton);
@@ -18,15 +19,17 @@ SettingsScreen::SettingsScreen(QWidget* parent)
 
 	urlBaseField->setEditable(true);
 	urlBaseField->setInsertPolicy(QComboBox::InsertAtTop);
-	urlBaseField->addItems(GlobalAppSettings::instance()->alternativeUrls);
-	urlBaseField->addItem(GlobalAppSettings::instance()->HttpUrl);
+	if (GlobalAppSettings::instance()->alternativeUrls.count() > 0)
+		urlBaseField->addItems(GlobalAppSettings::instance()->alternativeUrls);
+	if (!GlobalAppSettings::instance()->HttpUrl.isEmpty())
+		urlBaseField->addItem(GlobalAppSettings::instance()->HttpUrl);
 	urlBaseField->setCurrentIndex(0);
 
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	backButton->setIcon(QIcon(":/res/back.png"));
 
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
-	okButton->setIcon(QIcon(":/res/ok.png"));
+	okButton->setIcon(QIcon(":/res/submit.png"));
 
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &SettingsScreen::allConfirmed);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &SettingsScreen::backRequired);
@@ -39,11 +42,13 @@ void SettingsScreen::allConfirmed()
 	GlobalAppSettings::instance()->HttpUrl= (urlBaseField->currentText().isEmpty()) ? GlobalAppSettings::instance()->HttpUrl : urlBaseField->currentText();
 	if (!GlobalAppSettings::instance()->alternativeUrls.contains(GlobalAppSettings::instance()->HttpUrl))
 	{
-		GlobalAppSettings::instance()->alternativeUrls << GlobalAppSettings::instance()->HttpUrl;
+		if (!GlobalAppSettings::instance()->HttpUrl.isEmpty())
+			GlobalAppSettings::instance()->alternativeUrls << GlobalAppSettings::instance()->HttpUrl;
 		GlobalAppSettings::instance()->dump();
 		urlBaseField->addItem(GlobalAppSettings::instance()->HttpUrl);
 	}
-	globalWorkset.networkingEngine->setUrl(GlobalAppSettings::instance()->HttpUrl);
+	DataWorkset::instance()->networkingEngine->setUrl(GlobalAppSettings::instance()->HttpUrl);
+	emit backRequired();
 }
 
 void SettingsScreen::urlPicked(QString url)

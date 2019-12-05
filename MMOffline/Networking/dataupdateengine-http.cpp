@@ -42,10 +42,10 @@ void HttpUpdateEngine::initConnection()
 #ifdef DEBUG
 	//detrace_METHCALL("HttpUpdateEngine::initConnection");
 #endif
-	sendQuery("ping",nullptr, None);
+	sendQuery("ping",nullptr);
 }
 
-void HttpUpdateEngine::sendQuery(const QString& urlpath, RequestAwaiter* awaiter, AttributesToParse attrs = AttributesToParse::None)
+void HttpUpdateEngine::sendQuery(const QString& urlpath, RequestAwaiter* awaiter)
 {
 	if (awaiter != nullptr)
 	{
@@ -58,98 +58,16 @@ void HttpUpdateEngine::sendQuery(const QString& urlpath, RequestAwaiter* awaiter
 	QNetworkRequest r;
 	r.setRawHeader("Puller", "MMOffline");
 	r.setUrl(QUrl::fromUserInput(currUrl));
-	long long int i = (long long int)awaiter;
-	QVariant v(i);
-	r.setAttribute(static_cast<QNetworkRequest::Attribute>(DestinationObject), QVariant((long long int)awaiter));
-	auto f = r.attribute(static_cast<QNetworkRequest::Attribute>(DestinationObject));
-	switch (attrs)
-	{
-	case SystemValues:
-		r.setAttribute(static_cast<QNetworkRequest::Attribute>(SystemValues), QVariant(true));
-	case None:
-	default:
-		break;
-	}
 	QNetworkReply* reply = netManager.get(r);
-	switch (attrs)
-	{
-	case SystemValues:
-		connect(reply, SIGNAL(finished()), SLOT(onSystemRequestFinished()));
-		if (!(awaiter == nullptr))
-		{
-			QObject::connect(this, &HttpUpdateEngine::responseArrived, awaiter, &RequestAwaiter::receivePostparsedData);
-			awaiter->run();
-		}
-		return;
-	case None:
-	default:
-		break;
-	}
 	if (!(awaiter == nullptr))
 		awaiter->setReplyToAwait(reply);
-}
-
-void HttpUpdateEngine::requestFinish(QNetworkReply* reply)
-{
-	QString res;
-	QTextDecoder td(QTextCodec::codecForName("CP1251"));
-	if (!reply->error())
-		res = td.toUnicode(reply->readAll());
-	QString errText;
-	if (reply->error() == QNetworkReply::NoError) {
-			if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 200)
-				errText =
-				 reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toString()
-				+ " "
-				+ reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-	}
-	else 
-	{
-		errText = reply->errorString();
-	}
-	if (res.startsWith("({session:"))
-	{
-		auto temp = res.split(":");
-		if (temp.count() > 0)
-		{
-			temp = temp.at(1).split(",");
-			if (temp.count() > 0)
-			{
-				sessionId = temp.at(0);
-			}
-		}
-	}
-	if (GlobalAppSettings::instance()-> packetTracing)
-	{
-		detrace_METHDATAS("requestFinish", "session, res, err", << sessionId << res << errText);
-	}
-	emit responseArrived(res, errText, reply->request().attribute(static_cast<QNetworkRequest::Attribute>(DestinationObject)).toLongLong());
-}
-
-void HttpUpdateEngine::onReplyError(QNetworkReply::NetworkError)
-{
-#ifdef DEBUG
-	//detrace_METHCALL("HttpUpdateEngine::onReplyError");
-#endif
-	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-	if (reply) {
-		requestFinish(reply);
-	}
-}
-
-void HttpUpdateEngine::onSystemRequestFinished()
-{
-	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-	if (reply) {
-		requestFinish(reply);
-	}
 }
 
 void HttpUpdateEngine::initiateSession(QString login, QString password, RequestAwaiter* awaiter)
 {
 	sendQuery(
 		queryTemplates.value(Login).arg(nextQueryId++).arg(login).arg(password),
-		awaiter, SystemValues);
+		awaiter);
 }
 
 void HttpUpdateEngine::execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter )
@@ -197,9 +115,10 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, int argc, QStringList ar
 	if (_checkArgQuantity(id, argc) && !sessionId.isEmpty())
 	{
 		QString result = queryTemplates.value(id);
+		result = result.arg(nextQueryId++).arg(sessionId);
 		for (int i = 0; i < argc; ++i)
 		{
-			result.arg(argv.at(i));
+			result = result.arg(argv.at(i));
 		}
 		sendQuery(
 			result, awaiter
@@ -207,6 +126,11 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, int argc, QStringList ar
 	}
 }
 
+void HttpUpdateEngine::setSession(QString& session, QString& uid)
+{
+	sessionId = session;
+	user_id = uid;
+}
 
 void HttpUpdateEngine::setUrl(QString& Url)
 {

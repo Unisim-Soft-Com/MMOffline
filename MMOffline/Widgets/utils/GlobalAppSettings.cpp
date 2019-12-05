@@ -4,18 +4,12 @@
 #include <cstring>
 // utility
 
-GlobalAppSettings globalSettings;
+std::shared_ptr<GlobalAppSettings> globalSettings;
 
 const char* networkTraceFlag = "-nptr";
 const char* databaseTrackFlag = "-dbtr";	
 const int totalFlags = 2;
 const char * launchFlags[totalFlags] = {networkTraceFlag, databaseTrackFlag };
-
-void GlobalAppSettings::setDefaultsToEmpty()
-{
-	if (HttpUrl.isEmpty()) { HttpUrl = "una.md:3323/um/sammy_clouddev.php"; }
-	if (language.isEmpty()) { language = "English"; }
-}
 
 void GlobalAppSettings::setTranslator()
 {
@@ -75,9 +69,9 @@ void GlobalAppSettings::parseLaunchArgs(int argc, char** argv)
 	}
 }
 
-GlobalAppSettings* GlobalAppSettings::instance()
+std::shared_ptr<GlobalAppSettings> GlobalAppSettings::instance()
 {
-	return &globalSettings;
+	return globalSettings;
 }
 
 GlobalAppSettings::GlobalAppSettings()
@@ -85,7 +79,7 @@ GlobalAppSettings::GlobalAppSettings()
 	localLogin(), translator(), packetTracing(false), dbTracing(false)
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
-	HttpUrl = settings.value("http_host", "").toString();
+	HttpUrl = settings.value("http_host", "http://www.una.md:3323/milkmark/").toString();
 	language = settings.value("app_lang", "").toString();
 	alternativeUrls = settings.value("alt_addresses", "").toStringList();
 	localLogin = settings.value("local_user", "").toString();
@@ -96,4 +90,9 @@ GlobalAppSettings::GlobalAppSettings()
 GlobalAppSettings::~GlobalAppSettings()
 {
 	dump();
+}
+
+void allocateGlobalSettings()
+{
+	globalSettings = std::shared_ptr<GlobalAppSettings>(new GlobalAppSettings());
 }

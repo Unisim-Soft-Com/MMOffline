@@ -51,7 +51,7 @@
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <QtInstall>msvc17x32</QtInstall>
-    <QtModules>core;gui;network;widgets;xml</QtModules>
+    <QtModules>core;gui;network;sql;widgets;xml</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtInstall>msvc17x32</QtInstall>
@@ -88,11 +88,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dataprovider\DataEntities.cpp" />
+    <ClCompile Include="Dataprovider\SqliteDataProvider.cpp" />
+    <ClCompile Include="Dataprovider\TableHandlers.cpp" />
     <ClCompile Include="debugtrace.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MMOffline.cpp" />
     <ClCompile Include="Networking\dataupdateengine-http.cpp" />
     <ClCompile Include="Networking\dataupdateengine.cpp" />
+    <ClCompile Include="Networking\Parsers\abs_parser.cpp" />
+    <ClCompile Include="Networking\Parsers\ErrorParser.cpp" />
+    <ClCompile Include="Networking\Parsers\JsonUniresult.cpp" />
+    <ClCompile Include="Networking\Parsers\LinearParser.cpp" />
     <ClCompile Include="Networking\queryTemplates.cpp" />
     <ClCompile Include="Networking\RequestAwaiter.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\BigButtonsSpinbox.cpp" />
@@ -108,6 +115,8 @@
     <ClCompile Include="Widgets\parents\abstractNodeInterface.cpp" />
     <ClCompile Include="Widgets\parents\AbstractVariantSelectionWidget.cpp" />
     <ClCompile Include="Widgets\parents\inframedWidget.cpp" />
+    <ClCompile Include="Widgets\Syncing\SyncInfoWidget.cpp" />
+    <ClCompile Include="Widgets\Syncing\SyncMenuWidget.cpp" />
     <ClCompile Include="Widgets\utils\ApplicationDataWorkset.cpp" />
     <ClCompile Include="Widgets\utils\ElementsStyles.cpp" />
     <ClCompile Include="Widgets\utils\EventsAndFilters.cpp" />
@@ -115,10 +124,15 @@
     <ClCompile Include="Widgets\utils\SpecializedWidgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dataprovider\DataEntities.h" />
+    <ClInclude Include="Dataprovider\SqliteDataProvider.h" />
+    <ClInclude Include="Dataprovider\TableHandlers.h" />
     <ClInclude Include="debugtrace.h" />
     <QtMoc Include="MMOffline.h" />
     <ClInclude Include="Networking\Parsers\abs_parser.h" />
     <ClInclude Include="Networking\Parsers\ErrorParser.h" />
+    <ClInclude Include="Networking\Parsers\JsonUniresult.h" />
+    <ClInclude Include="Networking\Parsers\LinearParser.h" />
     <ClInclude Include="Networking\Parsers\RequestParser.h" />
     <ClInclude Include="Networking\queryTemplates.h" />
     <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h" />
@@ -127,6 +141,8 @@
     <QtMoc Include="Widgets\ModeDefining\SettingsScreen.h" />
     <ClInclude Include="Widgets\LogBranch\LogsWidget.h" />
     <ClInclude Include="Widgets\parents\abstractNodeInterface.h" />
+    <QtMoc Include="Widgets\Syncing\SyncMenuWidget.h" />
+    <QtMoc Include="Widgets\Syncing\SyncInfoWidget.h" />
     <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h" />
     <ClInclude Include="Widgets\utils\ElementsStyles.h" />
     <ClInclude Include="Widgets\utils\GlobalAppSettings.h" />

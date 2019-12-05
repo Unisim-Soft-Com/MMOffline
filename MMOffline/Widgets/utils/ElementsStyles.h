@@ -47,13 +47,28 @@ inline static QSize calculateAdaptiveSize(double Hpercent, double Wpercent)
 	);
 }
 
-QString& normalizeLine(QString& line);
+inline static QSize imitatePhoneSize(double HPercent)
+{
+	return QSize(
+		GEOMETRY_SOURCE->availableGeometry().height() * (HPercent*0.66),
+		GEOMETRY_SOURCE->availableGeometry().height() * HPercent
+	);
+}
 
-const QSize& getCurrentSize();
-void setCurrentSize(const QSize&);
 
-extern QString countAdaptiveFont(double perc);
-extern QFont makeFont(double perc);
+
+
+
+QString makeGradientStylesheet(const QColor& first,const QColor& second, int max, int curr);
+QString& normalizeLine(QString& line, int maxSymb);
+
+QString countAdaptiveFont(double perc);
+QFont makeFont(double perc);
+
+
+
+
+
 
 extern const QString OK_BUTTONS_STYLESHEET;
 // All buttons which are made for confirmation (commit button is separated from simple confirm)
@@ -93,17 +108,18 @@ extern const QString LARGE_BUTTON_STYLESHEET;
 
 extern const QString BETTER_CALENDAR_STYLESHEET;
 // large calendar
+
 extern const QString ERROR_TEXT_STYLESHEET;
 // red text for emergency messages
+
 extern const QString UNCHECKED_BUTTONS_STYLESHEET;
 // stylesheet for toggled buttons
 
 // This pair of stylesheets is used in zebra-styled items
-
 extern const QString ZEBRAEVEN_BUTTONS_STYLESHEET;
 // stylesheet for even buttons
 extern const QString ZEBRAODD_BUTTONS_STYLESHEET;
 // stylesheet for odd buttons
 
 extern const QString CHECKBOX_BUTTON_STYLESHEET;
-extern const QString LISTENING_CONTROL_STYLESHEET;
+// stylesheet for BIG checkboxes based on buttons

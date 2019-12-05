@@ -43,7 +43,6 @@ public slots:
 	void timeout();			//	sets wastimeout flag, stops awaiting
 	void requestIncoming();	//	receives data strings
 	void replyError(QNetworkReply::NetworkError);
-	void receivePostparsedData(QString, QString, long long int);
 signals:
 	void requestSuccess(QString, QString);	//	emitted when response arrived with results
 	void requestReceived();					//	emitted when response arrived

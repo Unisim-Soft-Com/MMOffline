@@ -1,10 +1,145 @@
+in method sendQuery state of variables url was pg_web_base.login_user?r=0&a=orders&u=Agent0&p=123&p_only_session=1
+Request finished yielding result |{
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="http://100.127.132.229/index_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="corecss-css" href="http://100.127.132.229/index_files/style(1).css" type="text/css" media="all">
 
 
-->Method called: do_action
-in method sendQuery state of variables url was http://www.una.md:3323/milkmark/pg_web_base.login_user?r=0&a=orders&u=Agen&p=23&p_only_session=1
-in method requestFinish state of variables session, res, err was rse.run(0,{
- error:"Logina \"Agen\" este incorect!"
-,error_full:"ORA-20000: Logina \"Agen\" este incorect!\nORA-06512: на  \"UN4PUBLIC.MSG\", line 4\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2660\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2867\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2952\nORA-01403: данные не найдены"
-,trace:"ORA-06512: на  \"UN4PUBLIC.MSG\", line 4\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2660\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2867\nORA-06512: на  \"UN4PUBLIC.A$UTIL\", line 2952\nORA-06512: на  line 1\nORA-06512: на  \"UN4PUBLIC.UN$USERPARAMS\", line 1111\nORA-06512: на  \"MILKMARK.PG_ORDERS_WEB\", line 840\nORA-06512: на  \"MILKMARKWEB.PG_WEB_BASE\", line 470"
-,lng:1
-});
+	</head>
+	
+<body>
+
+
+
+<div id="holder">
+    <div id="header">
+		<div class="header-banner">
+		<div class="wrapper">
+			<div class="left">
+				<img src="http://100.127.132.229/index_files/logo.png" width="200px" height="61px">
+			</div>
+			<div class="right language">
+				<p><a href="/en">en</a></p>
+				<p><a href="/ru">ru</a></p>
+				<p><a href="/">ro</a></p>
+			</div>
+		</div>
+		<div class="clr"></div>
+	</div>
+	<div class="header warning">
+		<div class="wrapper">
+			<div class="top">
+				<p></p><h1>Ne pare rДѓu, pagina solicitatДѓ nu a fost gДѓsitДѓ.</h1><p></p>
+	<a href="https://host.md//?pag=domains" target="_blank" title="molddata">
+	<img src="http://100.127.132.229/index_files/bannermolddata.png">
+	</a>
+			</div>
+			
+		</div>
+	</div>
+	</div>
+    <div id="body">
+		<div class="container">
+		<div class="wrapper">
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/2qSiTOW3cpE" frameborder="0" allowfullscreen=""></iframe></p>
+
+			<div class="banner left">
+					<div class="source">
+						<p class="bannermtc_urn_pre" style="display:none"></p>
+							<a href="https://moldtelecom.md/ro/personal/news/218"> <img src="http://100.127.132.229/index_files/bannermtc_ro.jpg"></a>
+						
+						<div class="bannermtc_urn">
+						</div>
+					</div>
+				<div class="clr"></div>
+			</div>
+			<div class="banner right">
+					<div class="source">
+						<p class="bannerunite_urn_pre" style="display:none"></p>
+							<a href="https://www.moldtelecom.md/Abonamente-TV-Internet"> <img src="http://100.127.132.229/index_files/banner__ro.jpg"></a>							
+						<div class="bannerunite_urn">
+						</div>
+					</div>
+				<div class="clr"></div>
+			</div>
+<script type="text/javascript" src="http://100.127.132.229/index_files/wp-embed.min.js"></script>
+
+		<div class="clr"></div>
+			<div class="social">
+				<div class="left">
+					<div class="social-icons">
+						<a href="https://plus.google.com/u/1/b/115486391673734520556/"><img src="http://100.127.132.229/index_files/gPlus.png"></a>
+						<a href="https://twitter.com/moldtelecom"><img src="http://100.127.132.229/index_files/twit.png"></a>
+					</div>
+				</div>
+				<div class="right">
+					<div class="social-icons">
+						<a href="https://www.facebook.com/Moldtelecom?ref=hl"><img src="http://100.127.132.229/index_files/fb.png"></a>
+						<a href="https://www.youtube.com/channel/UC7ETXBNXYyQP_FnzeXKlwEQ"><img src="http://100.127.132.229/index_files/youtube.png"></a>
+					</div>
+				</div>
+				<div class="clr"></div>		
+				<p align="center" style="margin-top: 15px;"><a href="http://www.moldtelecom.md/data_security">Moldtelecom</a></p>		
+			</div>
+			<div class="clr"></div>
+		</div>
+	</div>
+	</div>
+    <div id="footer">
+		<div class="footer">
+		<div class="wrapper">
+			<div class="icons">
+				<div class="icons">
+				<div class="item">
+					<a href="https://moldtelecom.md/Televiziune">
+						<img src="http://100.127.132.229/index_files/icon_1.png">
+						<span>televiziune</span>
+					</a>
+				</div>
+				<div class="item">
+					<a href="https://moldtelecom.md/Internet">
+						<img src="http://100.127.132.229/index_files/icon_2.png">
+						<span>internet</span>
+					</a>
+				</div>
+				<div class="item">
+					<a href="https://moldtelecom.md/Telefonie-Fixa">
+						<img src="http://100.127.132.229/index_files/icon_3.png">
+						<span>telefonie fixДѓ</span>
+					</a>
+				</div>
+				<div class="item">
+					<a href="https://moldtelecom.md/Internet-mobil">
+						<img src="http://100.127.132.229/index_files/icon_4.png">
+						<span>internet mobil</span>
+					</a>
+				</div>
+				<div class="item">
+					<a href="https://moldtelecom.md/Telefonie-Mobila">
+						<img src="http://100.127.132.229/index_files/icon_5.png">
+						<span>telefonie mobilДѓ</span>
+					</a>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+    </div>
+	</div>
+</div>	
+</div>
+</body></htm| and errtext |
+in method sendQuery state of variables url was http://www.una.md:3323/milkmark/ping
+in method sendQuery state of variables url was http://www.una.md:3323/milkmark/pg_web_base.login_user?r=1&a=orders&u=Agent0&p=123&p_only_session=1
+Request finished yielding result |{"session":3847,"user_id":500
+}
+| and errtext |

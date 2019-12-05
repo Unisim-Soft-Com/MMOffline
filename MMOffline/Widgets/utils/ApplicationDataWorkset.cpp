@@ -2,21 +2,29 @@
 #include <QSettings>
 #include "Networking/dataupdateengine-http.h"
 
+#include "Widgets/utils/GlobalAppSettings.h"
 
-QString defaultUrl("http://www.una.md:3323/milkmark/");
 
-
+DataWorkset * globalWorkset;
 DataWorkset::DataWorkset()
+	: networkingEngine(), dataprovider(nullptr)
 {
-	networkingEngine = new HttpUpdateEngine(defaultUrl, nullptr);
+	networkingEngine = new HttpUpdateEngine(GlobalAppSettings::instance()->HttpUrl, nullptr);
+}
+DataWorkset* DataWorkset::instance()
+{
+	return globalWorkset;
 }
 
-DataWorkset globalWorkset;
 
-void _initGlobalWorkset()
+
+
+
+void allocateGlobalWorkset()
 {
+	allocateGlobalSettings();
+	globalWorkset = new DataWorkset();
 }
-
 
 void dumpGlobalWorkset(QString filename)
 {

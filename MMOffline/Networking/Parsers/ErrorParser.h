@@ -1,19 +1,19 @@
 #pragma once
-#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include "Networking/queryTemplates.h"
 
 
 
 
 
-class parsedError
+struct parsedError
 {
 	bool isError;
 	QString displayable;
 	QString full;
 	QString trace;
 };
-
-
-parsedError makeError(QJsonArray*)
-
+namespace RequestParser {
+	bool containsError(QJsonObject* doc);
+	parsedError makeError(QJsonObject* doc);
+}

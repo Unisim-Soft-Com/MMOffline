@@ -9,6 +9,25 @@
 #endif
 const char* RECEIVER_SLOT_NAME = "requestIncoming";
 
+
+void removeRSE(QString* str)
+{
+	int cnt = 0;
+	auto strbeg = str->begin();
+	while (!(strbeg == str->end()))
+	{
+		if ((*strbeg++) == QChar('{'))
+		{
+			break;
+		}
+		cnt++;
+	}
+	str->remove(0,cnt);
+	str->chop(2);
+
+
+}
+
 RequestAwaiter::RequestAwaiter(int interval, QObject* parent)
 	: QObject(parent), timer(new QTimer(this)), awaiting(false), timeoutinterval(interval),awaitedReply(nullptr)
 {
@@ -98,16 +117,17 @@ void RequestAwaiter::requestIncoming()
 	{
 		errtext = awaitedReply->errorString();
 	}
-	if (GlobalAppSettings::instance()->packetTracing)
-	{
-		detrace_METHCALL("results:" << restext << "| " << errtext << "|" << '\r' << '\n');
-	}
 	awaiting = false;
 	timer->stop();
 	wastimeout = false;
 	if (awaitedReply != nullptr) {
 		awaitedReply->deleteLater();
 		awaitedReply = nullptr;
+	}
+	removeRSE(&restext);
+	if (GlobalAppSettings::instance()->packetTracing)
+	{
+		detrace_NETRESPREC(restext, errtext);
 	}
 	emit requestSuccess(restext, errtext);
 	emit requestReceived();
@@ -117,25 +137,3 @@ void RequestAwaiter::replyError(QNetworkReply::NetworkError)
 {
 }
 
-void RequestAwaiter::receivePostparsedData(QString a, QString b, long long int lint)
-{
-	if (lint != (long long int)this)
-	{
-		return;
-	}
-	else
-	{
-		restext = a; errtext = b;
-	}
-	disconnect(sender());
-	awaiting = false;
-	timer->stop();
-	wastimeout = false;
-	if (awaitedReply != nullptr) {
-		awaitedReply->deleteLater();
-		awaitedReply = nullptr;
-	}
-	emit requestSuccess(restext, errtext);
-	emit requestReceived();
-
-}

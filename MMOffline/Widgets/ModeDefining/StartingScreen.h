@@ -6,10 +6,10 @@
 #include "Widgets/parents/abstractNodeInterface.h"
 #include "Widgets/utils/GlobalAppSettings.h"
 #include <QtWidgets/QLabel>
+#include "Widgets/ModeDefining/OnlineLoginWidget.h"
+#include "Widgets/ModeDefining/SettingsScreen.h"
+#include "Widgets/LogBranch/LogsWidget.h"
 
-class OnlineLoginWidget;
-class SettingsScreen;
-class LogsWidget;
 
 class StartingScreen : public inframedWidget, abstractNode
 {
@@ -29,12 +29,14 @@ protected:
 	SettingsScreen* settings;
 	LogsWidget* logsScreen;
 public:
-	StartingScreen(GlobalAppSettings& go, QWidget* parent);
+	StartingScreen(QWidget* parent);
 
 protected slots:;
 	void toOnlineLogin();
-	void toOfflineLogin();
 	void toLogs();
 	void toSettings();
-
+	void hideCurrent();
+	void userLoggedIn(QString login);
+public slots:
+	void setInfoLabel();
 };

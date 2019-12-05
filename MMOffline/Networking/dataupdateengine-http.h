@@ -11,6 +11,7 @@ private:
 	uint nextQueryId;
 	qint64 delay;
 	QString sessionId;
+	QString user_id;
 	QNetworkAccessManager netManager;
 
 	QMap<int, QString> queryTemplates;
@@ -22,13 +23,8 @@ public:
 	virtual void sendQuery
 	(
 		const QString& urlpath,
-		RequestAwaiter* awaiter,
-		AttributesToParse attr
+		RequestAwaiter* awaiter
 	);
-private slots:
-	void requestFinish(QNetworkReply*);
-	void onReplyError(QNetworkReply::NetworkError);
-	void onSystemRequestFinished(); 
 public slots:
 	void initConnection();
 public:
@@ -40,5 +36,6 @@ public:
 	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter ) override;
 	virtual void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter ) override;
 	virtual void execQueryByTemplate(queryIDs, int argc, QStringList argv, RequestAwaiter* awaiter) override;
+	virtual void setSession(QString& session, QString& uid) override;
 };
 
