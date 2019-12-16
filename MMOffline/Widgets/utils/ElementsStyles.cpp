@@ -6,7 +6,10 @@
 /*
 	This file contains stylesheet definitions
 */
-QString QLabelColorizationTemplate = QStringLiteral("QLabel {color: %1;}");
+QString QLabelColorizationTemplate = QStringLiteral("QLabel {"
+	"color: %1;"
+	"border: 3px solid black;"
+"}");
 
 QString makeGradientStylesheet(const QColor& first,const QColor& second, int max, int curr)
 {
@@ -20,9 +23,9 @@ QString makeGradientStylesheet(const QColor& first,const QColor& second, int max
 	}
 	double diff = ((double)curr) / max;
 	double antidiff = 1 - diff;
-	int R = ((first.red() * diff) + (second.red() * antidiff)) / 2;
-	int G = ((first.green() * diff) + (second.green() * antidiff)) / 2;
-	int B = ((first.blue() * diff) + (second.blue() * antidiff)) / 2;
+	int R = ((first.red() * antidiff) + (second.red() * diff)) / 2;
+	int G = ((first.green() * antidiff) + (second.green() * diff)) / 2;
+	int B = ((first.blue() * antidiff) + (second.blue() * diff)) / 2;
 	QColor temp(R, G, B);;
 	return QLabelColorizationTemplate.arg(temp.name());
 }
@@ -215,4 +218,12 @@ const QString CHECKBOX_BUTTON_STYLESHEET(
 		"background-color:#d2e092;"
 		"border: 1px solid black;"
 		"}")
+);
+
+const QString FRAMED_LABEL_STYLESHEET(
+	QStringLiteral(
+		"QLabel {"
+		"border: 3px solid black;"
+		"}"
+	)
 );

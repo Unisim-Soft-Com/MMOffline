@@ -3,6 +3,7 @@
 #include "Networking/dataupdateengine.h"
 #include "Dataprovider/SqliteDataProvider.h"
 
+#define AppWorkset DataWorkset::instance()
 struct DataWorkset
 {
 	DataUpdateEngine* networkingEngine;

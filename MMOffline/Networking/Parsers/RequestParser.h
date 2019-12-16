@@ -40,11 +40,24 @@ namespace RequestParser
 		QString error;
 		bool isError;
 	};
-
+	inline QString showLEResponse(ListedEntitiesResponse* resp)
+	{
+		QString tret;
+		if (resp != nullptr)
+		{
+			tret = (resp->isError) ? (QStringLiteral("not valid ") + resp->error) : QStringLiteral("is valid ");
+			for (DataEntity e : resp->data)
+			{
+				tret += e->insertionQuery();
+			}
+		}
+		return tret;
+	}
 	template <class DataEnt>
 	ListedEntitiesResponse parseAndInterpretListAs(const QString& res, const QString& err)
 	{
 		ListedEntitiesResponse toreturn;
+		toreturn.isError = false;
 		LinearParser parser(res, err);
 		auto result = parser.read();
 		if (parser.hasError() || (! parser.isSuccesfull()))

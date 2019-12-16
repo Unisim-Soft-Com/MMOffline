@@ -12,7 +12,13 @@
 
 enum TableNames
 {
-	Clients
+	Clients,
+	Products,
+
+
+	// inner non-received entities
+	Documents,
+	DocumentEntries
 };
 namespace query_templates
 {

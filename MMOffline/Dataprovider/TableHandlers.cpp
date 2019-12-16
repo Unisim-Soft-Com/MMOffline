@@ -92,14 +92,14 @@ QString TemplatedTableHandler::allFieldsDeclaration() const noexcept
 
 QString TemplatedTableHandler::insert(const QString& values) const noexcept
 {
-	return QStringLiteral("insert into ") + table_declaration + QStringLiteral(" ")
-		+ allFieldsDeclaration() + QStringLiteral(" values ") + values;
+	return QStringLiteral("insert into ") + table_declaration + QStringLiteral(" (")
+		+ allFieldsDeclaration() + QStringLiteral(") values ") + values;
 }
 
 QString TemplatedTableHandler::insert(const QString another_name, const QString & values) const noexcept
 {
-	return QStringLiteral("insert into ") + table_declaration + QStringLiteral(" ")
-		+ allFieldsDeclaration() + QStringLiteral(" values ") + values;
+	return QStringLiteral("insert into ") + table_declaration + QStringLiteral(" (")
+		+ allFieldsDeclaration() + QStringLiteral(") values ") + values;
 }
 
 TemplatedTableHandler TemplatedTableHandler::clone(QString newName)

@@ -123,3 +123,5 @@ extern const QString ZEBRAODD_BUTTONS_STYLESHEET;
 
 extern const QString CHECKBOX_BUTTON_STYLESHEET;
 // stylesheet for BIG checkboxes based on buttons
+
+extern const QString FRAMED_LABEL_STYLESHEET;

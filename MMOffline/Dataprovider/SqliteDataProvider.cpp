@@ -25,6 +25,7 @@ bool SqliteDataProvider::executeQuery(const QString& sqlquery)
 	}
 	mainDatabase.close();
 	isSessionOpened = false;
+	mainDatabase.commit();
 	return true;
 }
 
@@ -76,7 +77,7 @@ QueryPtr SqliteDataProvider::runQuery(const QString& sqlquery)
 
 
 SqliteDataProvider::SqliteDataProvider(QObject * parent)
-	: QObject(parent), mainDatabase()
+	: QObject(parent), mainDatabase(), isSessionOpened(false)
 {
 	mainDatabase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), DATABASE_PATH);
 	mainDatabase.setDatabaseName(DATABASE_NAME);

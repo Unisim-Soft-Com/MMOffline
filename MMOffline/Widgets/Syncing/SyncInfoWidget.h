@@ -13,10 +13,10 @@ class SyncInfoWidget : public QWidget
 public:
 	enum syncSteps { 
 		uploadStart=1,
-			GettingClients=5,
 		uploadEnd=100,
 	
-		downloadStart=101, 
+		downloadStart=101,
+			GettingClients = 105,
 
 		downloadEnd=200 
 	};

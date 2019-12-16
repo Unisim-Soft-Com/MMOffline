@@ -20,6 +20,7 @@ protected:
 	QVBoxLayout* innerLayout;
 	QLabel* infoLabel;
 	MegaIconButton* onlineLoginButton;
+	MegaIconButton* createDocumentButton;
 	MegaIconButton* logsButton;
 	QHBoxLayout* footerLayout;
 	MegaIconButton* settingsButton;

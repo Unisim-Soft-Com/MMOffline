@@ -2,13 +2,13 @@
 #include <QStringList>
 #include <QString>
 #include <QJsonObject>
-
+#include <QHash>
 
 class uniform_json_object_representation
 {
 private:
 	QStringList fieldNames;
-	QStringList fields;
+	QHash<QString, QString> fields;
 	int sizeOfThis;
 public:
 	uniform_json_object_representation();
@@ -24,11 +24,13 @@ public:
 	QString toString() const;
 	int size() const;
 	const QStringList & keys() const;
-	const QString& value(QString key) const;
-	const QString& value(QLatin1String) const;
+	const QString value(QString key) const;
+	const QString value(QLatin1String) const;
 	void setKeys(QStringList&);
 	void setFields(QStringList&);
 	void addField(QString key, QString val);
+	QStringList mapValues(const QStringList& l, bool* ok) const;
+	QStringList mapValues(const QStringList& l, const QStringList& defaults) const;
 	QString makeTableDefinition() const;
 	QString makeTableInsertion() const;
 };

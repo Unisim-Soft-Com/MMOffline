@@ -9,14 +9,20 @@
 MMOffline::MMOffline()
 	: inframedWidget(nullptr), 
 	abstractDynamicNode(),
+// docroot(),//	
+docroot(new DocumentRootWidget(this)),
 	startingScreen(new StartingScreen(this)),
 	myAwaiter(new RequestAwaiter(10000, this))
 {
 	mainLayout = new QVBoxLayout(this);
 	this->setLayout(mainLayout);
-	mainLayout->addWidget(startingScreen);
-	currentlyOpened = startingScreen;
-	untouchable = startingScreen;
+	//
+	mainLayout->addWidget(docroot);
+//
+	currentlyOpened = docroot;
+//	
+//	
+	untouchable = docroot;
 }
 
 void MMOffline::do_action()
@@ -31,7 +37,14 @@ void MMOffline::do_action()
 	detrace_METHEXPL("initiation return" << myAwaiter->restext);
 	auto logres = RequestParser::getLoginResult(myAwaiter->restext, myAwaiter->errtext);
 	detrace_METHEXPL("logres: " << logres.isError << " errors: " << logres.error << " and values " << logres.uid << " " << logres.session);
-	DataWorkset::instance()->networkingEngine->execQueryByTemplate(GetClients, QString::number(0), QString::number(50), "", myAwaiter);
+	AppWorkset->networkingEngine->setSession(logres.session, logres.uid);
+	QStringList args{ QString::number(0), QString::number(50), "", "", "" , ""}; AppWorkset->networkingEngine->execQueryByTemplate(
+		GetClients,
+		QString::number(0),
+		QString::number(40),
+		"",
+		myAwaiter
+	);
 	while (myAwaiter->isAwaiting())
 	{
 		qApp->processEvents();
@@ -47,10 +60,5 @@ void MMOffline::do_action()
 		detrace_METHEXPL("\r\n" << "Parsed entity of type " << parsedData.at(i)->myType());
 		detrace_METHEXPL(" it will make query of insertion as: " << parsedData.at(i)->insertionQuery());
 	}
-	QVector<DataEntity> loaded = DataWorkset::instance()->dataprovider.loadDataAs<ClientEntity>();
-	for (int i = 0; i < loaded.count(); ++i)
-	{
-		detrace_METHEXPL("\r\n" << "Loaded entity of type " << loaded.at(i)->myType());
-		detrace_METHEXPL(" it will make query of insertion as: " << loaded.at(i)->insertionQuery());
-	}
+	AppWorkset->dataprovider.pushData(parsedData);
 }

@@ -1,6 +1,10 @@
 #include "SyncInfoWidget.h"
 #include "Widgets/utils/GlobalAppSettings.h"
 #include "Widgets/utils/ElementsStyles.h"
+#define DEBUG
+#ifdef DEBUG
+#include "debugtrace.h"
+#endif
 
 
 const QColor freshLogin(Qt::green);
@@ -31,11 +35,20 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	mainLayout->addWidget(uploadInfo, 5, 0, 1, 0);
 	mainLayout->addWidget(uploadProgress, 6, 0, 1, 0);
 
-	previousLogin->setAlignment(Qt::AlignRight);
-	setDate();
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setSpacing(0);
+	previousLogin->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	
-	pendingChanges->setAlignment(Qt::AlignRight);
-	errorLog->setAlignment(Qt::AlignRight);
+	pendingChanges->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	currentLogin->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	currentLogin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	previousLogin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	previousLogin->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	lastSyncDate->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	lastSyncDate->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	pendingChanges->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	pendingChanges->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	errorLog->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	errorLog->setStyleSheet(ERROR_TEXT_STYLESHEET);
 	downloadInfo->setAlignment(Qt::AlignCenter);
 	downloadInfo->setText(tr("Download progress"));
@@ -43,8 +56,13 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	uploadInfo->setText(tr("Upload progress"));
 	downloadProgress->setValue(0);
 	downloadProgress->setMaximum(100);
+	downloadProgress->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	downloadProgress->setAlignment(Qt::AlignCenter);
 	uploadProgress->setMaximum(100);
 	uploadProgress->setValue(0);
+	uploadProgress->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	uploadProgress->setAlignment(Qt::AlignCenter);
+	setDate();
 }
 
 void SyncInfoWidget::setInfopack(QString& newLogin, QString& pendingChange)

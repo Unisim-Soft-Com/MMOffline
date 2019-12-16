@@ -42,12 +42,24 @@ public:
 	template <class DataEnt>
 	QVector<DataEntity> loadDataAs()
 	{
-		DataEnt temp;
 		QVector<DataEntity> toreturn;
-		auto newQuery = runQuery(temp.getAssociatedTable()->select_all());
+		DataEnt temp;
+		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all());
 		while (temp.fromSqlQuery(newQuery))
 		{
 			toreturn.push_back(DataEntity(temp.clone()));
+		}
+		return toreturn;
+	}
+	template <class DataEnt>
+	QVector<std::shared_ptr<DataEnt>> loadEntities()
+	{
+		QVector<std::shared_ptr<DataEnt>> toreturn;
+		DataEnt temp;
+		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all());
+		while (temp.fromSqlQuery(newQuery))
+		{
+			toreturn.push_back(std::shared_ptr<DataEnt>((static_cast<DataEnt*>(temp.clone()))));
 		}
 		return toreturn;
 	}
@@ -56,7 +68,7 @@ public:
 	{
 		DataEnt temp;
 		QVector<DataEntity> toreturn;
-		auto newQuery = runQuery(temp.getRenamedTable(tname).select_all());
+		auto newQuery = runQuery(temp.getAssociatedTable()->select_all(tname));
 		while (temp.fromSqlQuery(newQuery))
 		{
 			toreturn.push_back(DataEntity(temp.clone()));

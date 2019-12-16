@@ -4,6 +4,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
 	infoLabel(new QLabel(innerWidget)), onlineLoginButton(new MegaIconButton(innerWidget)),
+	createDocumentButton(new MegaIconButton(innerWidget)),
 	logsButton(new MegaIconButton(innerWidget)), footerLayout(new QHBoxLayout(innerWidget)),
 	settingsButton(new MegaIconButton(innerWidget)), quitButton(new MegaIconButton(innerWidget)),
 	onlineLogin(new OnlineLoginWidget(this)), settings(new SettingsScreen(this)),

@@ -21,7 +21,6 @@ bool RequestParser::LinearParser::_parseThis()
 	QJsonArray jarray = innerObject.value(QLatin1String("items")).toArray();
 	if (jarray.count() == 0)
 		return true;
-	int maxsize = jarray.at(0).toObject().count();
 	QJsonObject tobj;
 	for (int i = 0; i < jarray.count(); ++i)
 	{

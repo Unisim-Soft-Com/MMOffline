@@ -40,11 +40,11 @@
 
   // print message about creating an object within specified method or function
 #define detrace_OCREATED(OBJECT, AROUND) detrace << detr_supply::objectConstruction \
-    << "][Created object " << OBJECT << " around " << AROUND << '\n'
+    <<QStringLiteral( "][Created object ") << OBJECT << QStringLiteral(" around " ) << AROUND << '\n'
 
   // print message about triggered default constructor
 #define detrace_DCONSTR(OBJECT) detrace << detr_supply::defaultConstructor << \
-    "\n][Created object " << OBJECT << " by his default constructor" << '\n'
+    QStringLiteral("\n][Created object " )<< OBJECT << QStringLiteral(" by his default constructor") << '\n'
 
 // pring message about something happening in method
 #define detrace_METHEXPL(HAPPENED) detrace << detr_supply::methodExplanation << HAPPENED << '\n'
@@ -54,65 +54,68 @@
 
 // print message about called method
 #define detrace_METHCALL(_METHOD_) detrace << detr_supply::methodCalled << \
-    "\n\n->Method called: "  << _METHOD_ << '\n'
+    QStringLiteral("\n\n->Method called: "  )<< _METHOD_ << '\n'
 
 // print message about slot activation
-#define detrace_SLOTCALL(_SLOT_, OBJECT) detrace << detr_supply::methodCalled << "\n\n-->Slot " \
-    << _SLOT_ << " of object "  << OBJECT << " called" << '\n'
+#define detrace_SLOTCALL(_SLOT_, OBJECT) detrace << detr_supply::methodCalled << QStringLiteral("\n\n-->Slot ") \
+    << _SLOT_ << QStringLiteral(" of object ")  << OBJECT << QStringLiteral(" called" )<< '\n'
 
 // print message about invocation of any method by any method of any class
 #define detrace_METHINVOK(INVOCATED_METHOD,INVOCATED_OBJECT,_METHOD_ ,OBJECT) detrace << detr_supply::methodInvocation \
-    << "\n\n-)Method " << INVOCATED_METHOD << " of object " << INVOCATED_OBJECT << \
-	" invocated in method " << _METHOD_ << " of object " << OBJECT << '\n'
+    << QStringLiteral("\n\n-)Method " )<< INVOCATED_METHOD << QStringLiteral(" of object " )<< INVOCATED_OBJECT << \
+	QStringLiteral(" invocated in method " )<< _METHOD_ << QStringLiteral(" of object " )<< OBJECT << '\n'
 
 // print message about emitting signal
 #define detrace_SIGNALINV(_SIGNAL_, OBJECT) detrace << detr_supply::signalInvocation\
-    << "\n\n-! Signal " << _SIGNAL_ << " is emitted from " << OBJECT << '\n'
+    << QStringLiteral("\n\n-! Signal ") << _SIGNAL_ << QStringLiteral(" is emitted from " )<< OBJECT << '\n'
 
 // print message containig snapshot of current data. Variables to dump must be provided using <<
 #define detrace_METHDATAS(_METHOD_, _VARIABLES_, _STATE_) detrace << detr_supply::methodDataSnapshot\
-    << "in method " << _METHOD_ << " state of variables "<< _VARIABLES_  << " was " _STATE_ << '\n'
+    << QStringLiteral("in method ") << _METHOD_ << QStringLiteral(" state of variables ")<< _VARIABLES_\
+  << QStringLiteral(" was " ) _STATE_ << '\n'
 
 // print message containing one text variable and its value in separated place
 #define detrace_METHTEXTS(_METHOD_,_VARIABLE_,_TEXT_) detrace << detr_supply::methodDataSnapshot\
-    << "in method " << _METHOD_ << " state of text variable " << _VARIABLE_ << " was: " << '\n'\
-    << "________________________________________" << '\n' << _TEXT_ << '\n'
+    << QStringLiteral("in method ") << _METHOD_ << QStringLiteral(" state of text variable ") << _VARIABLE_ << " was: " << '\n'\
+    << QStringLiteral("________________________________________") << '\n' << _TEXT_ << '\n'
 
 // print message about received arguments in method
 #define detrace_METHDRECEIVE(_METHOD_, _ARGUMENTS_ , _VALUES_) detrace << detr_supply::methodDataSnapshot\
-    << "method " << _METHOD_ << " received data: arguments " << _ARGUMENTS_ << " were filled with values"\
-    << '\n' << "|" << _VALUES_ << "|" << '\n'
+    << QStringLiteral("method ") << _METHOD_ << QStringLiteral(" received data: arguments ") << _ARGUMENTS_ \
+<< QStringLiteral(" were filled with values")\
+    << '\n' << QStringLiteral("|") << _VALUES_ << QStringLiteral("|" )<< '\n'
 
 // print message about sent request
 #define detrace_NETREQSENT(_METHOD_,_REQUEST_, _SUPPLIED_) detrace << detr_supply::netrequestSent << \
-    "method " << _METHOD_ << " sent request " << _REQUEST_ << " supplied with " << _SUPPLIED_ << '\n'
+   QStringLiteral( "method ") << _METHOD_ << QStringLiteral(" sent request ") << _REQUEST_ << QStringLiteral(" supplied with ")\
+ << _SUPPLIED_ << '\n'
 
 // prints message using high priority
 #define detrace_MSGIMP(_MESSAGE_) detrace << detr_supply::importantMessage << '\n' <<\
-    "!" <<  '\n'<< _MESSAGE_ <<"!" << '\n' << '\n'
+    QStringLiteral("!") <<  '\n'<< _MESSAGE_ <<QStringLiteral("!") << '\n' << '\n'
 
 // prints low priority message that frequent method was invoked
 #define detrace_METHFRECALL(_METHOD_) detrace << detr_supply::frequentMethodCalled <<\
-    "method " << _METHOD_ << "called" << '\n'
+    QStringLiteral("method ") << _METHOD_ << QStringLiteral( "called" )<< '\n'
 
 // prints low priority message about cycle
 #define detrace_CYCLEEXPL(_EXPLANATION_) detrace << detr_supply::cycleExplanation << \
-    ">>cycling: " << _EXPLANATION_ << '\n'
+   QStringLiteral( ">>cycling: ") << _EXPLANATION_ << '\n'
 
 // prints status of connecting with high priority to avoid disconnection errors
 #define detrace_CONNECTSTAT(_SIGNAL_TO_SLOT_, _STATE_) detrace << detr_supply::errorPossible << \
-	"after connecting " << _SIGNAL_TO_SLOT_ << " state was " << _STATE_ << '\n'
+	QStringLiteral("after connecting ") << _SIGNAL_TO_SLOT_ <<QStringLiteral( " state was ") << _STATE_ << '\n'
 
 //print message about possible error during flow of method X
 #define detrace_METHPERROR(_METHOD_, _CONTEXT_) detrace << detr_supply::errorPossible << \
-	"Error possible in method " << _METHOD_ << "with context: " << _CONTEXT_ << '\n'
+	QStringLiteral("Error possible in method ") << _METHOD_ <<QStringLiteral( "with context: " )<< _CONTEXT_ << '\n'
 
-#define detrace_SUCCESS detrace << detr_supply::methodDataSnapshot << "Operation success!" << '\n'
+#define detrace_SUCCESS detrace << detr_supply::methodDataSnapshot << QStringLiteral("Operation success!") << '\n'
 
-#define detrace_FAIL detrace << detr_supply::methodDataSnapshot << "Operation failed!" << '\n'
+#define detrace_FAIL detrace << detr_supply::methodDataSnapshot << QStringLiteral("Operation failed!") << '\n'
 
 #define detrace_NETRESPREC(_RESTEXT_, _ERRTEXT_)  detrace << detr_supply::methodDataSnapshot	\
-<< "Request finished yielding result |" << _RESTEXT_ << "| and errtext |" << _ERRTEXT_ << '\n'
+<< QStringLiteral("Request finished yielding result |") << _RESTEXT_ << QStringLiteral("| and errtext |" )<< _ERRTEXT_ << '\n'
 
 namespace detr_supply { // Holds enums for defining output method and priorities
 	enum OutputMode { toall, file, qDeb, qStr, Cons, some_united, buffConsole };

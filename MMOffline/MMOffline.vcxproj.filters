@@ -74,6 +74,36 @@
     <Filter Include="Header Files\widgets\Syncing">
       <UniqueIdentifier>{9ffa0000-62c8-4655-a1bd-a33111f70352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LocalDataProviders\DataEntities">
+      <UniqueIdentifier>{2dd551ac-2990-4774-a5d2-adf0b79398d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LocalDataProviders">
+      <UniqueIdentifier>{9346585e-a423-4c9a-8307-59efb4e1f66e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LocalDataProviders\DataEntities">
+      <UniqueIdentifier>{fd011726-de44-4077-b618-b6c79de26060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Networking\Parsers">
+      <UniqueIdentifier>{454da944-4241-4afd-8bc6-864b6da96900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\ModeDefining">
+      <UniqueIdentifier>{e3a2f100-188e-46c0-ae3a-e725e62f778f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\LogBranch">
+      <UniqueIdentifier>{74e28791-d871-4e16-965d-76c7c1d89171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\Multibranch">
+      <UniqueIdentifier>{eb489efd-a101-46eb-8ede-abba4a733026}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\Syncing">
+      <UniqueIdentifier>{e1253f7d-563c-4f56-8fc1-b71504cae357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\DocumentBranch">
+      <UniqueIdentifier>{9a11a92a-fbed-4b83-998b-a809a1fd555e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\widgets\ExtendedDelegates">
+      <UniqueIdentifier>{fa2e0f14-72af-432d-9cd6-336b67906a6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -130,52 +160,85 @@
     <ClCompile Include="Widgets\utils\GlobalAppSettings.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="debugtrace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\utils\ApplicationDataWorkset.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Networking\queryTemplates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Networking\Parsers\ErrorParser.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Dataprovider\Entities\abs_entity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
     <ClCompile Include="Networking\Parsers\abs_parser.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Networking\Parsers</Filter>
     </ClCompile>
-    <ClCompile Include="Networking\Parsers\LinearParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Networking\Parsers\JsonUniresult.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Dataprovider\Entities\ClientEntity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
     <ClCompile Include="Dataprovider\DataEntities.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
-    <ClCompile Include="Dataprovider\TableHandlers.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="debugtrace.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\ErrorParser.cpp">
+      <Filter>Source Files\Networking\Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\JsonUniresult.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\LinearParser.cpp">
+      <Filter>Source Files\Networking\Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\ProductEntity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\queryTemplates.cpp">
+      <Filter>Source Files\LocalDataProviders</Filter>
     </ClCompile>
     <ClCompile Include="Dataprovider\SqliteDataProvider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LocalDataProviders</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\TableHandlers.cpp">
+      <Filter>Source Files\LocalDataProviders</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp">
+      <Filter>Source Files\widgets\LogBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp">
+      <Filter>Source Files\widgets\ModeDefining</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp">
+      <Filter>Source Files\widgets\ModeDefining</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp">
+      <Filter>Source Files\widgets\ModeDefining</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\Syncing\SyncInfoWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\widgets\Syncing</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\Syncing\SyncMenuWidget.cpp">
+      <Filter>Source Files\widgets\Syncing</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\DocumentEntity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\DocumentEntryEntity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\FieldTablesPredefines.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\ClientsDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\ClientViewWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\ClientSelectionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\DocumentRootWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -196,9 +259,6 @@
     </ClInclude>
     <ClInclude Include="Widgets\utils\GlobalAppSettings.h">
       <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="debugtrace.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h">
       <Filter>Header Files\util</Filter>
@@ -224,14 +284,32 @@
     <ClInclude Include="Dataprovider\SqliteDataProvider.h">
       <Filter>Header Files\LocalDataProviders</Filter>
     </ClInclude>
-    <ClInclude Include="Dataprovider\DataEntities.h">
-      <Filter>Header Files\LocalDataProviders</Filter>
-    </ClInclude>
     <ClInclude Include="Networking\Parsers\JsonUniresult.h">
       <Filter>Header Files\Networking\Parsers</Filter>
     </ClInclude>
     <ClInclude Include="Dataprovider\TableHandlers.h">
       <Filter>Header Files\LocalDataProviders</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\abs_entity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\ProductEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="debugtrace.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\DocumentEntryEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\FieldTablesPredefines.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\ExtendedDelegates\DelegateUtility.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h">
+      <Filter>Header Files\widgets\Multibranch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +366,27 @@
     </QtMoc>
     <QtMoc Include="Widgets\Syncing\SyncInfoWidget.h">
       <Filter>Header Files\widgets\Syncing</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\DocumentBranch\DocumentRootWidget.h">
+      <Filter>Header Files\widgets\DocumentBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\DocumentBranch\ClientSelectionWidget.h">
+      <Filter>Header Files\widgets\DocumentBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Dataprovider\Entities\ClientEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </QtMoc>
+    <QtMoc Include="Dataprovider\DataEntities.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </QtMoc>
+    <QtMoc Include="Dataprovider\Entities\DocumentEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ExtendedDelegates\ClientsDelegate.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ExtendedDelegates\ProductsDelegate.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

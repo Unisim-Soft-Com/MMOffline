@@ -36,6 +36,7 @@ void GlobalAppSettings::dump()
 	setting.setValue("alt_addresses", alternativeUrls);
 	setting.setValue("local_user", localLogin);
 	setting.setValue("timeout_interval", timeoutint);
+	setting.setValue("last_sync", lastSyncDate);
 }
 
 void GlobalAppSettings::switchLaunchArgument(int arg)
@@ -84,6 +85,7 @@ GlobalAppSettings::GlobalAppSettings()
 	alternativeUrls = settings.value("alt_addresses", "").toStringList();
 	localLogin = settings.value("local_user", "").toString();
 	timeoutint = settings.value("timeout_interval", QVariant(0)).toInt();
+	lastSyncDate = settings.value("last_sync", QVariant(QDate())).toDate();
 	setTranslator();
 }
 
