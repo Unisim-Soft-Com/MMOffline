@@ -6,6 +6,7 @@ const QString queryTemplates[totalTemplates]
 	QStringLiteral("Ping"),
 	QStringLiteral("GetWeight"),
 	QStringLiteral("GetRouteList"),
+	QStringLiteral("GetGroups"),
 	QStringLiteral("Login"),
 	QStringLiteral("GetRoutes"),
 	QStringLiteral("GetTask"),
@@ -22,6 +23,7 @@ const QString queryDefaults[totalTemplates]
 	QStringLiteral("ping"),
 	QStringLiteral("pg_web_order.get_weight?r=%1&s=%2"),
 	QStringLiteral("pg_web_order.get_route_list?r=%1&s=%2"),
+	QStringLiteral("pg_web_order.get_groups?p_request_id=%1&p_session_id=%2"),
 	QStringLiteral("pg_web_base.login_user?r=%1&a=orders&u=%2&p=%3&p_only_session=1"),
 	QStringLiteral("pg_web_order.get_routes?r=%1&s=%2&i=%3&n=%4&f=%5"),
 	QStringLiteral("pg_web_order.get_tasks?r=%1&s=%2&i=%3&n=%4&f=%5"),
@@ -55,6 +57,7 @@ bool _checkArgQuantity(queryIDs id, int argc)
 	{
 	case Ping:
 	case GetWeight:
+	case GetGroups:
 		return argc == 0;
 	case Login:
 		return argc == 2;

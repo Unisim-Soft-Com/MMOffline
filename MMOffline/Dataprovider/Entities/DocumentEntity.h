@@ -29,6 +29,7 @@ protected:
 	virtual QString getContentsForDb() const override;
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
+	virtual bool isLikeString(const QRegExp& qregexp) const override;
 
 	void _listInit(const QStringList& l);
 public:

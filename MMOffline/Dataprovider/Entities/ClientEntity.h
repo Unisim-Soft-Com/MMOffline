@@ -15,6 +15,7 @@ protected:
 	virtual TemplatedTableHandler* getAssocTable() const override;
 	virtual QString getContentsForDb() const override;
 	virtual abs_entity* fabricate() const override;
+	virtual bool isLikeString(const QRegExp& qregexp) const override;
 public:
 	ClientEntity();
 	ClientEntity(int id, QString name);

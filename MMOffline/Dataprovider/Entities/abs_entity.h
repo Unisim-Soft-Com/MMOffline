@@ -4,8 +4,8 @@
 #include <memory>
 #include <QtSql/qsqlquery.h>
 #include <exception>
-
-
+#include <qregularexpression.h>
+#include <qmetatype.h>
 
 typedef std::shared_ptr<QSqlQuery> QueryPtr;
 
@@ -22,6 +22,7 @@ protected:
 	virtual QString getContentsForDb() const = 0;
 	virtual abs_entity* fabricate() const = 0;
 	virtual bool fromSql(QueryPtr q) = 0;
+	virtual bool isLikeString(const QRegExp& qregexp)const  = 0;
 public:
 	abs_entity(int class_id = 0);
 	uniform_json_object_representation toUniJson() const;
@@ -35,8 +36,12 @@ public:
 	QString insertionQuery() const;
 	QString insertionQuery(const QString another_table) const;
 	int myType() const;
+	bool filter(const QRegExp& qrexp) const;
 	abs_entity* clone() const;
 };
+
+typedef std::shared_ptr<abs_entity> DataEntity;
+Q_DECLARE_METATYPE(DataEntity);
 
 
 class InitializationError : public std::exception

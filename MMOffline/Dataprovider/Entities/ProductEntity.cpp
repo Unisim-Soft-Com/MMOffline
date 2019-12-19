@@ -59,12 +59,12 @@ uniform_json_object_representation ProductEntity::toJsonRepresentation() const
 			QString::number(quantityInPieces),
 			QString::number(rest),
 			expires,
-			QString::number(group),
+			QString::number(groupId),
 			color,
 			QString::number(groupInDictionary),
 			groupName,
 			QString::number(groupCounterparty),
-			QString::number(column),
+			QString::number(columnBE),
 			QString::number(groupgr2)
 		}
 	);
@@ -107,7 +107,7 @@ QString ProductEntity::getContentsForDb() const
 		+ QStringLiteral(" , \"") +
 		expires
 		+ QStringLiteral("\" , ") +
-		QString::number(group)
+		QString::number(groupId)
 		+ QStringLiteral(" , \"") +
 		color
 		+ QStringLiteral("\" , ") +
@@ -117,7 +117,7 @@ QString ProductEntity::getContentsForDb() const
 		+ QStringLiteral("\" , ") +
 		QString::number(groupCounterparty)
 		+ QStringLiteral(" , ") +
-		QString::number(column)
+		QString::number(columnBE)
 		+ QStringLiteral(" , ") +
 		QString::number(groupgr2)
 		+ QStringLiteral(" )");
@@ -151,7 +151,7 @@ void ProductEntity::_listInit(const QStringList& flist)
 		groupgr2 = flist.at(i--).toInt(&ok);
 		if (!ok) break;
 	case 16:
-		column = flist.at(i--).toInt(&ok);
+		columnBE = flist.at(i--).toInt(&ok);
 		if (!ok) break;
 	case 15:
 		groupCounterparty = flist.at(i--).toInt(&ok);
@@ -164,7 +164,7 @@ void ProductEntity::_listInit(const QStringList& flist)
 	case 12:
 		color = flist.at(i--);
 	case 11:
-		group = flist.at(i--).toInt(&ok);
+		groupId = flist.at(i--).toInt(&ok);
 		if (!ok) break;
 	case 10:
 		expires = flist.at(i--);
@@ -205,8 +205,8 @@ void ProductEntity::_listInit(const QStringList& flist)
 ProductEntity::ProductEntity()
 	:abs_entity(Products), id(std::numeric_limits<int>::min()), name(), shortName(),
 	price(0.0), priceWithTaxes(0.0), measure(0), quantity(0.0),
-	quantityInPieces(0.0), rest(0.0), expires(), group(0),
-	color(), groupInDictionary(0), groupName(), groupCounterparty(0), column(0),
+	quantityInPieces(0.0), rest(0.0), expires(), groupId(0),
+	color(), groupInDictionary(0), groupName(), groupCounterparty(0), columnBE(0),
 	groupgr2()
 {
 
@@ -215,8 +215,8 @@ ProductEntity::ProductEntity()
 ProductEntity::ProductEntity(int Id, QString Name, QString ShortName, double Price, double PriceWithTaxes)
 	:abs_entity(Products), id(Id), name(Name), shortName(ShortName),
 	price(Price), priceWithTaxes(PriceWithTaxes), measure(0), quantity(0.0),
-	quantityInPieces(0.0), rest(0.0), expires(), group(0),
-	color(), groupInDictionary(0), groupName(), groupCounterparty(0), column(0),
+	quantityInPieces(0.0), rest(0.0), expires(), groupId(0),
+	color(), groupInDictionary(0), groupName(), groupCounterparty(0), columnBE(0),
 	groupgr2()
 {
 }
@@ -225,4 +225,17 @@ ProductEntity::ProductEntity(const QStringList& flist)
 	:abs_entity(Products)
 {
 	_listInit(flist);
+}
+
+bool ProductEntity::isLikeString(const QRegExp& qregexp) const
+{
+	if (name.contains(qregexp.pattern()))
+	{
+		return true;
+	}
+	else if (QString::number(id).contains(qregexp.pattern()))
+	{
+		return true;
+	}
+	return false;
 }

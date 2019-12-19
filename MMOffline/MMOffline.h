@@ -6,13 +6,15 @@
 #include "Widgets/parents/abstractNodeInterface.h"
 #include "Widgets/ModeDefining/StartingScreen.h"
 #include "Widgets/DocumentBranch/DocumentRootWidget.h"
+#include "Widgets/MultibranchWidgets/GroupSelectionWidget.h"
+#include "Widgets/MultibranchWidgets/ProductSelectionWidget.h"
 class MMOffline : public inframedWidget, abstractDynamicNode
 {
 	Q_OBJECT
 private:
 	RequestAwaiter* myAwaiter;
 	StartingScreen* startingScreen;
-	DocumentRootWidget* docroot;
+	ProductSelectionWidget* docroot;
 public:
 	MMOffline();
 public slots:

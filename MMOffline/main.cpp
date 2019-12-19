@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	AppSettings->lastSyncDate = QDate::currentDate();
 	MMOffline w;
 	w.show();
-	//w.setMinimumSize(imitatePhoneSize(0.7));
-//	QTimer::singleShot(100, &w, SLOT(do_action()));
+	w.setMinimumSize(imitatePhoneSize(0.7));
+	//QTimer::singleShot(100, &w, SLOT(do_action()));
 	return a.exec();
 }

@@ -24,7 +24,7 @@ class BigButtonsSpinbox : public QWidget
 {
 	Q_OBJECT
 public:
-	enum spintype { intspin, timespin, floatspin };	//	Used to determine which type of spinbox is wrapped
+	enum spintype { intspin, timespin, floatspin , datespin};	//	Used to determine which type of spinbox is wrapped
 
 private:
 	QGridLayout* mainLayout;			//	View

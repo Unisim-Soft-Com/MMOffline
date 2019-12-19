@@ -1,7 +1,6 @@
 #include "DocumentEntity.h"
 #include <QVariant>
 #include<QWidget>
-
 const QStringList fieldDefaults
 {
 QStringLiteral("0"),
@@ -180,6 +179,11 @@ void DocumentEntity::cleanEntryField()
 	{
 		unlinkEntry(e);
 	}
+}
+
+bool DocumentEntity::isLikeString(const QRegExp& qregexp) const
+{
+	return true;
 }
 
 bool DocumentEntity::linkEntry(DocEntryPtr e)

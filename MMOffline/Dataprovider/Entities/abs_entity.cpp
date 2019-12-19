@@ -63,6 +63,11 @@ int abs_entity::myType() const
 	return class_id;
 }
 
+bool abs_entity::filter(const QRegExp& qrexp) const
+{
+	return isLikeString(qrexp);
+}
+
 abs_entity* abs_entity::clone() const
 {
 	return fabricate();

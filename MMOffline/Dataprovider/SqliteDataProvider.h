@@ -63,6 +63,18 @@ public:
 		}
 		return toreturn;
 	}
+	template<class DataEnt>
+	QVector<std::shared_ptr<DataEnt>> loadEntitiesFromTable(QString name)
+	{
+		QVector<std::shared_ptr<DataEnt>> toreturn;
+		DataEnt temp;
+		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all(name));
+		while (temp.fromSqlQuery(newQuery))
+		{
+			toreturn.push_back(std::shared_ptr<DataEnt>((static_cast<DataEnt*>(temp.clone()))));
+		}
+		return toreturn;
+	}
 	template <class DataEnt>
 	QVector<DataEntity> loadDataFromTableAs(QString tname)
 	{

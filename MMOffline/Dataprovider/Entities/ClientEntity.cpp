@@ -54,6 +54,20 @@ ClientEntity::ClientEntity(int Id, QString Name)
 
 }
 
+bool ClientEntity::isLikeString(const QRegExp& qregexp) const
+{
+	
+	if (name.contains(qregexp.pattern()))
+	{
+		return true;
+	}
+	else if (QString::number(id).contains(qregexp.pattern()))
+	{
+		return true;
+	}
+	return false;
+}
+
 
 bool ClientEntity::fromSql(QueryPtr q)
 {
@@ -99,6 +113,12 @@ QVariant ClientDataModel::data(const QModelIndex& index, int role) const
 	{
 		QVariant temp;
 		temp.setValue<Client>(innerList.at(index.row()));
+		return temp;
+	}
+	if (role == Qt::ItemDataRole::UserRole)
+	{
+		QVariant temp;
+		temp.setValue<DataEntity>(std::shared_ptr<abs_entity>(innerList.at(index.row())));
 		return temp;
 	}
 	return QVariant();

@@ -5,13 +5,9 @@
 
 void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	Product temp = index.data().value<Product>();
+	Product temp = upcastItem<ProductEntity>(index);
 	if (temp == nullptr)
-	{
-		temp = std::static_pointer_cast<ProductEntity>(index.data().value<DataEntity>());
-		if (temp == nullptr)
-			return;
-	}
+		return;
 	// predrawing calculations
 	QPoint diff(option.rect.bottomRight().x() * 0.333333, 0);
 	QRect textbox(
@@ -46,7 +42,7 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	painter->drawRect(textbox);
 	painter->setPen(Qt::SolidLine);
 	painter->setOpacity(1);
-	painter->drawText(textbox, Qt::AlignCenter, tr("Price: ") + temp->price);
+	painter->drawText(textbox, Qt::AlignCenter, tr("Price: ") + QString::number(temp->price, 'g', 4));
 	// Quantity box
 	textbox.setTopLeft(
 		textbox.topLeft() + diff
@@ -75,10 +71,15 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	painter->drawRect(textbox);
 	painter->setOpacity(1);
 	painter->drawText(textbox, Qt::AlignCenter | Qt::TextWordWrap, temp->name);
-
+	painter->setBrush(Qt::NoBrush);
+	painter->setPen(QPen(Qt::black, 3));
+	textbox.setTopLeft(option.rect.topLeft() + QPoint(1, 1));
+	textbox.setBottomRight(option.rect.bottomRight() - QPoint(1, 1));
+	painter->drawRect(textbox);
 	if (option.state.testFlag(QStyle::State_Selected))
 	{
 		painter->setBrush(option.palette.highlight());
+		painter->setPen(Qt::NoPen);
 		painter->setOpacity(0.3);
 		painter->drawRect(option.rect);
 	}
@@ -88,14 +89,11 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 
 QSize ProductsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	Product p = index.data().value<Product>();
-	if (p == nullptr)
-	{
-		p = std::static_pointer_cast<ProductEntity>(index.data().value<DataEntity>());
-		if (p == nullptr)
-			return QSize(100, 50);
-	}
-	double wdth = option.fontMetrics.averageCharWidth() * p->name.length();
+	Product temp = upcastItem<ProductEntity>(index);
+	if (temp == nullptr)
+		return QSize(100, 50);
+	
+	double wdth = option.fontMetrics.averageCharWidth() * temp->name.length();
 	double tabs = 0;
 	if (option.rect.width() == 0)
 	{

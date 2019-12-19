@@ -157,3 +157,8 @@ DocumentEntryEntity::DocumentEntryEntity(const QStringList& l)
 {
 	_listInit(l);
 }
+
+bool DocumentEntryEntity::isLikeString(const QRegExp& qregexp) const
+{
+	return false;
+}

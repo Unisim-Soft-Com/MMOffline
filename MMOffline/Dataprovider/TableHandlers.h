@@ -14,8 +14,8 @@ enum TableNames
 {
 	Clients,
 	Products,
-
-
+	Groups,
+	NamedIds,
 	// inner non-received entities
 	Documents,
 	DocumentEntries

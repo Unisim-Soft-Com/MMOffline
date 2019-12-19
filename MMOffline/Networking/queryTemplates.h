@@ -9,6 +9,7 @@ enum queryIDs
 	// system args
 	GetWeight,
 	GetRouteList,
+	GetGroups,
 	// 2 args + system args
 	Login,
 	// 3 args
@@ -23,6 +24,6 @@ enum queryIDs
 
 
 };
-const int totalTemplates = 10;
+const int totalTemplates = GetProducts + 1;
 QMap<int, QString> _initTemplates();
 bool _checkArgQuantity(queryIDs id, int argc);

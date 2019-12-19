@@ -8,6 +8,8 @@
 #include "Dataprovider/Entities/ClientEntity.h"
 #include <QtWidgets/QListView>
 #include "Widgets/ExtendedDelegates/ClientsDelegate.h"
+#include <QtCore/QSortFilterProxyModel>
+#include <Dataprovider/DataEntities.h>
 
 class ClientSelectionWidget : public inframedWidget, abstractNode
 {
@@ -19,12 +21,13 @@ protected:
 	QLabel* userInfo;
 	QHBoxLayout* searchPanel;
 	QLineEdit* searchLine;
-	MegaIconButton* doSearchButton;
+	//MegaIconButton* doSearchButton;
 	QListView* clientView;
 	MegaIconButton* backButton;
-	ClientDataModel* innerModel;
+	//ClientDataModel* innerModel;
+	DataEntityListModel* innerModel;
 	ClientsDelegate* innerDelegate;
-
+	QSortFilterProxyModel* searchProxy;
 
 public:
 	ClientSelectionWidget(QWidget* parent);

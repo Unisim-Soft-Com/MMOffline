@@ -2,16 +2,15 @@
 #include <QPainter>
 #include "Dataprovider/DataEntities.h"
 #include "debugtrace.h"
-
+#include "qsortfilterproxymodel.h"
+#include "DelegateUtility.h"
 
 void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	Client temp = index.data().value<Client>();
+	Client temp = upcastItem<ClientEntity>(index);
 	if (temp == nullptr)
 	{
-		temp = std::static_pointer_cast<ClientEntity>(index.data().value<DataEntity>());
-		if (temp == nullptr)
-			return;
+		return;
 	}
 	QLinearGradient gr;
 	painter->save();
@@ -48,15 +47,12 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 	painter->restore();
 }
 
+
 QSize ClientsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-	Client c = index.data().value<Client>();
+	Client c = upcastItem<ClientEntity>(index);
 	if (c == nullptr)
-	{
-		c = std::static_pointer_cast<ClientEntity>(index.data().value<DataEntity>());
-		if (c == nullptr)
-			return QSize(100, 50);
-	}
+		return QSize(100, 50);
 	double wdth = option.fontMetrics.averageCharWidth() * c->name.length();
 	int tabs = 0;
 	if (option.rect.width() == 0)
@@ -66,6 +62,5 @@ QSize ClientsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModel
 	else
 		tabs = std::ceil(wdth / option.rect.width());
 	tabs = (tabs > 0) ? tabs : 1;
-	detrace_METHEXPL("for width " << wdth << " decided to make " << tabs << " tabs comparing with width " << option.rect.width());
 	return QSize(option.rect.width(), (tabs + 1.4) * (option.fontMetrics.height()+2) );
 }

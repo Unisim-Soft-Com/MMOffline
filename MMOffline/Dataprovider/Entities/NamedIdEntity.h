@@ -1,24 +1,14 @@
 #pragma once
 #include "abs_entity.h"
-#include <memory>
+#include <QMetaType>
 
 
 
-class DocumentEntryEntity : public abs_entity
+class NamedIdEntity : public abs_entity
 {
 public:
-	int parentDocId;
-	int entryId;
-	int productId;
-	QString productName;
-	double price;
-	int measure;
-	double quantity;
-	QString option1;
-	QString option2;
-	QString option3;
-	QString comment;
-
+	int id;
+	QString name;
 protected:
 	// Inherited via abs_entity
 	virtual uniform_json_object_representation toJsonRepresentation() const override;
@@ -28,14 +18,12 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
-
-	void _listInit(const QStringList&);
 public:
-	explicit DocumentEntryEntity();
-	explicit DocumentEntryEntity(int ID);
-	explicit DocumentEntryEntity(const QStringList&);
-
-	// Inherited via abs_entity
+	explicit NamedIdEntity();
+	explicit NamedIdEntity(QString Name, int Id);
+	explicit NamedIdEntity(const QStringList& List);
 };
 
-typedef std::shared_ptr<DocumentEntryEntity> DocEntryPtr;
+typedef std::shared_ptr<NamedIdEntity> NamedId;
+typedef QVector<NamedId> NamedIdList;
+Q_DECLARE_METATYPE(NamedId);

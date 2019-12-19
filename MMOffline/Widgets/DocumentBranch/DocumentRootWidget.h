@@ -3,8 +3,9 @@
 #include "Widgets/parents/inframedWidget.h"
 #include "Widgets/parents/abstractNodeInterface.h"
 #include "Widgets/DocumentBranch/ClientSelectionWidget.h"
-
-
+#include "Widgets/MultibranchWidgets/GroupSelectionWidget.h"
+class DocumentCreationScreen;
+class EntryCreationScreen;
 
 class DocumentRootWidget : public inframedWidget, abstractNode
 {
@@ -12,7 +13,13 @@ class DocumentRootWidget : public inframedWidget, abstractNode
 protected:
 	QVBoxLayout* mainLayout;
 	ClientSelectionWidget* clientSelection;
+	DocumentCreationScreen* documentCreation;
+	GroupSelectionWidget* groupSelection;
+	ProductSelectionWidget* productSelection;
+	EntryCreationScreen* entryCreation;
 
+	Client currentClient;
+	Group currentGroup;
 
 
 public:

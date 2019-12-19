@@ -241,6 +241,24 @@
     <ClCompile Include="Widgets\DocumentBranch\DocumentRootWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\GroupEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\GroupDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\NamedIdEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\DocumentCreationScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MMOffline.qrc">
@@ -310,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h">
       <Filter>Header Files\widgets\Multibranch</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets\DocumentBranch\DocumentCreationScreen.h">
+      <Filter>Header Files\widgets\DocumentBranch</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\NamedIdEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +411,18 @@
     </QtMoc>
     <QtMoc Include="Widgets\ExtendedDelegates\ProductsDelegate.h">
       <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </QtMoc>
+    <QtMoc Include="Dataprovider\Entities\GroupEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\MultibranchWidgets\GroupSelectionWidget.h">
+      <Filter>Header Files\widgets\Multibranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ExtendedDelegates\GroupDelegate.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionWidget.h">
+      <Filter>Header Files\widgets\Multibranch</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -1,13 +1,18 @@
 #include "ClientSelectionWidget.h"
 #include "Widgets/utils/ElementsStyles.h"
 #include "Widgets/utils/ApplicationDataWorkset.h"
+
+
 ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
 	userInfo(new QLabel(innerWidget)), searchPanel(new QHBoxLayout(innerWidget)),
-	searchLine(new QLineEdit(innerWidget)), doSearchButton(new MegaIconButton(innerWidget)),
+	searchLine(new QLineEdit(innerWidget)),// doSearchButton(new MegaIconButton(innerWidget)),
 	clientView(new QListView(innerWidget)), backButton(new MegaIconButton(innerWidget)),
-	innerModel(new ClientDataModel(this)), innerDelegate(new ClientsDelegate(this))
+	//innerModel(new ClientDataModel(this)),
+	innerModel(new DataEntityListModel(this)),
+	innerDelegate(new ClientsDelegate(this)),
+	searchProxy(new DataEntityFilterModel(this))
 {
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
@@ -17,7 +22,7 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	innerLayout->addWidget(clientView);
 	innerLayout->addWidget(backButton);
 	searchPanel->addWidget(searchLine);
-	searchPanel->addWidget(doSearchButton);
+//	searchPanel->addWidget(doSearchButton);
 
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -25,13 +30,10 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	innerLayout->setContentsMargins(0, 0, 0, 0);
 
 
-	clientView->setModel(innerModel);
-	clientView->setItemDelegate(innerDelegate);
-
 	userInfo->setText(tr("Select client"));
-	doSearchButton->setText(tr("Search!"));
-	doSearchButton->setStyleSheet(CHANGE_BUTTONS_STYLESHEET);
-	doSearchButton->setIcon(QIcon(":/res/search.png"));
+	//doSearchButton->setText(tr("Search!"));
+	//doSearchButton->setStyleSheet(CHANGE_BUTTONS_STYLESHEET);
+	//doSearchButton->setIcon(QIcon(":/res/search.png"));
 	backButton->setIcon(QIcon(":/res/back.png"));
 	backButton->setText(tr("back"));
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
@@ -39,9 +41,12 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	untouchable = innerWidget;
 	main = this;
 
-	innerModel->setList(AppWorkset->dataprovider.loadEntities<ClientEntity>());
-
-	QObject::connect(doSearchButton, &MegaIconButton::clicked, this, &ClientSelectionWidget::doSearch);
+	innerModel->setData(AppWorkset->dataprovider.loadDataAs<ClientEntity>());
+	searchProxy->setSourceModel(innerModel);
+	clientView->setModel(searchProxy);
+	clientView->setItemDelegate(innerDelegate);
+//	QObject::connect(doSearchButton, &MegaIconButton::clicked, this, &ClientSelectionWidget::doSearch);
+	QObject::connect(searchLine, &QLineEdit::textChanged, searchProxy, &QSortFilterProxyModel::setFilterFixedString);
 }
 
 void ClientSelectionWidget::doSearch()

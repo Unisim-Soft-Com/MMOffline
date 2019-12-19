@@ -10,7 +10,7 @@ MMOffline::MMOffline()
 	: inframedWidget(nullptr), 
 	abstractDynamicNode(),
 // docroot(),//	
-docroot(new DocumentRootWidget(this)),
+docroot(new ProductSelectionWidget(this)),
 	startingScreen(new StartingScreen(this)),
 	myAwaiter(new RequestAwaiter(10000, this))
 {
@@ -38,18 +38,14 @@ void MMOffline::do_action()
 	auto logres = RequestParser::getLoginResult(myAwaiter->restext, myAwaiter->errtext);
 	detrace_METHEXPL("logres: " << logres.isError << " errors: " << logres.error << " and values " << logres.uid << " " << logres.session);
 	AppWorkset->networkingEngine->setSession(logres.session, logres.uid);
-	QStringList args{ QString::number(0), QString::number(50), "", "", "" , ""}; AppWorkset->networkingEngine->execQueryByTemplate(
-		GetClients,
-		QString::number(0),
-		QString::number(40),
-		"",
-		myAwaiter
-	);
+	AppWorkset->dataprovider.dropTable(Groups);
+	AppWorkset->networkingEngine->execQueryByTemplate(GetGroups, myAwaiter);
 	while (myAwaiter->isAwaiting())
 	{
 		qApp->processEvents();
 	}
-	auto parseres = RequestParser::parseAndInterpretListAs<ClientEntity>(myAwaiter->restext, myAwaiter->errtext);
+	detrace_METHEXPL("Groups result: " << myAwaiter->restext);
+	auto parseres = RequestParser::parseAndInterpretListAs<GroupEntity>(myAwaiter->restext, myAwaiter->errtext);
 	if (parseres.isError)
 	{
 		detrace_METHPERROR("parseAndinterpret", parseres.error);
