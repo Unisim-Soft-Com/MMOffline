@@ -1,6 +1,7 @@
 #include "LinearParser.h"
 #include <QtCore/QJsonArray>
 
+#include <qapplication.h>
 
 
 RequestParser::LinearParser::LinearParser( const QString& restext, const QString& errtext)
@@ -26,6 +27,7 @@ bool RequestParser::LinearParser::_parseThis()
 	{
 		tobj = jarray.at(i).toObject();
 		uniresult->queryResult.push_back(uniform_json_object_representation(tobj));
+		qApp->processEvents();
 	}
 	return true;
 }

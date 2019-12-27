@@ -5,7 +5,7 @@
 class ClientEntity : public abs_entity
 {
 public:
-	int id;
+	IdInt id;
 	QString name;
 protected:
 	// Inherited via abs_entity
@@ -16,9 +16,10 @@ protected:
 	virtual QString getContentsForDb() const override;
 	virtual abs_entity* fabricate() const override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
+	virtual IdInt extractId() const override;
 public:
 	ClientEntity();
-	ClientEntity(int id, QString name);
+	ClientEntity(IdInt id, QString name);
 };
 typedef std::shared_ptr<ClientEntity> Client;
 typedef QVector<Client> ClientList;

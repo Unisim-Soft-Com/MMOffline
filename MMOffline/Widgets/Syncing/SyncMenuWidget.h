@@ -5,7 +5,7 @@
 #include "Widgets/ElementWidgets/MegaIconButton.h"
 #include "Networking/RequestAwaiter.h"
 #include "SyncInfoWidget.h"
-
+#include "Dataprovider/DataEntities.h"
 class SyncMenuWidget : public inframedWidget
 {
 	Q_OBJECT
@@ -23,10 +23,18 @@ private:
 	int synchrostep;
 	int entriesFrom;
 	int entriesTo;
-	void _send_data_request();
+
+	ClientList dClients;
+	int currentClientId;
+
+	bool repeatingQuery;
+
+	bool _send_data_request();
 	bool _process_clients_response();
 	bool _next_step();
 	void _download_complete();
+	bool _assertError(bool isErr, QString& errtext);
+	QString _subdictionaryNameConversion();
 public:
 	SyncMenuWidget(QWidget* parent);
 	void setLogin(QString& nlogin);

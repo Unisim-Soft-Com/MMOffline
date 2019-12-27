@@ -74,7 +74,7 @@ void SyncInfoWidget::setInfopack(QString& newLogin, QString& pendingChange)
 	pendingChanges->setText(tr("Pending changes: ") + pendingChange);
 }
 
-void SyncInfoWidget::setErrorLog(QString& error)
+void SyncInfoWidget::setErrorLog(const QString& error)
 {
 	errorLog->setText(error);
 }

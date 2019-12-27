@@ -38,6 +38,12 @@ TemplatedTableHandler abs_entity::getRenamedTable(TableNames tname) const
 	return getAssocTable()->clone(predefinedDBNames.at(tname));
 }
 
+IdInt abs_entity::getId() const
+{
+	return extractId();
+}
+
+
 QString abs_entity::insertToDBHeader() const
 {
 	return getAssocTable()->allFieldsDeclaration();
@@ -72,3 +78,8 @@ abs_entity* abs_entity::clone() const
 {
 	return fabricate();
 }
+
+const QString dateSerializationFormat =
+"dd.MM.yyyy";
+const QString dateTimeSerializationFormat=
+"dd.MM.yyyy HH.mm.ss";

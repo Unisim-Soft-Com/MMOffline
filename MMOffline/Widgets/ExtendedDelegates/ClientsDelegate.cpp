@@ -12,11 +12,16 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 	{
 		return;
 	}
+	bool QuantityGiven = false;
+	int qty = index.data(DataEntityListModel::QuantityView).toInt(&QuantityGiven);
+	QuantityGiven = (QuantityGiven) ? qty != 0 : QuantityGiven;
 	QLinearGradient gr;
 	painter->save();
 	gr.setColorAt(0, Qt::red);
 	gr.setColorAt(1, option.palette.highlight().color());
-	QRect textbox(option.rect.topLeft(), QSize(option.rect.width(), option.fontMetrics.height() + 6));
+	QRect textbox(option.rect.topLeft(), QSize(
+		((QuantityGiven) ? 
+		option.rect.width()/2 : option.rect.width()), option.fontMetrics.height() + 6));
 	gr.setStart(textbox.topLeft());
 	gr.setFinalStop(textbox.bottomLeft());
 	painter->setPen(Qt::PenStyle::SolidLine);
@@ -25,8 +30,22 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 	painter->drawRect(textbox);
 	painter->setOpacity(1);
 	painter->drawText(textbox, Qt::AlignCenter, QString::number(temp->id));
-	textbox.setTopLeft(textbox.bottomLeft());
-	textbox.setBottomRight(option.rect.bottomRight());
+	if (QuantityGiven)
+	{
+		textbox.setTopLeft(textbox.topRight());
+		textbox.setBottomRight(QPoint(option.rect.bottomRight().x(), option.rect.topRight().y() + option.fontMetrics.height()+6));
+		gr.setColorAt(0, option.palette.dark().color());
+		gr.setColorAt(1, option.palette.highlight().color());
+		gr.setStart(textbox.topLeft());
+		gr.setFinalStop(textbox.bottomLeft());
+		painter->setBrush(gr);
+		painter->setOpacity(0.6);
+		painter->drawRect(textbox);
+		painter->setOpacity(1);
+		painter->drawText(textbox, Qt::AlignCenter, tr("Quantity: ") + QString::number(qty));
+	}
+	textbox.setTopRight(textbox.bottomRight());
+	textbox.setBottomLeft(option.rect.bottomLeft());
 	gr.setColorAt(0, option.palette.highlight().color());
 	gr.setColorAt(1, option.palette.brightText().color());
 	gr.setStart(textbox.topLeft());
@@ -36,13 +55,6 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 	painter->drawRect(textbox);
 	painter->setOpacity(1);
 	painter->drawText(textbox, Qt::TextWordWrap | Qt::AlignCenter, temp->name);
-
-	if (option.state.testFlag(QStyle::State_Selected))
-	{
-		painter->setBrush(option.palette.highlight());
-		painter->setOpacity(0.3);
-		painter->drawRect(option.rect);
-	}
 
 	painter->restore();
 }
@@ -62,5 +74,5 @@ QSize ClientsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModel
 	else
 		tabs = std::ceil(wdth / option.rect.width());
 	tabs = (tabs > 0) ? tabs : 1;
-	return QSize(option.rect.width(), (tabs + 1.4) * (option.fontMetrics.height()+2) );
+	return QSize(option.rect.width(), (tabs + 1.8) * (option.fontMetrics.height()+2) );
 }

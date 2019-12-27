@@ -7,7 +7,7 @@
 class NamedIdEntity : public abs_entity
 {
 public:
-	int id;
+	IdInt id;
 	QString name;
 protected:
 	// Inherited via abs_entity
@@ -18,12 +18,14 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
+	virtual IdInt extractId() const override;
 public:
 	explicit NamedIdEntity();
-	explicit NamedIdEntity(QString Name, int Id);
+	explicit NamedIdEntity(QString Name, IdInt Id);
 	explicit NamedIdEntity(const QStringList& List);
 };
 
 typedef std::shared_ptr<NamedIdEntity> NamedId;
 typedef QVector<NamedId> NamedIdList;
 Q_DECLARE_METATYPE(NamedId);
+int findNamedId(const QString& qstr, const NamedIdList& list);

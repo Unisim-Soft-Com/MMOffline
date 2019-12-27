@@ -104,6 +104,12 @@
     <Filter Include="Header Files\widgets\ExtendedDelegates">
       <UniqueIdentifier>{fa2e0f14-72af-432d-9cd6-336b67906a6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\widgets\ExtendedDelegates">
+      <UniqueIdentifier>{5b77c324-6b22-4005-9d84-4db1119dc34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\widgets\DocumentBranch">
+      <UniqueIdentifier>{5f46cd52-4a20-43e1-af84-507ad3556fc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,36 +233,45 @@
       <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\ExtendedDelegates\ClientsDelegate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\MultibranchWidgets\ClientViewWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\DocumentBranch\ClientSelectionWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\DocumentBranch\DocumentRootWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dataprovider\Entities\GroupEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\ExtendedDelegates\GroupDelegate.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp">
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\IdGenerator.cpp">
+      <Filter>Source Files\LocalDataProviders</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\Entities\GroupEntity.cpp">
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
     <ClCompile Include="Dataprovider\Entities\NamedIdEntity.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\DocumentBranch\DocumentCreationScreen.cpp">
+      <Filter>Source Files\widgets\DocumentBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\DocumentRootWidget.cpp">
+      <Filter>Source Files\widgets\DocumentBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\EntryCreationScreen.cpp">
+      <Filter>Source Files\widgets\DocumentBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\DocumentBranch\ClientSelectionWidget.cpp">
+      <Filter>Source Files\widgets\Multibranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp">
+      <Filter>Source Files\widgets\Multibranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp">
+      <Filter>Source Files\widgets\Multibranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -329,11 +344,11 @@
     <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h">
       <Filter>Header Files\widgets\Multibranch</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets\DocumentBranch\DocumentCreationScreen.h">
-      <Filter>Header Files\widgets\DocumentBranch</Filter>
-    </ClInclude>
     <ClInclude Include="Dataprovider\Entities\NamedIdEntity.h">
       <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
+    <ClInclude Include="Dataprovider\IdGenerator.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -423,6 +438,18 @@
     </QtMoc>
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionWidget.h">
       <Filter>Header Files\widgets\Multibranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\DocumentBranch\EntryCreationScreen.h">
+      <Filter>Header Files\widgets\DocumentBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\DocumentBranch\DocumentCreationScreen.h">
+      <Filter>Header Files\widgets\DocumentBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ExtendedDelegates\DocumentsDelegate.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ExtendedDelegates\EntryDelegate.h">
+      <Filter>Header Files\widgets\ExtendedDelegates</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

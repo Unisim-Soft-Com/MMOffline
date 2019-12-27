@@ -84,7 +84,7 @@ GlobalAppSettings::GlobalAppSettings()
 	language = settings.value("app_lang", "").toString();
 	alternativeUrls = settings.value("alt_addresses", "").toStringList();
 	localLogin = settings.value("local_user", "").toString();
-	timeoutint = settings.value("timeout_interval", QVariant(0)).toInt();
+	timeoutint = settings.value("timeout_interval", QVariant(10000)).toInt();
 	lastSyncDate = settings.value("last_sync", QVariant(QDate())).toDate();
 	setTranslator();
 }

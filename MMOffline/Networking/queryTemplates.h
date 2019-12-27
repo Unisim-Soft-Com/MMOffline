@@ -7,21 +7,17 @@ enum queryIDs
 {
 	Ping,
 	// system args
-	GetWeight,
-	GetRouteList,
 	GetGroups,
-	// 2 args + system args
+	// 1 arg
+	GetTips,
+	GetDepozits,
+	GetMeasures,
+	GetOptions,
+	// 2 args 
 	Login,
 	// 3 args
-	GetRoutes,
-	GetTask,
 	GetClients,
-	GetOrders,
-	// 5 args
-	GetShipOrders,
-	// 6 args
 	GetProducts
-
 
 };
 const int totalTemplates = GetProducts + 1;

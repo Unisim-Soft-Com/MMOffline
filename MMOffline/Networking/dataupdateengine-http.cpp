@@ -80,6 +80,13 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter 
 	}
 }
 
+void HttpUpdateEngine::execQueryByAutofillTemplate(queryIDs id, RequestAwaiter* awaiter)
+{
+	sendQuery(
+		queryTemplates.value(id).arg(nextQueryId++).arg(sessionId).arg(id), awaiter
+	);
+}
+
 void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter)
 {
 	if (_checkArgQuantity(id, 1) && !sessionId.isEmpty())
@@ -136,6 +143,11 @@ void HttpUpdateEngine::setUrl(QString& Url)
 {
 	url = Url;
 	initConnection();
+}
+
+const QString& HttpUpdateEngine::getUserID()
+{
+	return user_id;
 }
 
 

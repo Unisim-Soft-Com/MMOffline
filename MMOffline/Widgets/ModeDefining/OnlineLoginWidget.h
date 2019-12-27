@@ -31,7 +31,7 @@ protected:
 	QString pendingLogin;
 public:
 	OnlineLoginWidget(QWidget* parent);
-
+	virtual void show() override;
 protected slots:
 	void passwordConfirmed();
 	void processResponse();

@@ -1,15 +1,15 @@
 #pragma once
 #include "abs_entity.h"
 #include <memory>
-
+#include <qmetatype.h>
 
 
 class DocumentEntryEntity : public abs_entity
 {
 public:
-	int parentDocId;
-	int entryId;
-	int productId;
+	IdInt parentDocId;
+	IdInt entryId;
+	IdInt productId;
 	QString productName;
 	double price;
 	int measure;
@@ -28,14 +28,16 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
-
+	virtual IdInt extractId() const override;
 	void _listInit(const QStringList&);
 public:
 	explicit DocumentEntryEntity();
-	explicit DocumentEntryEntity(int ID);
+	explicit DocumentEntryEntity(IdInt ID);
 	explicit DocumentEntryEntity(const QStringList&);
 
 	// Inherited via abs_entity
 };
-
-typedef std::shared_ptr<DocumentEntryEntity> DocEntryPtr;
+typedef std::shared_ptr<DocumentEntryEntity> DocumentEntry;
+Q_DECLARE_METATYPE(DocumentEntry);
+typedef QVector<DocumentEntry> DocEntryList;
+extern const QString entryIdAssertionQuery;

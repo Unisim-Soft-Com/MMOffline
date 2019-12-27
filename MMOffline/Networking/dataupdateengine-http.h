@@ -19,6 +19,7 @@ public:
 	HttpUpdateEngine(QString& Url, QObject* parent);
 	QString getUrl();
 	virtual void setUrl(QString& url) override;
+	virtual const QString& getUserID() override;
 	bool sessionReady();
 	virtual void sendQuery
 	(
@@ -32,6 +33,7 @@ public:
 
 	// Inherited via DataUpdateEngine
 	virtual void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter ) override;
+	virtual void execQueryByAutofillTemplate(queryIDs id, RequestAwaiter* awaiter) override;
 	virtual void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter ) override;
 	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter ) override;
 	virtual void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter ) override;

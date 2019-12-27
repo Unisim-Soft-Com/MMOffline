@@ -10,11 +10,12 @@ uniform_json_object_representation ClientEntity::toJsonRepresentation() const
 	);
 }
 
+using namespace fieldPredefinitions;
 bool ClientEntity::fromJsonRepr(const uniform_json_object_representation& o)
 {
 	QString t = o.value(QLatin1String("id"));
 	bool ok;
-	int tmp = t.toInt(&ok);
+	int tmp = t.toLongLong(&ok);
 	if (ok)
 	{
 		id = tmp;
@@ -48,7 +49,7 @@ ClientEntity::ClientEntity()
 {
 }
 
-ClientEntity::ClientEntity(int Id, QString Name)
+ClientEntity::ClientEntity(IdInt Id, QString Name)
 	: abs_entity(Clients), id(Id), name(Name)
 {
 
@@ -68,6 +69,11 @@ bool ClientEntity::isLikeString(const QRegExp& qregexp) const
 	return false;
 }
 
+IdInt ClientEntity::extractId() const
+{
+	return id;
+}
+
 
 bool ClientEntity::fromSql(QueryPtr q)
 {
@@ -77,7 +83,7 @@ bool ClientEntity::fromSql(QueryPtr q)
 	QVariant temp(q->value(0));
 	if (!temp.isValid())
 		return false;
-	id = temp.toInt(&ok);
+	id = temp.toLongLong(&ok);
 	if (!ok)
 		return false;
 	temp = q->value(1);

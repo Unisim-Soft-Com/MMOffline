@@ -3,63 +3,103 @@
 #include "Widgets/utils/ElementsStyles.h"
 #include "Widgets/utils/ApplicationDataWorkset.h"
 #include "Networking/Parsers/RequestParser.h"
-#define DEBUG
+
 #ifdef DEBUG
 #include "debugtrace.h"
 #endif
 
 using namespace RequestParser;
 
-void SyncMenuWidget::_send_data_request()
+bool SyncMenuWidget::_send_data_request()
 {
 
 #ifdef DEBUG
 	detrace_METHCALL("_send_data_request");
 #endif
-
 	switch (synchrostep)
 	{
 	case -1:
 		synchrostep = 0;
-		return;
+		return false;
 	case SyncInfoWidget::GettingClients:
 			AppWorkset->networkingEngine->execQueryByTemplate(
 				GetClients,
+				"0",
+				"100",
+				"",
+			awaiter
+			);
+			return false;
+	case SyncInfoWidget::GettingGroups:
+		AppWorkset->networkingEngine->execQueryByTemplate(
+			GetGroups,
+			awaiter
+		);
+		return false;
+	case SyncInfoWidget::GettingTips:
+		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetTips, awaiter);
+		return false;
+	case SyncInfoWidget::GettingDepozits:
+		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetDepozits, awaiter);
+		return false;
+	case SyncInfoWidget::GettingMeasures:
+		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetMeasures, awaiter);
+		return false;
+	case SyncInfoWidget::GettingOptions:
+		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetOptions, awaiter);
+		return false;
+	case SyncInfoWidget::GettingProducts:
+		AppWorkset->networkingEngine->execQueryByTemplate(GetProducts, 
+				AppWorkset->networkingEngine->getUserID(),
 				QString::number(entriesFrom),
 				QString::number(entriesTo),
-				"",
-				awaiter
-			);
-			break;
-
+			awaiter);
+		return true;
 	}
+	return false;
 }
 
 bool SyncMenuWidget::_process_clients_response()
 {
-
 #ifdef DEBUG
 	detrace_METHCALL("_process_clients_response");
 #endif
-
-	ListedEntitiesResponse resp = parseAndInterpretListAs<ClientEntity>(awaiter->restext, awaiter->errtext);
-#ifdef DEBUG
-	detrace_METHEXPL(" response: " << showLEResponse(&resp));
-#endif
-	if (resp.isError && (!resp.error.isEmpty()))
+	qApp->processEvents();
+	ListedEntitiesResponse resp;
+	switch (synchrostep)
 	{
-		syncInfo->setErrorLog(resp.error);
-		synchrostep = -1;
-		return false;
+	case -1:
+		synchrostep = 0;
+		break;
+	case SyncInfoWidget::GettingClients:
+		resp = parseAndInterpretListAs<ClientEntity>(awaiter->restext, awaiter->errtext);
+		if (_assertError(resp.isError, resp.error)) return false;
+		dClients = upcastEntityVector<ClientEntity>(resp.data);
+		currentClientId = 0;
+		AppWorkset->dataprovider.pushData(resp.data);
+		return true;
+	case SyncInfoWidget::GettingMeasures:
+	case SyncInfoWidget::GettingDepozits:
+	case SyncInfoWidget::GettingOptions:
+	case SyncInfoWidget::GettingTips:
+		resp = parseAndInterpretListAs<NamedIdEntity>(awaiter->restext, awaiter->errtext);
+		if (_assertError(resp.isError, resp.error)) return false;
+		AppWorkset->dataprovider.pushData(resp.data, _subdictionaryNameConversion());
+		return true;
+	case SyncInfoWidget::GettingGroups:
+		resp = parseAndInterpretListAs<GroupEntity>(awaiter->restext, awaiter->errtext);
+		if (_assertError(resp.isError, resp.error)) return false;
+		AppWorkset->dataprovider.pushData(resp.data);
+		return true;
+	case SyncInfoWidget::GettingProducts:
+		resp = parseAndInterpretListAs<ProductEntity>( awaiter->restext, awaiter->errtext);
+		if (_assertError(resp.isError, resp.error)) return false;
+		AppWorkset->dataprovider.pushData(resp.data);
+		entriesFrom += 50;
+		entriesTo += 50;
+		return !resp.data.isEmpty();
 	}
-	if (resp.data.isEmpty())
-	{
-		return false;
-	}
-	AppWorkset->dataprovider.pushData(resp.data);
-	entriesFrom += 50;
-	entriesTo += 50;
-	return true;
+	return false;
 }
 bool SyncMenuWidget::_next_step()
 {
@@ -69,11 +109,27 @@ bool SyncMenuWidget::_next_step()
 	{
 	case SyncInfoWidget::downloadStart:
 		synchrostep = SyncInfoWidget::GettingClients;
-		entriesFrom = 0;
-		entriesTo = 50;
 		break;
 	case SyncInfoWidget::GettingClients:
+		synchrostep = SyncInfoWidget::GettingGroups;
+		break;
+	case SyncInfoWidget::GettingGroups:
+		synchrostep = SyncInfoWidget::GettingTips;
+		break;
+	case SyncInfoWidget::GettingTips:
+	case SyncInfoWidget::GettingDepozits:
+	case SyncInfoWidget::GettingMeasures:
+		synchrostep += 5;
+		break;
+	case SyncInfoWidget::GettingOptions:
+		synchrostep = SyncInfoWidget::GettingProducts;
+		break;
+	case SyncInfoWidget::GettingProducts:
+		
 		synchrostep = SyncInfoWidget::downloadEnd;
+		break;
+	default:
+		return false;
 	}
 	syncInfo->setProgress(synchrostep);
 	if (synchrostep == SyncInfoWidget::downloadEnd)
@@ -83,7 +139,35 @@ bool SyncMenuWidget::_next_step()
 void SyncMenuWidget::_download_complete()
 {
 	AppSettings->lastSyncDate = QDate::currentDate();
+	AppWorkset->dataprovider.forcedCommit();
 	synchrostep = 0;
+}
+bool SyncMenuWidget::_assertError(bool isErr, QString& errtext)
+{
+	if (isErr && (!errtext.isEmpty()))
+	{
+		syncInfo->setErrorLog(errtext);
+		synchrostep = -1;
+		return true;
+	}
+	return false;
+}
+QString SyncMenuWidget::_subdictionaryNameConversion()
+{
+	switch (synchrostep)
+	{
+	case SyncInfoWidget::GettingTips:
+		return QStringLiteral("Tips");
+	case SyncInfoWidget::GettingDepozits:
+		return QStringLiteral("Depozits");
+	case SyncInfoWidget::GettingMeasures:
+		return QStringLiteral("Measures");
+	case SyncInfoWidget::GettingOptions:
+		return QStringLiteral("Options");
+	default:
+		return QString();
+	}
+
 }
 SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 	:inframedWidget(parent),
@@ -149,8 +233,15 @@ void SyncMenuWidget::receiveData()
 		return;
 	}
 	synchrostep = SyncInfoWidget::downloadStart;
+	currentClientId = -1;
+	entriesFrom = 0;
+	entriesTo = 50;
+	AppWorkset->dataprovider.dropEverything();
+	AppWorkset->dataprovider.recreateTable<DocumentEntity>();
+	AppWorkset->dataprovider.recreateTable<DocumentEntryEntity>();
+	AppWorkset->dataprovider.forcedCommit();
 	_next_step();
-	_send_data_request();
+	repeatingQuery = _send_data_request();
 }
 
 void SyncMenuWidget::makeFullSync()
@@ -158,28 +249,41 @@ void SyncMenuWidget::makeFullSync()
 	if (synchrostep != 0)
 		return;
 	sendData();
+	synchrostep = SyncInfoWidget::downloadStart;
 	receiveData();
 }
 
 void SyncMenuWidget::operate_on_response()
 {
-#ifdef DEBUG
-	detrace_METHCALL("_process_clients_response");
-#endif
-	switch (synchrostep)
+	synchrostep;
+	if (_process_clients_response())
 	{
-	case SyncInfoWidget::GettingClients:
-		if (_process_clients_response())
+		qApp->processEvents();
+		if (repeatingQuery)
 		{
-			_send_data_request();
+			repeatingQuery = _send_data_request();
 			return;
 		}
+		else
+		{
+			if (!_next_step())
+				return;
+			else
+				repeatingQuery = _send_data_request();
+		}
+	}
+	else
+	{
+		qApp->processEvents();
 		if (!_next_step())
 			return;
-		break;
+		else
+			repeatingQuery = _send_data_request();
 	}
 }
 
 void SyncMenuWidget::was_timeout()
 {
+	synchrostep = 0;
+	syncInfo->setErrorLog(tr("Timeout: ") + QString::number(AppSettings->timeoutint));
 }

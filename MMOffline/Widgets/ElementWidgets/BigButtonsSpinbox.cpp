@@ -2,10 +2,36 @@
 #include "widgets/utils/ElementsStyles.h"
 #include <QtWidgets/QDoubleSpinBox>
 #include <cmath>
+#include <QtWidgets/qcalendarwidget.h>
+#include <QKeyEvent>
+void BigButtonsSpinbox::showEvent(QShowEvent* ev)
+{
+	QWidget::showEvent(ev);
+	if (sptype == datespin)
+	{
+		QDateEdit* tsp = qobject_cast<QDateEdit*>(coreSpinbox);
+		if (tsp != Q_NULLPTR)
+		{
+			QString tmp = "QDateEdit{"
+				"border-radius: 1px;"
+				"padding: 1px 1px 1px 1px;"
+				"border: 1px solid black;"
+				"}"
+				"QDateEdit::drop-down {"
+				"subcontrol-origin: padding;"
+				"subcontrol-position: center right;"
+				"width: " + QString::number((int)(coreSpinbox->width()/3)) + " px;"
+				"}"
+			;
+			tsp->setStyleSheet(tmp);
+		}
+	}
+
+}
 BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adaptH)
 	: QWidget(parent), mainLayout(new QGridLayout(this)),
 	buttonUp(new QPushButton(this)), buttonDown(new QPushButton(this)),
-	infoLabel(new QLabel(this)),
+	
 	keyFilter(new filters::CaptureBackFilter(this)),
 	coreSpinbox()
 {
@@ -16,14 +42,18 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 		break;
 	case timespin:
 		coreSpinbox = new QTimeEdit(this);
+		break;
 	case floatspin:
 		coreSpinbox = new QDoubleSpinBox(this);
+		break;
+	case datespin:
+		coreSpinbox = new QDateEdit(this);
+		break;
 	}
 	sptype = type;
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(buttonUp, 0, 0, 3, 1);
-	mainLayout->addWidget(infoLabel, 0, 1);
-	mainLayout->addWidget(coreSpinbox, 1, 1, 2, 1);
+	mainLayout->addWidget(coreSpinbox, 0, 1, 3, 1);
 	mainLayout->addWidget(buttonDown, 0, 2, 3, 1);
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -32,22 +62,20 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 	coreSpinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 	buttonUp->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
 	buttonDown->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
-	infoLabel->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH / 3));
-	infoLabel->setFont(makeFont(0.027));
-	infoLabel->setAlignment(Qt::AlignCenter);
-	coreSpinbox->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH * 0.6666));
+	coreSpinbox->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
+	buttonUp->setMinimumWidth(calculateAdaptiveWidth(0.05));
+	buttonDown->setMinimumWidth(calculateAdaptiveWidth(0.05));
 	coreSpinbox->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
-
+	buttonUp->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+	buttonDown->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 	coreSpinbox->installEventFilter(keyFilter);
-
-	infoLabel->setStyleSheet("QLabel{border: 1px solid black;}");
 	buttonUp->setStyleSheet(UP_SPINBOX_STYLESHEET);
 	buttonDown->setStyleSheet(DOWN_SPINBOX_STYLESHEET);
 	QObject::connect(buttonUp, &QPushButton::pressed, coreSpinbox, &QSpinBox::stepUp);
 	QObject::connect(buttonDown, &QPushButton::pressed, coreSpinbox, &QSpinBox::stepDown);
 	QObject::connect(coreSpinbox, &QAbstractSpinBox::editingFinished, this, &BigButtonsSpinbox::editingDone);
 	QObject::connect(keyFilter, &filters::CaptureBackFilter::backRequired, this, &BigButtonsSpinbox::backRequire);
-
+	
 	switch (sptype)
 		//RTTI used to connect right signals
 	{
@@ -79,6 +107,19 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 			dsp->setSpecialValueText("");
             dsp->setDecimals(3);
 			QObject::connect(dsp, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &BigButtonsSpinbox::doubleValueChanged);
+		}
+		break;
+	}
+	case datespin:
+	{
+		QDateEdit* dsp;
+		dsp = qobject_cast<QDateEdit*>(coreSpinbox);
+		if (dsp != Q_NULLPTR)
+		{
+			dsp->setSpecialValueText("");
+			dsp->setDate(QDate::currentDate());
+			dsp->setCalendarPopup(true);
+			QObject::connect(dsp, &QDateEdit::dateChanged, this, &BigButtonsSpinbox::dateChanged);
 		}
 		break;
 	}
@@ -281,7 +322,48 @@ bool BigButtonsSpinbox::hasFocus() const
 
 void BigButtonsSpinbox::setInfo(QString& str)
 {
-	infoLabel->setText(str);
+}
+
+QDate BigButtonsSpinbox::date()
+{
+	if (sptype == datespin)
+	{
+		QDateEdit* tsp = qobject_cast<QDateEdit*>(coreSpinbox);
+		if (tsp != Q_NULLPTR)
+		{
+			return tsp->date();
+		}
+	}
+	return QDate();
+}
+
+void BigButtonsSpinbox::clear()
+{
+	switch (sptype)
+	{
+	case intspin:
+	case floatspin:
+		setValue(0);
+		break;
+	case datespin:
+		setDate(QDate::currentDate());
+		break;
+	case timespin:
+		setTime(QTime::currentTime());
+		break;
+	}
+}
+
+void BigButtonsSpinbox::setDate(QDate time)
+{
+	if (sptype == datespin)
+	{
+		QDateEdit* tsp = qobject_cast<QDateEdit*>(coreSpinbox);
+		if (tsp != Q_NULLPTR)
+		{
+			tsp->setDate(time);
+		}
+	}
 }
 
 void BigButtonsSpinbox::timeValueChanged(const QTime& t)
@@ -304,6 +386,12 @@ void BigButtonsSpinbox::editingDone()
 void BigButtonsSpinbox::backRequire()
 {
 	emit backRequired();
+}
+
+void BigButtonsSpinbox::dateChanged(const QDate& d)
+{
+	emit dateValueChanged(d);
+	emit valueChanged(coreSpinbox->text());
 }
 
 void BigButtonsSpinbox::setFocus() const

@@ -21,18 +21,17 @@ protected:
 	QLabel* userInfo;
 	QHBoxLayout* searchPanel;
 	QLineEdit* searchLine;
-	//MegaIconButton* doSearchButton;
 	QListView* clientView;
 	MegaIconButton* backButton;
-	//ClientDataModel* innerModel;
-	DataEntityListModel* innerModel;
+	DataCountingDataModel* innerModel;
 	ClientsDelegate* innerDelegate;
-	QSortFilterProxyModel* searchProxy;
+	DataEntityFilterModel* searchProxy;
 
 public:
 	ClientSelectionWidget(QWidget* parent);
+	void incrementDocCounter(int id, int q=1);
 protected slots:
-	void doSearch();
+	void clientClicked(DataEntity);
 signals:
 	void clientSelected(ClientEntity);
 };

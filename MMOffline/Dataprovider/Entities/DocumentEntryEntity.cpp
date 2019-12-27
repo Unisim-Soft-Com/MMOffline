@@ -1,6 +1,6 @@
 #include "DocumentEntryEntity.h"
 #include <QVariant>
-
+#include <QTime>
 const QStringList fieldDefaults
 {
 QStringLiteral("0"),
@@ -15,7 +15,10 @@ QStringLiteral(""),
 QStringLiteral(""),
 QStringLiteral("")
 };
+const QString entryIdAssertionQuery =
+QStringLiteral("select entryId from Entries where entryId = %1;");
 
+using namespace fieldPredefinitions;
 uniform_json_object_representation DocumentEntryEntity::toJsonRepresentation() const
 {
 	return uniform_json_object_representation(
@@ -121,13 +124,13 @@ void DocumentEntryEntity::_listInit(const QStringList& l)
 	case 4:
 		productName = l.at(i--);
 	case 3:
-		productId = l.at(i--).toInt(&ok);
+		productId = l.at(i--).toLongLong(&ok);
 		if (!ok) break;
 	case 2:
-		entryId = l.at(i--).toInt(&ok);
+		entryId = l.at(i--).toLongLong(&ok);
 		if (!ok) break;
 	case 1:
-		parentDocId = l.at(i--).toInt(&ok);
+		parentDocId = l.at(i--).toLongLong(&ok);
 		break;
 	default:
 		break;
@@ -146,7 +149,7 @@ DocumentEntryEntity::DocumentEntryEntity()
 
 }
 
-DocumentEntryEntity::DocumentEntryEntity(int ID)
+DocumentEntryEntity::DocumentEntryEntity(IdInt ID)
 	: abs_entity(DocumentEntries), parentDocId(0), entryId(0), productId(0),
 	productName(), price(0.0), measure(0), quantity(0.0), option1(),
 	option2(), option3(), comment()
@@ -162,3 +165,9 @@ bool DocumentEntryEntity::isLikeString(const QRegExp& qregexp) const
 {
 	return false;
 }
+
+IdInt DocumentEntryEntity::extractId() const
+{
+	return entryId;
+}
+

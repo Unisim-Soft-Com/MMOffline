@@ -4,16 +4,14 @@
 const QString queryTemplates[totalTemplates]
 {
 	QStringLiteral("Ping"),
-	QStringLiteral("GetWeight"),
-	QStringLiteral("GetRouteList"),
 	QStringLiteral("GetGroups"),
+	QStringLiteral("GetTips"),
+	QStringLiteral("GetDepozits"),
+	QStringLiteral("GetMeasures"),
+	QStringLiteral("GetOptions"),
 	QStringLiteral("Login"),
-	QStringLiteral("GetRoutes"),
-	QStringLiteral("GetTask"),
 	QStringLiteral("GetClients"),
-	QStringLiteral("GetOrders"),
-	QStringLiteral("GetShipOrders"),
-	QStringLiteral("Getproducts")
+	QStringLiteral("GetProducts")
 
 
 };
@@ -21,17 +19,14 @@ const QString queryTemplates[totalTemplates]
 const QString queryDefaults[totalTemplates]
 {
 	QStringLiteral("ping"),
-	QStringLiteral("pg_web_order.get_weight?r=%1&s=%2"),
-	QStringLiteral("pg_web_order.get_route_list?r=%1&s=%2"),
 	QStringLiteral("pg_web_order.get_groups?p_request_id=%1&p_session_id=%2"),
+	QStringLiteral("pg_web_order.get_reference?p_response_id=%1&p_session_id=%2&p_type=%3"),
+	QStringLiteral("pg_web_order.get_reference?p_response_id=%1&p_session_id=%2&p_type=%3"),
+	QStringLiteral("pg_web_order.get_reference?p_response_id=%1&p_session_id=%2&p_type=%3"),
+	QStringLiteral("pg_web_order.get_reference?p_response_id=%1&p_session_id=%2&p_type=%3"),
 	QStringLiteral("pg_web_base.login_user?r=%1&a=orders&u=%2&p=%3&p_only_session=1"),
-	QStringLiteral("pg_web_order.get_routes?r=%1&s=%2&i=%3&n=%4&f=%5"),
-	QStringLiteral("pg_web_order.get_tasks?r=%1&s=%2&i=%3&n=%4&f=%5"),
 	QStringLiteral("pg_web_order.get_clients?r=%1&s=%2&i=%3&n=%4&f=%5"),
-	QStringLiteral("pg_web_order.get_orders?r=%1&s=%2&i=%3&n=%4&f=%5&hide=%6"),
-	QStringLiteral("pg_web_order.get_ship_orders?r=%1&s=%2&i=%3&n=%4&f=%5&g1=%6"),
-	QStringLiteral("pg_web_order.get_products?r=%1&s=%2&i=%3&n=%4&f=%5&g1=%6&g2=%7")
-
+	QStringLiteral("pg_web_order.get_products_by_userid?p_responce_id=%1&p_session_id=%2&p_userid=%3&p_first_rn=%4&p_last_rn=%5")
 };
 
 
@@ -56,20 +51,18 @@ bool _checkArgQuantity(queryIDs id, int argc)
 	switch (id)
 	{
 	case Ping:
-	case GetWeight:
 	case GetGroups:
 		return argc == 0;
+	case GetTips:
+	case GetDepozits:
+	case GetMeasures:
+	case GetOptions:
+		return argc == 1;
 	case Login:
 		return argc == 2;
-	case GetRoutes:
-	case GetTask:
 	case GetClients:
-	case GetOrders:
-		return argc == 3;
-	case GetShipOrders:
-		return argc == 5;
 	case GetProducts:
-		return argc == 6;
+		return argc == 3;
 	default:
 		return false;
 	}

@@ -56,7 +56,7 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	painter->drawRect(textbox);
 	painter->setPen(Qt::SolidLine);
 	painter->setOpacity(1);
-	painter->drawText(textbox, Qt::AlignCenter, tr("Quantity: ") + QString::number(temp->quantity));
+	painter->drawText(textbox, Qt::AlignCenter, tr("Quantity: ") + QString::number(index.data(DataEntityListModel::QuantityView).toInt()));
 	// name box, occupies all remaining space
 	textbox.setTopLeft(
 		option.rect.topLeft() + QPoint(0, option.fontMetrics.height() * 1.1)

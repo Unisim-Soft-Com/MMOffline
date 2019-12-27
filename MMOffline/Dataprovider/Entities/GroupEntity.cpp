@@ -1,7 +1,8 @@
 #include "GroupEntity.h"
 
 
-
+using namespace fieldPredefinitions;
+Group nullGroup(nullptr);
 uniform_json_object_representation GroupEntity::toJsonRepresentation() const
 {
 	return uniform_json_object_representation(
@@ -65,6 +66,11 @@ bool GroupEntity::isLikeString(const QRegExp& qregexp) const
 	return name.contains(qregexp.pattern());
 }
 
+IdInt GroupEntity::extractId() const
+{
+	return id;
+}
+
 bool GroupEntity::_listInit(QStringList& L)
 {
 	int i = L.count() - 1;
@@ -74,10 +80,10 @@ bool GroupEntity::_listInit(QStringList& L)
 	case 0:
 		return false;
 	case 3:
-		superiorGroupId = L.at(i--).toUInt(&ok);
+		superiorGroupId = L.at(i--).toLongLong(&ok);
 		if (!ok) throw InitializationError(i);
 	case 2:
-		id = L.at(i--).toUInt(&ok);
+		id = L.at(i--).toLongLong(&ok);
 		if (!ok) throw InitializationError(i);
 	case 1:
 		name = L.at(i--);
@@ -90,7 +96,7 @@ GroupEntity::GroupEntity()
 {
 }
 
-GroupEntity::GroupEntity(QString Name, uint Id, uint SuperiorGroupId)
+GroupEntity::GroupEntity(QString Name, IdInt Id, IdInt SuperiorGroupId)
 	: abs_entity(Groups), name(Name), id(Id), superiorGroupId(SuperiorGroupId), subgroups()
 {
 
@@ -128,14 +134,16 @@ bool GroupEntity::owns(const std::shared_ptr<GroupEntity>& another)
 	return false;
 }
 
-const Group& GroupEntity::getSubgroupIfExists(uint id) const
+const Group& GroupEntity::getSubgroupIfExists(IdInt id) const
 {
-	for (const Group& g : subgroups)
+	QVector<Group>::ConstIterator begin = subgroups.constBegin();
+	while (begin != subgroups.constEnd())
 	{
-		if (g->id == id)
-			return g;
+		if ((*begin)->id == id)
+			return *(begin);
+		++begin;
 	}
-	return nullptr;
+	return nullGroup;
 }
 
 const std::shared_ptr<GroupEntity>& GroupEntity::getSubgroup(int index) const
@@ -264,6 +272,15 @@ void GroupTreeModel::setList(const GroupList& l)
 	}
 	
 
+}
+
+void GroupTreeModel::clearLayers()
+{
+	beginResetModel();
+	currentVisibleLayer = 0;
+	currentGroup = nullptr;
+	layersIds.clear();
+	endResetModel();
 }
 
 void GroupTreeModel::stepToNextLayer(const QModelIndex& index)

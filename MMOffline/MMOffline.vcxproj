@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtInstall>msvc17x32</QtInstall>
-    <QtModules>core;gui;network;widgets;xml</QtModules>
+    <QtModules>core;gui;network;sql;widgets;xml</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -97,6 +97,7 @@
     <ClCompile Include="Dataprovider\Entities\GroupEntity.cpp" />
     <ClCompile Include="Dataprovider\Entities\NamedIdEntity.cpp" />
     <ClCompile Include="Dataprovider\Entities\ProductEntity.cpp" />
+    <ClCompile Include="Dataprovider\IdGenerator.cpp" />
     <ClCompile Include="Dataprovider\SqliteDataProvider.cpp" />
     <ClCompile Include="Dataprovider\TableHandlers.cpp" />
     <ClCompile Include="debugtrace.cpp" />
@@ -113,18 +114,20 @@
     <ClCompile Include="Widgets\DocumentBranch\ClientSelectionWidget.cpp" />
     <ClCompile Include="Widgets\DocumentBranch\DocumentCreationScreen.cpp" />
     <ClCompile Include="Widgets\DocumentBranch\DocumentRootWidget.cpp" />
+    <ClCompile Include="Widgets\DocumentBranch\EntryCreationScreen.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\BigButtonsSpinbox.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\MegaIconButton.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\ProcessingOverlay.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\ZebraListItemDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\ClientsDelegate.cpp" />
+    <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp" />
+    <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\GroupDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp" />
     <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp" />
     <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp" />
     <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp" />
     <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp" />
-    <ClCompile Include="Widgets\MultibranchWidgets\ClientViewWidget.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp" />
     <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp" />
@@ -150,6 +153,7 @@
     <QtMoc Include="Dataprovider\Entities\GroupEntity.h" />
     <ClInclude Include="Dataprovider\Entities\NamedIdEntity.h" />
     <ClInclude Include="Dataprovider\Entities\ProductEntity.h" />
+    <ClInclude Include="Dataprovider\IdGenerator.h" />
     <ClInclude Include="Dataprovider\SqliteDataProvider.h" />
     <ClInclude Include="Dataprovider\TableHandlers.h" />
     <ClInclude Include="debugtrace.h" />
@@ -162,7 +166,8 @@
     <ClInclude Include="Networking\queryTemplates.h" />
     <QtMoc Include="Widgets\DocumentBranch\DocumentRootWidget.h" />
     <QtMoc Include="Widgets\DocumentBranch\ClientSelectionWidget.h" />
-    <ClInclude Include="Widgets\DocumentBranch\DocumentCreationScreen.h" />
+    <QtMoc Include="Widgets\DocumentBranch\DocumentCreationScreen.h" />
+    <QtMoc Include="Widgets\DocumentBranch\EntryCreationScreen.h" />
     <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h" />
     <QtMoc Include="Widgets\ModeDefining\OnlineLoginWidget.h" />
     <QtMoc Include="Widgets\ModeDefining\StartingScreen.h" />
@@ -171,6 +176,8 @@
     <QtMoc Include="Widgets\ExtendedDelegates\ProductsDelegate.h" />
     <ClInclude Include="Widgets\ExtendedDelegates\DelegateUtility.h" />
     <QtMoc Include="Widgets\ExtendedDelegates\GroupDelegate.h" />
+    <QtMoc Include="Widgets\ExtendedDelegates\DocumentsDelegate.h" />
+    <QtMoc Include="Widgets\ExtendedDelegates\EntryDelegate.h" />
     <ClInclude Include="Widgets\LogBranch\LogsWidget.h" />
     <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\GroupSelectionWidget.h" />

@@ -10,6 +10,17 @@ const abs_entity* const associateTableWithData[PREDEFINED_TABLES_QUANTITY]
 	new DocumentEntryEntity()
 };
 
+int indexOfEntityById(int id, const QVector<DataEntity> & v)
+{
+	for (int i = 0; i < v.count(); ++i)
+	{
+		if (v.at(i)->getId() == id)
+			return i;
+	}
+	return -1;
+}
+
+
 DataEntityListModel::DataEntityListModel(const QVector<DataEntity>& entities, QWidget* parent)
 	: QAbstractListModel(parent), innerList(entities)
 {
@@ -26,7 +37,7 @@ QVariant DataEntityListModel::data(const QModelIndex& index, int role) const
 		return QVariant();
 	if (index.row() >= rowCount())
 		return QVariant();
-	if (role == Qt::DisplayRole || role == Qt::UserRole)
+	if (role == Qt::DisplayRole || role == SearchRole)
 	{
 		QVariant temp;
 		temp.setValue<DataEntity>(innerList.at(index.row()));
@@ -42,8 +53,10 @@ QVariant DataEntityListModel::headerData(int section, Qt::Orientation orientatio
 
 void DataEntityListModel::setData(const QVector<DataEntity>& data)
 {
+	beginResetModel();
 	innerList.clear();
 	innerList << data;
+	endResetModel();
 }
 
 void DataEntityListModel::mapClickToEntity(const QModelIndex& index)
@@ -62,3 +75,55 @@ bool DataEntityFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 	return temp->filter(filterRegExp());
 }
 
+void DataEntityFilterModel::mapClickToEntity(const QModelIndex& index)
+{
+	if (!index.isValid())
+		return; 
+	QVariant temp = mapToSource(index).data(Qt::DisplayRole);
+	DataEntity tde(nullptr);
+	tde = temp.value<DataEntity>();
+	if (tde != nullptr)
+	{
+		emit dataEntityClicked(tde);
+	}
+}
+
+QVariant DataCountingDataModel::data(const QModelIndex& index, int role) const
+{
+	if (role == QuantityView)
+	{
+		return QVariant(quantityLinker.value(innerList.at(index.row())->getId()));
+	}
+	return DataEntityListModel::data(index, role);
+}
+
+void DataCountingDataModel::assignQuantityInfo(QHash<IdInt, int>&& quinfo)
+{
+	beginResetModel();
+	quantityLinker = QHash<IdInt, int>(quinfo);
+	endResetModel();
+}
+
+bool DataCountingDataModel::assignQuantityUpdate(DataEntity dent, int q)
+{
+	if (quantityLinker.contains(dent->getId()))
+	{
+		quantityLinker[dent->getId()] = q;
+		return true;
+	}
+	return false;
+}
+
+bool DataCountingDataModel::assignQuantityUpdate(IdInt id, int q)
+{
+	if (quantityLinker.contains(id))
+	{
+		
+		quantityLinker[id] += q;
+		QModelIndex updated = createIndex(indexOfEntityById(id, innerList)-1, 0);
+		QModelIndex postUpdated = createIndex(updated.row()+1, 0);
+		dataChanged(updated, postUpdated );
+		return true;
+	}
+	return false;
+}

@@ -1,5 +1,6 @@
 #include "NamedIdEntity.h"
 
+using namespace fieldPredefinitions;
 uniform_json_object_representation NamedIdEntity::toJsonRepresentation() const
 {
 	return uniform_json_object_representation(
@@ -12,7 +13,7 @@ bool NamedIdEntity::fromJsonRepr(const uniform_json_object_representation& o)
 {
 	QString t = o.value(QLatin1String("id"));
 	bool ok;
-	int tmp = t.toInt(&ok);
+	int tmp = t.toLongLong(&ok);
 	if (ok)
 	{
 		id = tmp;
@@ -56,7 +57,7 @@ bool NamedIdEntity::fromSql(QueryPtr q)
 	bool ok;
 	if (!temp.isValid())
 		return false;
-	id = temp.toInt(&ok);
+	id = temp.toLongLong(&ok);
 	if (!ok)
 		return false;
 	return true;
@@ -67,12 +68,17 @@ bool NamedIdEntity::isLikeString(const QRegExp& qregexp) const
 	return name.contains(qregexp.pattern());
 }
 
+IdInt NamedIdEntity::extractId() const
+{
+	return id;
+}
+
 NamedIdEntity::NamedIdEntity()
 	: abs_entity(NamedIds), name(), id(0)
 {
 }
 
-NamedIdEntity::NamedIdEntity(QString Name, int Id)
+NamedIdEntity::NamedIdEntity(QString Name, IdInt Id)
 	: abs_entity(NamedIds), name(Name), id(Id)
 {
 }
@@ -89,4 +95,20 @@ NamedIdEntity::NamedIdEntity(const QStringList& List)
 	default:
 		break;
 	}
+}
+
+
+int findNamedId(const QString& qstr, const NamedIdList& list)
+{
+	for (int i = 0; i < list.count(); ++i)
+	{
+		if (list.at(i)->name.length() == qstr.length())
+		{
+			if (list.at(i)->name == qstr)
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
 }

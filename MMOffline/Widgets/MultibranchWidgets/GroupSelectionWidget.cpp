@@ -2,21 +2,7 @@
 #include "Widgets/ExtendedDelegates/GroupDelegate.h"
 #include <QtWidgets/qheaderview.h>
 #include "Widgets/utils/ApplicationDataWorkset.h"
-GroupList glist
-{
-	Group(new GroupEntity("001", 100, 0)),
-	Group(new GroupEntity("012", 012, 0)),
-	Group(new GroupEntity("013", 013, 0)),
-	Group(new GroupEntity("004", 400, 100)),
-Group(new GroupEntity("005", 500, 400)),
-Group(new GroupEntity("006", 600, 400)),
-Group(new GroupEntity("007", 700, 500)),
-Group(new GroupEntity("008", 800, 500)),
-Group(new GroupEntity("010", 010, 600)),
-Group(new GroupEntity("011", 011, 600)),
 
-
-};
 
 
 GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
@@ -45,16 +31,13 @@ GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
 
 	QObject::connect(groupView, &QTableView::clicked, innerModel, &GroupTreeModel::stepToNextLayer);
 	QObject::connect(backButton, &MegaIconButton::clicked, innerModel, &GroupTreeModel::stepToUpperLevel);
-	QObject::connect(innerModel, &GroupTreeModel::backRequired, this, &GroupSelectionWidget::backUsed);
+	QObject::connect(innerModel, &GroupTreeModel::backRequired, this, &GroupSelectionWidget::backRequired);
 	QObject::connect(innerModel, &GroupTreeModel::groupSelected, this, &GroupSelectionWidget::gselected);
 }
 
-void GroupSelectionWidget::backUsed()
-{
-	info->setText("BACK!!!111");
-}
 
 void GroupSelectionWidget::gselected(const Group& g)
 {
-	info->setText("GroupSelected: " + g->name);
+	emit groupSelected(*g);
+	innerModel->clearLayers();
 }

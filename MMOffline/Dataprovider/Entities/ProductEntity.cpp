@@ -1,48 +1,55 @@
 #include "ProductEntity.h"
 #include <limits>
 #include <QVariant>
-
+#include <qtextstream.h>
+using namespace fieldPredefinitions;
 const QStringList fieldDefaults
 {
 QStringLiteral("-1"),
 QStringLiteral(""),
-QStringLiteral(""),
-QStringLiteral("0.0"),
 QStringLiteral("0.0"),
 QStringLiteral("0"),
-QStringLiteral("0.0"),
-QStringLiteral("0.0"),
-QStringLiteral("0.0"),
-QStringLiteral(""),
 QStringLiteral("0"),
 QStringLiteral(""),
-QStringLiteral("0"),
-QStringLiteral(""),
-QStringLiteral("0"),
-QStringLiteral("0"),
-QStringLiteral("0")
 };
+ProductEntity;
 const QStringList compressedFieldNames
 {
 QStringLiteral("id"),
 QStringLiteral("name"),
-QStringLiteral("sn"),
-QStringLiteral("pr"),
-QStringLiteral("pr2"),
+QStringLiteral("price"),
 QStringLiteral("um"),
-QStringLiteral("qty"),
-QStringLiteral("qtyb"),
-QStringLiteral("sld"),
-QStringLiteral("ex"),
-QStringLiteral("gr"),
-QStringLiteral("clr"),
-QStringLiteral("ogr"),
-QStringLiteral("ogrn"),
-QStringLiteral("gr1"),
-QStringLiteral("ocol"),
-QStringLiteral("gr2"),
+QStringLiteral("group_id"),
+QStringLiteral("clients_id_list")
 };
 
+QString _serializeIdList(const QVector<int>& vect)
+{
+	QString outstr;
+	QTextStream out(&outstr);
+	QVector<int>::ConstIterator begin = vect.constBegin();
+	while (begin != vect.constEnd())
+	{
+		out << *(begin++) << "|";
+	}
+	out.flush();
+	return outstr;
+}
+void _deserializeIdList(QVector<int>& vect, const QString& string)
+{
+	if (vect.count() > 0)
+		vect.clear();
+	auto temp = string.split("|", QString::SplitBehavior::SkipEmptyParts);
+	bool ok = true;
+	int buff;
+	for (QString& str : temp)
+	{
+		buff = str.toInt(&ok);
+		if (!ok)
+			continue;
+		vect.push_back(buff);
+	}
+}
 uniform_json_object_representation ProductEntity::toJsonRepresentation() const
 {
 	return uniform_json_object_representation(
@@ -51,21 +58,10 @@ uniform_json_object_representation ProductEntity::toJsonRepresentation() const
 		{
 			QString::number(id),
 			name,
-			shortName,
 			QString::number(price),
-			QString::number(priceWithTaxes),
 			QString::number(measure),
-			QString::number(quantity),
-			QString::number(quantityInPieces),
-			QString::number(rest),
-			expires,
 			QString::number(groupId),
-			color,
-			QString::number(groupInDictionary),
-			groupName,
-			QString::number(groupCounterparty),
-			QString::number(columnBE),
-			QString::number(groupgr2)
+			_serializeIdList(clientIds)
 		}
 	);
 }
@@ -90,37 +86,15 @@ QString ProductEntity::getContentsForDb() const
 		QString::number(id) 
 		+ QStringLiteral(" , \"") +
 		name
-		+ QStringLiteral("\" , \"")+
-		shortName
 		+ QStringLiteral("\" , ")+
 		QString::number(price)
 		+ QStringLiteral(" , ")+
-		QString::number(priceWithTaxes)
-		+ QStringLiteral(" , ")+
 		QString::number(measure)
 		+ QStringLiteral(" , ")+
-		QString::number(quantity)
-		+ QStringLiteral(" , ")+
-		QString::number(quantityInPieces)
-		+ QStringLiteral(" , ")+
-		QString::number(rest)
-		+ QStringLiteral(" , \"") +
-		expires
-		+ QStringLiteral("\" , ") +
 		QString::number(groupId)
 		+ QStringLiteral(" , \"") +
-		color
-		+ QStringLiteral("\" , ") +
-		QString::number(groupInDictionary)
-		+ QStringLiteral(" , \"") +
-		groupName
-		+ QStringLiteral("\" , ") +
-		QString::number(groupCounterparty)
-		+ QStringLiteral(" , ") +
-		QString::number(columnBE)
-		+ QStringLiteral(" , ") +
-		QString::number(groupgr2)
-		+ QStringLiteral(" )");
+		 _serializeIdList(clientIds) +
+		 QStringLiteral("\" )");
 }
 
 abs_entity* ProductEntity::fabricate() const
@@ -147,51 +121,21 @@ void ProductEntity::_listInit(const QStringList& flist)
 	bool ok = true;
 	switch (flist.count())
 	{
-	case 17:
-		groupgr2 = flist.at(i--).toInt(&ok);
-		if (!ok) break;
-	case 16:
-		columnBE = flist.at(i--).toInt(&ok);
-		if (!ok) break;
-	case 15:
-		groupCounterparty = flist.at(i--).toInt(&ok);
-		if (!ok) break;
-	case 14:
-		groupName = flist.at(i--);
-	case 13:
-		groupInDictionary = flist.at(i--).toInt(&ok);
-		if (!ok) break;
-	case 12:
-		color = flist.at(i--);
-	case 11:
-		groupId = flist.at(i--).toInt(&ok);
-		if (!ok) break;
-	case 10:
-		expires = flist.at(i--);
-	case 9:
-		rest = flist.at(i--).toDouble(&ok);
-		if (!ok) break;
-	case 8:
-		quantityInPieces = flist.at(i--).toDouble(&ok);
-		if (!ok) break;
-	case 7:
-		quantity = flist.at(i--).toDouble(&ok);
-		if (!ok) break;
 	case 6:
-		measure = flist.at(i--).toInt(&ok);
-		if (!ok) break;
+		_deserializeIdList(clientIds, flist.at(i--));
 	case 5:
-		priceWithTaxes = flist.at(i--).toDouble(&ok);
+		groupId = flist.at(i--).toLongLong(&ok);
 		if (!ok) break;
 	case 4:
-		price = flist.at(i--).toDouble(&ok);
+		measure = flist.at(i--).toLongLong(&ok);
 		if (!ok) break;
 	case 3:
-		shortName = flist.at(i--);
+		price = flist.at(i--).toDouble(&ok);
+		if (!ok) break;
 	case 2:
 		name = flist.at(i--);
 	case 1:
-		id = flist.at(i--).toInt(&ok);
+		id = flist.at(i--).toLongLong(&ok);
 		break;
 	default:
 		ok = false;
@@ -203,21 +147,16 @@ void ProductEntity::_listInit(const QStringList& flist)
 }
 
 ProductEntity::ProductEntity()
-	:abs_entity(Products), id(std::numeric_limits<int>::min()), name(), shortName(),
-	price(0.0), priceWithTaxes(0.0), measure(0), quantity(0.0),
-	quantityInPieces(0.0), rest(0.0), expires(), groupId(0),
-	color(), groupInDictionary(0), groupName(), groupCounterparty(0), columnBE(0),
-	groupgr2()
+	:abs_entity(Products), id(std::numeric_limits<int>::min()), name(),
+	price(0.0), measure(0),
+	groupId(0), clientIds()
+	
 {
 
 }
 
-ProductEntity::ProductEntity(int Id, QString Name, QString ShortName, double Price, double PriceWithTaxes)
-	:abs_entity(Products), id(Id), name(Name), shortName(ShortName),
-	price(Price), priceWithTaxes(PriceWithTaxes), measure(0), quantity(0.0),
-	quantityInPieces(0.0), rest(0.0), expires(), groupId(0),
-	color(), groupInDictionary(0), groupName(), groupCounterparty(0), columnBE(0),
-	groupgr2()
+ProductEntity::ProductEntity(IdInt Id, QString Name, QString ShortName, double Price, double PriceWithTaxes)
+	:abs_entity(Products), id(Id), name(Name), price(Price), measure(0), groupId(0), clientIds()
 {
 }
 
@@ -238,4 +177,9 @@ bool ProductEntity::isLikeString(const QRegExp& qregexp) const
 		return true;
 	}
 	return false;
+}
+
+IdInt ProductEntity::extractId() const
+{
+	return id;
 }

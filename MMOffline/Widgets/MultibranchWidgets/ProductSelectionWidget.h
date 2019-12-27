@@ -16,16 +16,16 @@ protected:
 	QLabel *info;
 	QLineEdit* searchLine;
 	QListView* productView;
-	DataEntityListModel* dataModel;
+	DataCountingDataModel* dataModel;
 	DataEntityFilterModel* searchProxy;
 	ProductsDelegate* innerDelegate;
 	MegaIconButton* backButton;
 public:
 	ProductSelectionWidget(QWidget* parent);
 	void setDataLoadParameters(Group group, Client client);
-
-protected slots:;
-	void backUsed();
+	void primeSelection(Group group, Client client);
+	void incrementQuantityCounter(int id, int q = 1);
+protected slots:
 	void productSelected(DataEntity product);
 signals:
 	void productObtained(const Product);

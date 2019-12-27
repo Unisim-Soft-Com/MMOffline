@@ -3,20 +3,19 @@
 #include "Widgets/ElementWidgets/MegaIconButton.h"
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/qlistwidget.h>
-
-
+#include <QtWidgets/qlistview.h>
+#include "Dataprovider/DataEntities.h"
+#include "Widgets/ExtendedDelegates/DocumentsDelegate.h"
 
 
 class LogsWidget : public inframedWidget
 {
 protected:
 	QVBoxLayout* mainLayout;
-	QLabel* totalInfo;
-	MegaIconButton* deleteAllButton;
-	QListWidget* logView;
+	QListView* logView;
 	MegaIconButton* backButton;
-
+	DataEntityListModel* innerModel;
+	DocumentsDelegate* innerDelegate;
 public:
 	LogsWidget(QWidget* parent);
 

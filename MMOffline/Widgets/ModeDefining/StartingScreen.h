@@ -40,4 +40,6 @@ protected slots:;
 	void userLoggedIn(QString login);
 public slots:
 	void setInfoLabel();
+signals:
+	void documentCreationInitiated();
 };

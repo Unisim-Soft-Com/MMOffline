@@ -10,8 +10,8 @@ class GroupEntity : public abs_entity
 public:
 	// deserialized data
 	QString name;
-	uint id;
-	uint superiorGroupId;
+	IdInt id;
+	IdInt superiorGroupId;
 protected:
 	// vector of subgroups
 	QVector<std::shared_ptr<GroupEntity> > subgroups;
@@ -24,16 +24,17 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
+	virtual IdInt extractId() const override;
 	bool _listInit(QStringList& L);
 public:
 	explicit GroupEntity();
-	explicit GroupEntity(QString name, uint Id = 0, uint SuperiorGroupId = 0);
+	explicit GroupEntity(QString name, IdInt Id = 0, IdInt SuperiorGroupId = 0);
 	const QVector<std::shared_ptr<GroupEntity> >& getSubgroups() const;
 	bool isTopLevel() const;
 	bool hasSubgroups() const;
 	bool appendIfOwned(const std::shared_ptr<GroupEntity> &);
 	bool owns(const std::shared_ptr<GroupEntity>&);
-	const  std::shared_ptr<GroupEntity>& getSubgroupIfExists(uint id) const;
+	const  std::shared_ptr<GroupEntity>& getSubgroupIfExists(IdInt id) const;
 	const std::shared_ptr<GroupEntity>& getSubgroup(int index) const;
 	int countSubgroups() const;
 	bool operator==(const GroupEntity&) const;
@@ -60,6 +61,7 @@ public:
 	QVariant data(const QModelIndex& index, int role) const override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	void setList(const GroupList& l);
+	void clearLayers();
 public slots:
 	void stepToNextLayer(const QModelIndex& index);
 	void stepToUpperLevel();

@@ -21,6 +21,7 @@ protected:
 public:
 	GroupSelectionWidget(QWidget* parent);
 public slots:
-	void backUsed();
 	void gselected(const Group& g);
+signals:
+	void groupSelected(GroupEntity);
 };

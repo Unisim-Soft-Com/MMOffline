@@ -1,6 +1,17 @@
 #pragma once
 #include <QtCore/QPointer>
 #include "widgets/parents/inframedWidget.h"
+#include <exception>
+#include <QtCore/QString>
+
+class CastFailedException : public std::exception
+{
+private:
+	std::string msg = "Error upcasting inframed pointer with from type ";
+public:
+	CastFailedException(QString str) { msg += str.toStdString(); };
+	virtual const char* what() const override { return msg.c_str(); };
+};
 
 class abstractNode
 {
@@ -26,4 +37,14 @@ public:
 	abstractDynamicNode();
 	virtual void _hideAndDeleteCurrent(inframedWidget* replacement);
 	virtual void _hideAnyWithDelete(inframedWidget* replacement);
+	template <class T>
+	T* _upCO()
+	{
+		T* temp = qobject_cast<T*>(currentlyOpened);
+		if (temp == nullptr)
+		{
+			throw CastFailedException(currentlyOpened->objectName());
+		}
+		return temp;
+	}
 };

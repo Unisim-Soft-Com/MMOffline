@@ -98,7 +98,7 @@ QString TemplatedTableHandler::insert(const QString& values) const noexcept
 
 QString TemplatedTableHandler::insert(const QString another_name, const QString & values) const noexcept
 {
-	return QStringLiteral("insert into ") + table_declaration + QStringLiteral(" (")
+	return QStringLiteral("insert into ") + another_name + QStringLiteral(" (")
 		+ allFieldsDeclaration() + QStringLiteral(") values ") + values;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include <QStyleOptionViewItem>
-
+#include <QtGui/QPainter>
 inline QSize countOptimalSizeOfItem(const QStyleOptionViewItem& option)
 {
 	return QSize(option.rect.width(), option.fontMetrics.height() * 4);
@@ -8,6 +8,21 @@ inline QSize countOptimalSizeOfItem(const QStyleOptionViewItem& option)
 inline QSize countWrappingBorder(const QString& str, const QStyleOptionViewItem& option)
 {
 	return QSize(option.fontMetrics.width(str) + 6, option.fontMetrics.height() + 6);
+}
+
+inline void setGradient(const QRect*r, QLinearGradient* g, const QColor & a,const QColor & b)
+{
+	g->setColorAt(0, a);
+	g->setColorAt(1, b);
+	g->setStart(r->topLeft());
+	g->setFinalStop(r->bottomLeft());
+}
+inline void drawRect(const QRect& r, const QLinearGradient& gr, QPainter*p)
+{
+	p->setBrush(gr);
+	p->setOpacity(0.6);
+	p->drawRect(r);
+	p->setOpacity(1);
 }
 template <class DataEntSub>
 std::shared_ptr<DataEntSub> upcastItem(const QModelIndex& index)

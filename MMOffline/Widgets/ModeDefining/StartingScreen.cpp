@@ -17,6 +17,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	mainLayout->addWidget(logsScreen);
 	innerWidget->setLayout(innerLayout);
 	innerLayout->addWidget(infoLabel);
+	innerLayout->addWidget(createDocumentButton);
 	innerLayout->addWidget(onlineLoginButton);
 	innerLayout->addWidget(logsButton);
 	innerLayout->addLayout(footerLayout);
@@ -41,6 +42,8 @@ StartingScreen::StartingScreen(QWidget* parent)
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	setInfoLabel();
+	createDocumentButton->setIcon(QIcon(":/res/add.png"));
+	createDocumentButton->setText(tr("New document"));
 	onlineLoginButton->setIcon(QIcon(":/res/login.png"));
 	onlineLoginButton->setText(tr("Login"));
 	logsButton->setIcon(QIcon(":/res/mlogs.png"));
@@ -49,7 +52,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	settingsButton->setText(tr("Settings"));
 	quitButton->setIcon(QIcon(":/res/exit.png"));
 	quitButton->setText(tr("Quit!"));
-
+	QObject::connect(createDocumentButton, &MegaIconButton::clicked, this, &StartingScreen::documentCreationInitiated);
 	QObject::connect(onlineLoginButton, &MegaIconButton::clicked, this, &StartingScreen::toOnlineLogin);
 	QObject::connect(logsButton, &MegaIconButton::clicked, this, &StartingScreen::toLogs);
 	QObject::connect(settingsButton, &MegaIconButton::clicked, this, &StartingScreen::toSettings);
@@ -59,6 +62,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	QObject::connect(onlineLogin, &OnlineLoginWidget::loginReady, this, &StartingScreen::userLoggedIn);
 	QObject::connect(quitButton, &MegaIconButton::clicked, qApp, QApplication::quit);
 }
+
 
 void StartingScreen::toOnlineLogin()
 {

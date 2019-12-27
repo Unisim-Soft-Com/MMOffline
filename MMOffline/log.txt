@@ -1,1 +1,0 @@
-method runQuery select id , name , shortName , price , priceWithTaxes , measure , quantity , quantityInPieces , rest , expires , groupId , color , groupInDictionary , groupName , groupCounterparty , columnBE , groupgr2 from Productscalled

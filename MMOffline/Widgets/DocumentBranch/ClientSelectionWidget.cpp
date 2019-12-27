@@ -7,10 +7,9 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
 	userInfo(new QLabel(innerWidget)), searchPanel(new QHBoxLayout(innerWidget)),
-	searchLine(new QLineEdit(innerWidget)),// doSearchButton(new MegaIconButton(innerWidget)),
+	searchLine(new QLineEdit(innerWidget)),
 	clientView(new QListView(innerWidget)), backButton(new MegaIconButton(innerWidget)),
-	//innerModel(new ClientDataModel(this)),
-	innerModel(new DataEntityListModel(this)),
+	innerModel(new DataCountingDataModel(this)),
 	innerDelegate(new ClientsDelegate(this)),
 	searchProxy(new DataEntityFilterModel(this))
 {
@@ -22,7 +21,6 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	innerLayout->addWidget(clientView);
 	innerLayout->addWidget(backButton);
 	searchPanel->addWidget(searchLine);
-//	searchPanel->addWidget(doSearchButton);
 
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -31,9 +29,6 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 
 
 	userInfo->setText(tr("Select client"));
-	//doSearchButton->setText(tr("Search!"));
-	//doSearchButton->setStyleSheet(CHANGE_BUTTONS_STYLESHEET);
-	//doSearchButton->setIcon(QIcon(":/res/search.png"));
 	backButton->setIcon(QIcon(":/res/back.png"));
 	backButton->setText(tr("back"));
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
@@ -45,10 +40,21 @@ ClientSelectionWidget::ClientSelectionWidget(QWidget* parent)
 	searchProxy->setSourceModel(innerModel);
 	clientView->setModel(searchProxy);
 	clientView->setItemDelegate(innerDelegate);
-//	QObject::connect(doSearchButton, &MegaIconButton::clicked, this, &ClientSelectionWidget::doSearch);
+	innerModel->assignQuantityInfo(std::move(AppWorkset->dataprovider.loadIdPairs(ComplexFilters::ClientQuantityLinking)));
 	QObject::connect(searchLine, &QLineEdit::textChanged, searchProxy, &QSortFilterProxyModel::setFilterFixedString);
+	QObject::connect(searchProxy, &DataEntityFilterModel::dataEntityClicked, this, &ClientSelectionWidget::clientClicked);
+	QObject::connect(clientView, &QListView::clicked, searchProxy, &DataEntityFilterModel::mapClickToEntity);
+	QObject::connect(backButton, &MegaIconButton::clicked, this, &ClientSelectionWidget::backRequired);
 }
 
-void ClientSelectionWidget::doSearch()
+void ClientSelectionWidget::incrementDocCounter(int id, int q)
 {
+	innerModel->assignQuantityUpdate(id, q);
 }
+
+void ClientSelectionWidget::clientClicked(DataEntity client)
+{
+	Client temp = std::static_pointer_cast<ClientEntity>(client);
+	emit clientSelected(*temp);
+}
+

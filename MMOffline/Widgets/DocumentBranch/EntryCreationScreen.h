@@ -9,34 +9,38 @@
 #include "Widgets/parents/inframedWidget.h"
 #include "Dataprovider/DataEntities.h"
 
-class DocumentCreationScreen : public inframedWidget
+
+
+class EntryCreationScreen : public inframedWidget
 {
 	Q_OBJECT
 protected:
 	QVBoxLayout* mainLayout;
-	QLabel* clientInfo;
+	QLabel* productInfo;
 	QFormLayout* formLayout;
-	QLabel* idInfo;
-	QDateEdit* dateSpinBox;
-	QComboBox* depozitField;
-	QComboBox* tipField;
-	QLineEdit* contactField;
-	QSpinBox* summPaidField;
+	QLabel* priceInfo;
+	QComboBox* measureField;
+	BigButtonsSpinbox* quantitySpinbox;
+	QComboBox* foptionField;
+	QComboBox* soptionField;
+	QComboBox* toptionField;
+	QLineEdit* commentField;
 	QHBoxLayout* buttonLayout;
 	MegaIconButton* backButton;
 	MegaIconButton* okButton;
-	
-	NamedIdList depozits;
-	NamedIdList tips;
 
-	Document currentDocument;
+	NamedIdList measures;
+	NamedIdList options;
+
+	Product operatedProduct;
+
+	DocumentEntry currentEntry;
 public:
-	DocumentCreationScreen(QWidget*);
-	void primeCreation(Client);
+	EntryCreationScreen(QWidget* parent);
+	void primeEntryCreation(Product p, Document d);
 	virtual void show() override;
 protected slots:
-	void okPressed();
+	void confirmed();
 signals:
-	void documentCreated(Document);
-	
+	void entryCreated(DocumentEntry);
 };

@@ -6,10 +6,10 @@
 #include <exception>
 #include <qregularexpression.h>
 #include <qmetatype.h>
-
+#include <QVariant>
 typedef std::shared_ptr<QSqlQuery> QueryPtr;
 
-
+typedef long long int IdInt;
 
 class abs_entity
 {
@@ -23,6 +23,7 @@ protected:
 	virtual abs_entity* fabricate() const = 0;
 	virtual bool fromSql(QueryPtr q) = 0;
 	virtual bool isLikeString(const QRegExp& qregexp)const  = 0;
+	virtual IdInt extractId()const =0;
 public:
 	abs_entity(int class_id = 0);
 	uniform_json_object_representation toUniJson() const;
@@ -31,6 +32,7 @@ public:
 	const TemplatedTableHandler* const getAssociatedTable() const;
 	TemplatedTableHandler getRenamedTable(const QString& tname) const;
 	TemplatedTableHandler getRenamedTable(TableNames tname) const;
+	IdInt getId() const;
 	QString insertToDBHeader() const;
 	QString insertToDBValues() const;
 	QString insertionQuery() const;
@@ -54,3 +56,5 @@ public:
 	virtual const char* what() const override { return msg.c_str(); };
 };
 
+extern const QString dateSerializationFormat;
+extern const QString dateTimeSerializationFormat;

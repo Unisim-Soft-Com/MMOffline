@@ -17,7 +17,12 @@ public:
 	
 		downloadStart=101,
 			GettingClients = 105,
-
+			GettingGroups = 115,
+			GettingTips = 140,
+			GettingDepozits = 145,
+			GettingMeasures = 150,
+			GettingOptions = 155,
+			GettingProducts = 160,
 		downloadEnd=200 
 	};
 private:
@@ -37,7 +42,7 @@ private:
 public:
 	SyncInfoWidget(QWidget* parent = nullptr);
 	void setInfopack(QString & newLogin, QString & pendingChanges);
-	void setErrorLog(QString& error);
+	void setErrorLog(const QString& error);
 	void reload();
 public slots:
 	void setProgress(int step);

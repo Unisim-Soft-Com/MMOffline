@@ -1,26 +1,25 @@
 #pragma once
 #include "abs_entity.h"
-#include <QDate>
+#include <QDateTime>
 #include "DocumentEntryEntity.h"
 #include <QtCore/QAbstractListModel>
-
 
 
 class DocumentEntity : public abs_entity
 {
 public:
-	int documentId;
-	QDate dateWhenCreated;
+	IdInt documentId;
+	QDateTime dateWhenCreated;
 	QDate shippingDate;
-	int clientId;
+	IdInt clientId;
 	QString clientName;
-	int warehouseId;
+	IdInt warehouseId;
 	QString warehouseName;
 	int documentType;
 	QString documentTypeName;
 	double alreadyPaid;
 
-	QVector<DocEntryPtr> linkedEntries;
+	DocEntryList linkedEntries;
 protected:
 	// Inherited via abs_entity
 	virtual uniform_json_object_representation toJsonRepresentation() const override;
@@ -30,16 +29,16 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool fromSql(QueryPtr q) override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
-
+	virtual IdInt extractId() const override;
 	void _listInit(const QStringList& l);
 public:
 	explicit DocumentEntity();
-	explicit DocumentEntity(int ID);
+	explicit DocumentEntity(IdInt ID);
 	explicit DocumentEntity(const QStringList& args);
 
-	bool linkEntry(DocEntryPtr);
-	bool unlinkEntry(DocEntryPtr);
-	bool hisEntry(DocEntryPtr);
+	bool linkEntry(DocumentEntry);
+	bool unlinkEntry(DocumentEntry);
+	bool hisEntry(DocumentEntry);
 	void cleanEntryField();
 };
 typedef std::shared_ptr<DocumentEntity> Document;
@@ -58,3 +57,4 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 };
+extern const QString documentIdAssertionQuery;

@@ -60,6 +60,19 @@ awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMen
 	QObject::connect(syncMenu, &SyncMenuWidget::backRequired, this, &OnlineLoginWidget::backRequired);
 }
 
+void OnlineLoginWidget::show()
+{
+	if (loginField->text().isEmpty())
+	{
+		loginField->setFocus();
+	}
+	else
+	{
+		passwordField->setFocus();
+	}
+	inframedWidget::show();
+}
+
 void OnlineLoginWidget::processResponse()
 {
 	auto resp = RequestParser::getLoginResult(awaiter->restext, awaiter->errtext);

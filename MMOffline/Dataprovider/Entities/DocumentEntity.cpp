@@ -1,6 +1,8 @@
 #include "DocumentEntity.h"
 #include <QVariant>
-#include<QWidget>
+#include <QWidget>
+#include <limits>
+#include <random>
 const QStringList fieldDefaults
 {
 QStringLiteral("0"),
@@ -14,6 +16,10 @@ QStringLiteral("0"),
 QStringLiteral(""),
 QStringLiteral("0.0")
 };
+
+int topDocumentId = 0;
+
+using namespace fieldPredefinitions;
 
 uniform_json_object_representation DocumentEntity::toJsonRepresentation() const
 {
@@ -53,9 +59,9 @@ QString DocumentEntity::getContentsForDb() const
 	return	QStringLiteral("( ") +
 		QString::number(documentId)
 		+ QStringLiteral(" , \"") +
-		dateWhenCreated.toString()
+		dateWhenCreated.toString(dateTimeSerializationFormat)
 		+ QStringLiteral("\" , \"") +
-		shippingDate.toString()
+		shippingDate.toString(dateSerializationFormat)
 		+ QStringLiteral("\" , ") +
 		QString::number(clientId)
 		+ QStringLiteral(" , \"") +
@@ -113,15 +119,17 @@ void DocumentEntity::_listInit(const QStringList& l)
 	case 5:
 		clientName = l.at(i--);
 	case 4:
-		clientId = l.at(i--).toInt(&ok);
+		clientId = l.at(i--).toLongLong(&ok);
 		if (!ok) break;
+		if (clientId > topDocumentId)
+			topDocumentId = clientId + 1;
 	case 3:
-		shippingDate =  QDate::fromString(l.at(i--));
+		shippingDate =  QDate::fromString(l.at(i--), dateSerializationFormat);
 	case 2:
-		dateWhenCreated = QDate::fromString(l.at(i--));
+		dateWhenCreated = QDateTime::fromString(l.at(i--), dateTimeSerializationFormat);
 	case 1:
-		documentId = l.at(i--).toInt(&ok);
-		if (!ok) break;
+		documentId = l.at(i--).toLongLong(&ok);
+		break;
 	default:
 		ok = false;
 	}
@@ -139,7 +147,7 @@ DocumentEntity::DocumentEntity()
 {
 }
 
-DocumentEntity::DocumentEntity(int ID)
+DocumentEntity::DocumentEntity(IdInt ID)
 	: abs_entity(Documents), documentId(ID), dateWhenCreated(),
 	shippingDate(), clientId(0), clientName(), warehouseId(0),
 	warehouseName(), documentType(0), documentTypeName(),
@@ -152,7 +160,7 @@ DocumentEntity::DocumentEntity(const QStringList& args)
 	_listInit(args);
 }
 
-bool DocumentEntity::unlinkEntry(DocEntryPtr e)
+bool DocumentEntity::unlinkEntry(DocumentEntry e)
 {
 	if (e != nullptr)
 	{
@@ -165,7 +173,7 @@ bool DocumentEntity::unlinkEntry(DocEntryPtr e)
 
 void DocumentEntity::cleanEntryField()
 {
-	QVector<DocEntryPtr> temp;
+	QVector<DocumentEntry> temp;
 	auto begin = linkedEntries.begin();
 	while (begin != linkedEntries.end())
 	{
@@ -175,18 +183,24 @@ void DocumentEntity::cleanEntryField()
 		}
 		++begin;
 	}
-	for (DocEntryPtr e : temp)
+	for (DocumentEntry e : temp)
 	{
 		unlinkEntry(e);
 	}
 }
+
 
 bool DocumentEntity::isLikeString(const QRegExp& qregexp) const
 {
 	return true;
 }
 
-bool DocumentEntity::linkEntry(DocEntryPtr e)
+IdInt DocumentEntity::extractId() const
+{
+	return documentId;
+}
+
+bool DocumentEntity::linkEntry(DocumentEntry e)
 {
 	if (e->parentDocId != 0)
 		return false;
@@ -195,7 +209,7 @@ bool DocumentEntity::linkEntry(DocEntryPtr e)
 	return true;
 }
 
-bool DocumentEntity::hisEntry(DocEntryPtr e)
+bool DocumentEntity::hisEntry(DocumentEntry e)
 {
 	return e->parentDocId == documentId;
 }
@@ -230,3 +244,5 @@ QVariant DocumentsListModel::headerData(int section, Qt::Orientation orientation
 {
 	return QVariant();
 }
+const QString documentIdAssertionQuery =
+QStringLiteral("select documentId from Documents where documentId = %1 ;");

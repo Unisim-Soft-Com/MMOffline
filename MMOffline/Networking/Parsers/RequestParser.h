@@ -4,7 +4,6 @@
 #include "Dataprovider/DataEntities.h"
 #include <QtCore/QVector>
 #include "Networking/Parsers/LinearParser.h"
-
 namespace RequestParser
 {
 	template <class DataEnt>
