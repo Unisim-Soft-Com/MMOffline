@@ -268,10 +268,22 @@
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp">
       <Filter>Source Files\widgets\Multibranch</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp">
+    <ClCompile Include="Widgets\LogBranch\LogBranchRoot.cpp">
+      <Filter>Source Files\widgets\LogBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp">
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
+    </ClCompile>
     <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp">
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionBranch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -340,9 +352,6 @@
     </ClInclude>
     <ClInclude Include="Widgets\ExtendedDelegates\DelegateUtility.h">
       <Filter>Header Files\widgets\ExtendedDelegates</Filter>
-    </ClInclude>
-    <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h">
-      <Filter>Header Files\widgets\Multibranch</Filter>
     </ClInclude>
     <ClInclude Include="Dataprovider\Entities\NamedIdEntity.h">
       <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
@@ -450,6 +459,18 @@
     </QtMoc>
     <QtMoc Include="Widgets\ExtendedDelegates\EntryDelegate.h">
       <Filter>Header Files\widgets\ExtendedDelegates</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.h">
+      <Filter>Header Files\widgets\Multibranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.h">
+      <Filter>Header Files\widgets\LogBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\LogBranch\LogBranchRoot.h">
+      <Filter>Header Files\widgets\LogBranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionBranch.h">
+      <Filter>Header Files\widgets\Multibranch</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -38,6 +38,7 @@ protected:
 public:
 	EntryCreationScreen(QWidget* parent);
 	void primeEntryCreation(Product p, Document d);
+	void primeEntryCreation(DocumentEntry);
 	virtual void show() override;
 protected slots:
 	void confirmed();

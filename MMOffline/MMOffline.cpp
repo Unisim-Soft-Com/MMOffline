@@ -11,14 +11,18 @@ MMOffline::MMOffline()
 	abstractDynamicNode(),
 	docroot(),
 	startingScreen(new StartingScreen(this)),
+	logsBranch(),
 	myAwaiter(new RequestAwaiter(10000, this))
 {
 	mainLayout = new QVBoxLayout(this);
 	this->setLayout(mainLayout);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setSpacing(0);
 	mainLayout->addWidget(startingScreen);
 	currentlyOpened = startingScreen;
 	untouchable = startingScreen;
 	QObject::connect(_upCO<StartingScreen>(), &StartingScreen::documentCreationInitiated, this, &MMOffline::toDocumentRoot);
+	QObject::connect(_upCO<StartingScreen>(), &StartingScreen::logsRequired, this, &MMOffline::toLogs);
 }
 
 void MMOffline::toDocumentRoot()
@@ -31,6 +35,13 @@ void MMOffline::toDocumentRoot()
 void MMOffline::toStart()
 {
 	_hideAndDeleteCurrent(untouchable);
+}
+
+void MMOffline::toLogs()
+{
+	_hideAnyWithDelete(new LogBranchRoot(this));
+	logsBranch = currentlyOpened;
+	QObject::connect(currentlyOpened, &inframedWidget::backRequired, this, &MMOffline::toStart);
 }
 
 void MMOffline::do_action()

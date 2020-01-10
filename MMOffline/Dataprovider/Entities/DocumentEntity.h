@@ -31,6 +31,7 @@ protected:
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
 	virtual IdInt extractId() const override;
 	void _listInit(const QStringList& l);
+	virtual bool compare(abs_entity* another) const override;
 public:
 	explicit DocumentEntity();
 	explicit DocumentEntity(IdInt ID);
@@ -40,6 +41,7 @@ public:
 	bool unlinkEntry(DocumentEntry);
 	bool hisEntry(DocumentEntry);
 	void cleanEntryField();
+
 };
 typedef std::shared_ptr<DocumentEntity> Document;
 typedef QVector<Document> DocumentsList;

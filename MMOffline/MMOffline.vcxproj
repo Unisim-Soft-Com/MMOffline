@@ -67,12 +67,16 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>C:\Users\AKELESH\source\repos\MMOffline\MMOffline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <QtMoc>
+      <QtMocDir>$(Configuration)\moc_%(Filename).cpp</QtMocDir>
+    </QtMoc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -80,12 +84,16 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>C:\Users\AKELESH\source\repos\MMOffline\MMOffline;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
+    <QtMoc>
+      <QtMocDir>$(Configuration)\moc_%(Filename).cpp</QtMocDir>
+    </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dataprovider\DataEntities.cpp" />
@@ -124,11 +132,15 @@
     <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\GroupDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp" />
+    <ClCompile Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.cpp" />
+    <ClCompile Include="Widgets\LogBranch\LogBranchRoot.cpp" />
     <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp" />
     <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp" />
     <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp" />
     <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp" />
+    <ClCompile Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp" />
+    <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionBranch.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp" />
     <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp" />
     <ClCompile Include="Widgets\parents\AbstractListSelectionWidget.cpp" />
@@ -178,10 +190,13 @@
     <QtMoc Include="Widgets\ExtendedDelegates\GroupDelegate.h" />
     <QtMoc Include="Widgets\ExtendedDelegates\DocumentsDelegate.h" />
     <QtMoc Include="Widgets\ExtendedDelegates\EntryDelegate.h" />
+    <QtMoc Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.h" />
+    <QtMoc Include="Widgets\LogBranch\LogBranchRoot.h" />
     <ClInclude Include="Widgets\LogBranch\LogsWidget.h" />
-    <ClInclude Include="Widgets\MultibranchWidgets\ClientViewWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\GroupSelectionWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionWidget.h" />
+    <QtMoc Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.h" />
+    <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionBranch.h" />
     <ClInclude Include="Widgets\parents\abstractNodeInterface.h" />
     <QtMoc Include="Widgets\Syncing\SyncMenuWidget.h" />
     <QtMoc Include="Widgets\Syncing\SyncInfoWidget.h" />

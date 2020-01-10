@@ -24,6 +24,7 @@ protected:
 	virtual bool fromSql(QueryPtr q) = 0;
 	virtual bool isLikeString(const QRegExp& qregexp)const  = 0;
 	virtual IdInt extractId()const =0;
+	virtual bool compare(abs_entity* another) const = 0;
 public:
 	abs_entity(int class_id = 0);
 	uniform_json_object_representation toUniJson() const;
@@ -37,6 +38,7 @@ public:
 	QString insertToDBValues() const;
 	QString insertionQuery() const;
 	QString insertionQuery(const QString another_table) const;
+	bool deepCompare(abs_entity*) const;
 	int myType() const;
 	bool filter(const QRegExp& qrexp) const;
 	abs_entity* clone() const;

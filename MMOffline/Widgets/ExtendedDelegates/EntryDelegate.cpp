@@ -39,6 +39,12 @@ void EntryDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 	setGradient(&textbox, &gr, option.palette.brightText().color(), option.palette.highlight().color());
 	drawRect(textbox, gr, painter);
 	painter->drawText(textbox, Qt::AlignCenter, d->productName);
+	if (option.state.testFlag(QStyle::State_Selected))
+	{
+		painter->setBrush(option.palette.highlight());
+		painter->setOpacity(0.3);
+		painter->drawRect(option.rect);
+	}
 	painter->restore();
 }
 

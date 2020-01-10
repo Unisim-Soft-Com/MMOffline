@@ -28,13 +28,11 @@ protected:
 
 	OnlineLoginWidget* onlineLogin;
 	SettingsScreen* settings;
-	LogsWidget* logsScreen;
 public:
 	StartingScreen(QWidget* parent);
 
 protected slots:;
 	void toOnlineLogin();
-	void toLogs();
 	void toSettings();
 	void hideCurrent();
 	void userLoggedIn(QString login);
@@ -42,4 +40,5 @@ public slots:
 	void setInfoLabel();
 signals:
 	void documentCreationInitiated();
+	void logsRequired();
 };

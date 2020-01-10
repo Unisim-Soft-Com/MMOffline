@@ -7,14 +7,12 @@ StartingScreen::StartingScreen(QWidget* parent)
 	createDocumentButton(new MegaIconButton(innerWidget)),
 	logsButton(new MegaIconButton(innerWidget)), footerLayout(new QHBoxLayout(innerWidget)),
 	settingsButton(new MegaIconButton(innerWidget)), quitButton(new MegaIconButton(innerWidget)),
-	onlineLogin(new OnlineLoginWidget(this)), settings(new SettingsScreen(this)),
-	logsScreen(new LogsWidget(this))
+	onlineLogin(new OnlineLoginWidget(this)), settings(new SettingsScreen(this))
 {
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
 	mainLayout->addWidget(onlineLogin);
 	mainLayout->addWidget(settings);
-	mainLayout->addWidget(logsScreen);
 	innerWidget->setLayout(innerLayout);
 	innerLayout->addWidget(infoLabel);
 	innerLayout->addWidget(createDocumentButton);
@@ -37,7 +35,6 @@ StartingScreen::StartingScreen(QWidget* parent)
 	main = this;
 	settings->hide();
 	onlineLogin->hide();
-	logsScreen->hide();
 
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -54,11 +51,10 @@ StartingScreen::StartingScreen(QWidget* parent)
 	quitButton->setText(tr("Quit!"));
 	QObject::connect(createDocumentButton, &MegaIconButton::clicked, this, &StartingScreen::documentCreationInitiated);
 	QObject::connect(onlineLoginButton, &MegaIconButton::clicked, this, &StartingScreen::toOnlineLogin);
-	QObject::connect(logsButton, &MegaIconButton::clicked, this, &StartingScreen::toLogs);
+	QObject::connect(logsButton, &MegaIconButton::clicked, this, &StartingScreen::logsRequired);
 	QObject::connect(settingsButton, &MegaIconButton::clicked, this, &StartingScreen::toSettings);
 	QObject::connect(onlineLogin, &OnlineLoginWidget::backRequired, this, &StartingScreen::hideCurrent);
 	QObject::connect(settings, &SettingsScreen::backRequired, this, &StartingScreen::hideCurrent);
-	QObject::connect(logsScreen, &LogsWidget::backRequired, this, &StartingScreen::hideCurrent);
 	QObject::connect(onlineLogin, &OnlineLoginWidget::loginReady, this, &StartingScreen::userLoggedIn);
 	QObject::connect(quitButton, &MegaIconButton::clicked, qApp, QApplication::quit);
 }
@@ -70,10 +66,6 @@ void StartingScreen::toOnlineLogin()
 }
 
 
-void StartingScreen::toLogs()
-{
-	_hideAny(logsScreen);
-}
 
 void StartingScreen::toSettings()
 {

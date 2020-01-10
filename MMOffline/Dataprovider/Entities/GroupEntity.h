@@ -26,6 +26,7 @@ protected:
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
 	virtual IdInt extractId() const override;
 	bool _listInit(QStringList& L);
+	virtual bool compare(abs_entity* another) const override;
 public:
 	explicit GroupEntity();
 	explicit GroupEntity(QString name, IdInt Id = 0, IdInt SuperiorGroupId = 0);
@@ -38,6 +39,7 @@ public:
 	const std::shared_ptr<GroupEntity>& getSubgroup(int index) const;
 	int countSubgroups() const;
 	bool operator==(const GroupEntity&) const;
+
 };
 typedef std::shared_ptr<GroupEntity> Group;
 typedef QVector<Group> GroupList;

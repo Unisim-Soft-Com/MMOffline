@@ -1,6 +1,7 @@
 #include "DocumentEntryEntity.h"
 #include <QVariant>
 #include <QTime>
+
 const QStringList fieldDefaults
 {
 QStringLiteral("0"),
@@ -10,9 +11,9 @@ QStringLiteral(""),
 QStringLiteral("0"),
 QStringLiteral("0"),
 QStringLiteral("0"),
-QStringLiteral(""),
-QStringLiteral(""),
-QStringLiteral(""),
+QStringLiteral("0"),
+QStringLiteral("0"),
+QStringLiteral("0"),
 QStringLiteral("")
 };
 const QString entryIdAssertionQuery =
@@ -32,9 +33,9 @@ uniform_json_object_representation DocumentEntryEntity::toJsonRepresentation() c
 			QString::number(price),
 			QString::number(measure),
 			QString::number(quantity),
-			option1,
-			option2,
-			option3,
+			QString::number(option1),
+			QString::number(option2),
+			QString::number(option3),
 			comment
 		}
 	);
@@ -69,13 +70,13 @@ QString DocumentEntryEntity::getContentsForDb() const
 		QString::number(measure)
 		+ QStringLiteral(" , ") +
 		QString::number(quantity)
-		+ QStringLiteral(" , \"") +
-		option1
-		+ QStringLiteral("\" , \"") +
-		option2
-		+ QStringLiteral("\" , \"") +
-		option3
-		+ QStringLiteral("\", \"") +
+		+ QStringLiteral(" , ") +
+		QString::number(option1)
+		+ QStringLiteral(" , ") +
+		QString::number(option2)
+		+ QStringLiteral(" , ") +
+		QString::number(option3)
+		+ QStringLiteral(", \"") +
 		comment
 		+ QStringLiteral("\" )");
 }
@@ -107,11 +108,14 @@ void DocumentEntryEntity::_listInit(const QStringList& l)
 	case 11:
 		comment = l.at(i--);
 	case 10:
-		option3 = l.at(i--);
+		option3 = l.at(i--).toInt(&ok);
+		if (!ok) break;
 	case 9:
-		option2 = l.at(i--);
+		option2 = l.at(i--).toInt(&ok);
+		if (!ok) break;
 	case 8:
-		option1 = l.at(i--);
+		option1 = l.at(i--).toInt(&ok);
+		if (!ok) break;
 	case 7:
 		quantity = l.at(i--).toDouble(&ok);
 		if (!ok) break;
@@ -143,16 +147,16 @@ void DocumentEntryEntity::_listInit(const QStringList& l)
 
 DocumentEntryEntity::DocumentEntryEntity()
 	: abs_entity(DocumentEntries), parentDocId(0), entryId(0), productId(0),
-	productName(), price(0.0), measure(0), quantity(0.0), option1(),
-	option2(), option3(), comment()
+	productName(), price(0.0), measure(0), quantity(0.0), option1(0),
+	option2(0), option3(0), comment()
 {
 
 }
 
 DocumentEntryEntity::DocumentEntryEntity(IdInt ID)
 	: abs_entity(DocumentEntries), parentDocId(0), entryId(0), productId(0),
-	productName(), price(0.0), measure(0), quantity(0.0), option1(),
-	option2(), option3(), comment()
+	productName(), price(0.0), measure(0), quantity(0.0), option1(0),
+	option2(0), option3(0), comment()
 {
 }
 
@@ -161,9 +165,17 @@ DocumentEntryEntity::DocumentEntryEntity(const QStringList& l)
 	_listInit(l);
 }
 
+bool DocumentEntryEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<DocumentEntryEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return entryId == temp->entryId;
+}
+
 bool DocumentEntryEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return false;
+	return productName.contains(qregexp.pattern());
 }
 
 IdInt DocumentEntryEntity::extractId() const

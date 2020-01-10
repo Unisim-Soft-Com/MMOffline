@@ -68,42 +68,42 @@ using namespace fieldPredefinitions;
 	{
 		TemplatedTableHandler(
 			predefinedDBNames.at(Clients),
-			QStringLiteral("( id INTEGER, name TEXT )"),
+			QStringLiteral("( id INTEGER PRIMARY KEY NOT NULL, name TEXT )"),
 			QStringList
 			{
 				QStringLiteral("id"),
 				QStringLiteral("name")
-			}),
+			}, 0),
 		TemplatedTableHandler(
 			predefinedDBNames.at(Products),
-			QStringLiteral("( id INTEGER, name TEXT, price number,"
+			QStringLiteral("( id INTEGER PRIMARY KEY NOT NULL, name TEXT, price number,"
 			" measure number,"
 			"groupId INTEGER, "
 			"clientIds TEXT )"),
-			fieldsOfProductEntity),
+			fieldsOfProductEntity, 0),
 
 		TemplatedTableHandler(
 			predefinedDBNames.at(Groups),
-			QStringLiteral("( name TEXT, id INTEGER, parent_id INTEGER )"),
-			fieldsOfGroupEntity),
+			QStringLiteral("( name TEXT, id INTEGER PRIMARY KEY NOT NULL, parent_id INTEGER )"),
+			fieldsOfGroupEntity, 1),
 		TemplatedTableHandler(
 			predefinedDBNames.at(NamedIds),
-			QStringLiteral("( name TEXT, id INTEGER )"),
-			fieldsOfNamedIdEntity
+			QStringLiteral("( name TEXT, id INTEGER PRIMARY KEY NOT NULL)"),
+			fieldsOfNamedIdEntity, 1
 	),
 		// These tables are for inner objects
 		TemplatedTableHandler(
 			predefinedDBNames.at(Documents),
-			QStringLiteral("( documentId INTEGER, dateWhenCreated TEXT, shippingDate TEXT, clientId INTEGER, clientName TEXT,"
+			QStringLiteral("( documentId INTEGER PRIMARY KEY NOT NULL, dateWhenCreated TEXT, shippingDate TEXT, clientId INTEGER, clientName TEXT,"
 				" warehouseId INTEGER, warehouseName TEXT, documentType number, documentTypeName TEXT, "
 				"alreadyPaid NUMBER )"),
-			documentFields
+			documentFields, 0
 		),
 		TemplatedTableHandler(
 			predefinedDBNames.at(DocumentEntries),
-			QStringLiteral("( parentDocId INTEGER, entryId INTEGER, productId INTEGER, productName TEXT,"
-			"price number, measure INTEGER, quantity number, option1 TEXT, option2 TEXT, option3 TEXT, comment TEXT )"),
-			documentEntryFields
+			QStringLiteral("( parentDocId INTEGER, entryId INTEGER PRIMARY KEY NOT NULL, productId INTEGER, productName TEXT,"
+			"price number, measure INTEGER, quantity number, option1 INTEGER, option2 INTEGER, option3 INTEGER, comment TEXT )"),
+			documentEntryFields, 1
 	)
 	};
 	namespace ComplexFilters

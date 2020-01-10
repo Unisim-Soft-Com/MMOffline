@@ -43,6 +43,12 @@ QVariant DataEntityListModel::data(const QModelIndex& index, int role) const
 		temp.setValue<DataEntity>(innerList.at(index.row()));
 		return temp;
 	}
+	else if (role == DataCopyRole)
+	{
+		QVariant temp;
+		temp.setValue<DataEntity>(DataEntity(innerList.at(index.row())->clone()));
+		return temp;
+	}
 	return QVariant();
 }
 
@@ -56,6 +62,46 @@ void DataEntityListModel::setData(const QVector<DataEntity>& data)
 	beginResetModel();
 	innerList.clear();
 	innerList << data;
+	endResetModel();
+}
+
+void DataEntityListModel::removeDataEntity(const QModelIndex& mindex)
+{
+	if (!mindex.isValid())
+		return;
+	beginRemoveRows(mindex, mindex.row(), mindex.row());
+	innerList.removeAt(mindex.row());
+	endRemoveRows();
+}
+
+void DataEntityListModel::removeDataEntity(DataEntity e)
+{
+	for (int i = 0; i < innerList.count(); ++i)
+	{
+		if (innerList.at(i)->deepCompare(&(*(e))))
+		{
+			beginRemoveRows(createIndex(i, 0), i, i);
+			innerList.removeAt(i);
+			endRemoveRows();
+		}
+	}
+}
+
+void DataEntityListModel::replaceDataEntity(DataEntity e)
+{
+	for (int i = 0; i < innerList.count(); ++i)
+	{
+		if (innerList.at(i)->deepCompare(&(*(e))))
+		{
+			innerList[i] = e;
+		}
+	}
+}
+
+void DataEntityListModel::reset()
+{
+	beginResetModel();
+	innerList.clear();
 	endResetModel();
 }
 

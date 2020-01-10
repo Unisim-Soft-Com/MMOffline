@@ -28,8 +28,6 @@ EntryCreationScreen::EntryCreationScreen(QWidget* parent)
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
 
-	mainLayout->setContentsMargins(0, 0, 0, 0);
-	mainLayout->setSpacing(0);
 	quantitySpinbox->setMinimum(0);
 	quantitySpinbox->setMaximum(1000000);
 	backButton->setText(tr("back"));
@@ -71,6 +69,37 @@ void EntryCreationScreen::primeEntryCreation(Product p, Document doc)
 	currentEntry->price = p->price;
 	currentEntry->productId = p->id;
 	
+}
+
+void EntryCreationScreen::primeEntryCreation(DocumentEntry e)
+{
+	if (e == nullptr)
+		return;
+	operatedProduct = AppWorkset->dataprovider.loadEntityById<ProductEntity>(e->productId);
+	Document doc = AppWorkset->dataprovider.loadEntityById<DocumentEntity>(e->parentDocId);
+	if (operatedProduct == nullptr || doc == nullptr)
+	{
+		emit backRequired();
+		return;
+	}
+	priceInfo->setText(QString::number(operatedProduct->price));
+	productInfo->setText(operatedProduct->name);
+	currentEntry = e;
+	int index = findNamedId(e->measure, measures);
+	if (index != -1)
+		measureField->setCurrentIndex(index);
+	index = findNamedId(e->option1, options);
+	if (index != -1)
+		foptionField->setCurrentIndex(index);
+	index = findNamedId(e->option2, options);
+	if (index != -1)
+		soptionField->setCurrentIndex(index);
+	index = findNamedId(e->option3, options);
+	if (index != -1)
+		toptionField->setCurrentIndex(index);
+	quantitySpinbox->setDValue(e->quantity);
+	commentField->setText(e->comment);
+
 }
 
 void EntryCreationScreen::show()

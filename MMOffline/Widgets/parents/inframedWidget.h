@@ -46,7 +46,7 @@ protected:
 	filters::GeneralPurposeFilter* keyfilter;
 
 public:
-	inframedWidget(QWidget* parent);
+	inframedWidget(QWidget* parent = nullptr);
 	virtual bool back();
 	virtual bool giveSettings();
 	virtual void handleBarcode(QString) {}

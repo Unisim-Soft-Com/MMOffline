@@ -23,9 +23,13 @@ public:
 	explicit NamedIdEntity();
 	explicit NamedIdEntity(QString Name, IdInt Id);
 	explicit NamedIdEntity(const QStringList& List);
+
+	// Inherited via abs_entity
+	virtual bool compare(abs_entity* another) const override;
 };
 
 typedef std::shared_ptr<NamedIdEntity> NamedId;
 typedef QVector<NamedId> NamedIdList;
 Q_DECLARE_METATYPE(NamedId);
 int findNamedId(const QString& qstr, const NamedIdList& list);
+int findNamedId(const int, const NamedIdList& list);

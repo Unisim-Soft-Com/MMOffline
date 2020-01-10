@@ -161,6 +161,14 @@ bool GroupEntity::operator==(const GroupEntity& another) const
 	return id == another.id;
 }
 
+bool GroupEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<GroupEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return id == temp->id;
+}
+
 const QVector<std::shared_ptr<GroupEntity>>& GroupEntity::getSubgroups() const
 {
 	return subgroups;

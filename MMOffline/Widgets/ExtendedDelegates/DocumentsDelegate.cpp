@@ -49,6 +49,12 @@ void DocumentsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opt
 	setGradient(&textbox, &gr, QColor(Qt::red), option.palette.highlight().color());
 	drawRect(textbox, gr, painter);
 	painter->drawText(textbox, Qt::AlignCenter, d->clientName);
+	if (option.state.testFlag(QStyle::State_Selected))
+	{
+		painter->setBrush(option.palette.highlight());
+		painter->setOpacity(0.3);
+		painter->drawRect(option.rect);
+	}
 	painter->restore();
 }
 

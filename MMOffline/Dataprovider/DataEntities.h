@@ -49,7 +49,7 @@ class DataEntityListModel : public QAbstractListModel
 protected:
 	QVector<DataEntity> innerList;
 public:
-	enum ExtendedRoles {SearchRole = Qt::UserRole + 1, QuantityView};
+	enum ExtendedRoles {SearchRole = Qt::UserRole + 1, QuantityView, DataCopyRole};
 
 
 	using QAbstractListModel::QAbstractListModel;
@@ -58,6 +58,10 @@ public:
 	QVariant data(const QModelIndex& index, int role) const override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	void setData(const QVector<DataEntity>& data);
+	void removeDataEntity(const QModelIndex&);
+	void removeDataEntity(DataEntity);
+	void replaceDataEntity(DataEntity);
+	void reset();
 public slots:
 	void mapClickToEntity(const QModelIndex& index);
 signals:

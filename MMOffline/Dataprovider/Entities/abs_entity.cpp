@@ -61,7 +61,16 @@ QString abs_entity::insertionQuery() const
 
 QString abs_entity::insertionQuery(const QString another_table) const
 {
-	return  getAssocTable()->insert(another_table, getContentsForDb());
+	return  getAssocTable()->insert( getContentsForDb(), another_table);
+}
+
+bool abs_entity::deepCompare(abs_entity* another) const
+{
+	if (another->class_id == this->class_id)
+	{
+		return compare(another);
+	}
+	return false;
 }
 
 int abs_entity::myType() const

@@ -17,9 +17,12 @@ protected:
 	virtual abs_entity* fabricate() const override;
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
 	virtual IdInt extractId() const override;
+
+	virtual bool compare(abs_entity* another) const override;
 public:
 	ClientEntity();
 	ClientEntity(IdInt id, QString name);
+
 };
 typedef std::shared_ptr<ClientEntity> Client;
 typedef QVector<Client> ClientList;

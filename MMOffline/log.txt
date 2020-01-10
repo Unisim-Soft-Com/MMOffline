@@ -1,0 +1,13 @@
+method runQuery select id , name from Clientscalled
+method runQuery select c.id cod_client, (select count(documentId) from Documents d where c.id = d.clientId) cnt from Clients c;called
+method runQuery select name , id from Depozitscalled
+method runQuery select name , id from Tipscalled
+method runQuery select name , id , parent_id from Groupscalled
+method runQuery select name , id from Measurescalled
+method runQuery select name , id from Optionscalled
+method runQuery select parentDocId , entryId , productId , productName , price , measure , quantity , option1 , option2 , option3 , comment from Entriescalled
+method runQuery select documentId , dateWhenCreated , shippingDate , clientId , clientName , warehouseId , warehouseName , documentType , documentTypeName , alreadyPaid from Documentscalled
+method runQuery select name , id from Measurescalled
+method runQuery select name , id from Optionscalled
+method runQuery select name , id , parent_id from Groupscalled
+method runQuery select name , id from Tipscalled

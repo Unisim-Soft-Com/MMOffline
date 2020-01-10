@@ -21,10 +21,12 @@ protected:
 	virtual bool isLikeString(const QRegExp& qregexp) const override;
 	virtual IdInt extractId() const override;
 	void _listInit(const QStringList&);
+	virtual bool compare(abs_entity* another) const override;
 public:
 	ProductEntity();
 	ProductEntity(IdInt id, QString name, QString shortname = QString::null, double price = 0.0, double priceWithTaxes = 0.0);
 	ProductEntity(const QStringList & flist);
+
 };
 typedef std::shared_ptr<ProductEntity> Product;
 typedef QVector<Product> ProductList;

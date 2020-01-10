@@ -97,6 +97,14 @@ NamedIdEntity::NamedIdEntity(const QStringList& List)
 	}
 }
 
+bool NamedIdEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<NamedIdEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return id == temp->id;
+}
+
 
 int findNamedId(const QString& qstr, const NamedIdList& list)
 {
@@ -109,6 +117,16 @@ int findNamedId(const QString& qstr, const NamedIdList& list)
 				return i;
 			}
 		}
+	}
+	return -1;
+}
+
+int findNamedId(const int id, const NamedIdList& list)
+{
+	for (int i = 0; i < list.count(); ++i)
+	{
+		if (list.at(i)->id == id)
+			return i;
 	}
 	return -1;
 }

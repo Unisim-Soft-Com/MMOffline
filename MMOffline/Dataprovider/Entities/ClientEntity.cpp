@@ -55,6 +55,14 @@ ClientEntity::ClientEntity(IdInt Id, QString Name)
 
 }
 
+bool ClientEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<ClientEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return id == temp->id;
+}
+
 bool ClientEntity::isLikeString(const QRegExp& qregexp) const
 {
 	

@@ -166,6 +166,14 @@ ProductEntity::ProductEntity(const QStringList& flist)
 	_listInit(flist);
 }
 
+bool ProductEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<ProductEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return id == temp->id;
+}
+
 bool ProductEntity::isLikeString(const QRegExp& qregexp) const
 {
 	if (name.contains(qregexp.pattern()))

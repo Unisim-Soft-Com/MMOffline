@@ -14,9 +14,9 @@ public:
 	double price;
 	int measure;
 	double quantity;
-	QString option1;
-	QString option2;
-	QString option3;
+	int option1;
+	int option2;
+	int option3;
 	QString comment;
 
 protected:
@@ -34,6 +34,10 @@ public:
 	explicit DocumentEntryEntity();
 	explicit DocumentEntryEntity(IdInt ID);
 	explicit DocumentEntryEntity(const QStringList&);
+
+
+	// Inherited via abs_entity
+	virtual bool compare(abs_entity* another) const override;
 
 	// Inherited via abs_entity
 };

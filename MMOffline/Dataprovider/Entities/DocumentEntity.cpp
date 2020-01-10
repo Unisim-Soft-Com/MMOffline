@@ -189,10 +189,18 @@ void DocumentEntity::cleanEntryField()
 	}
 }
 
+bool DocumentEntity::compare(abs_entity* another) const
+{
+	auto temp = dynamic_cast<DocumentEntity*>(another);
+	if (temp == nullptr)
+		return false;
+	return documentId == temp->documentId;
+}
+
 
 bool DocumentEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return true;
+	return clientName.contains(qregexp.pattern());
 }
 
 IdInt DocumentEntity::extractId() const

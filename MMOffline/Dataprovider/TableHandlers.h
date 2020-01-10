@@ -38,26 +38,27 @@ protected:
 	QString table_definition;
 	QString table_declaration;
 	QStringList table_fields;
+	int primaryKeyField;
 	int table_type;
+
+	const QString& assertAnotherName(const QString& another_name) const noexcept;
+
 public:
 	TemplatedTableHandler();
-	TemplatedTableHandler( QString t_def, QString t_decl, QStringList tfields);
-	QString definition() const noexcept;		//	returns table name
+	TemplatedTableHandler( QString t_def, QString t_decl, QStringList tfields, int primarykey = -1);
 	QString declaration() const noexcept;		//	returns declaration of the table which is used to create it in database
-	QString definition(const QString another_name) const noexcept;
-	QString select_all() const noexcept;		//	returns standard select * query
-	QString select_all(const QString another_name) const noexcept;
-	QString select_filtered(const QString& filter) const noexcept;	//	"select where " + your input
-	QString select_filtered(const QString& filter, const QString another_name) const noexcept;
-	QString update(const QString& values) const noexcept;			//	"update table " + your input
-	QString update(const QString& values, const QString another_name) const noexcept;
-	QString delete_filtered(const QString& filter) const noexcept;	//	"delete from table " + your input
-	QString delete_filtered(const QString& filter, const QString another_name) const noexcept;
-	QString drop() const noexcept;							//	returns drop query for this table
-	QString drop(const QString another_name) const noexcept;
+	QString definition(const QString another_name = QString::null) const noexcept;
+	QString select_all(const QString another_name = QString::null) const noexcept;
+	QString select_filtered(const QString& filter, const QString another_name = QString::null) const noexcept;
+	QString select_by_primary_key(const QString pkeyvalue, const QString another_name = QString::null) const noexcept;
+	QString update(const QString& values, const QString another_name = QString::null) const noexcept;
+	QString replace(const QString& values, const QString& another_name = QString::null) const noexcept;
+	QString delete_filtered(const QString& filter, const QString another_name = QString::null) const noexcept;
+	QString delete_by_primary_key(const QString& pkeyvalue, const QString another_name = QString::null) const noexcept;
+	QString drop(const QString another_name = QString::null) const noexcept;
 	QString allFieldsDeclaration() const noexcept;
-	QString insert(const QString& values) const noexcept;
-	QString insert(const QString another_name, const QString& values) const noexcept;
+	QString insert( const QString& values, const QString another_name = QString::null) const noexcept;
+	QString makeIndex(const QString& another_name = QString::null) const noexcept;
 	TemplatedTableHandler clone(QString newName);
 	int getType() const noexcept { return table_type; };	//	returns type of this table
 };
