@@ -59,7 +59,7 @@ namespace RequestParser
 		toreturn.isError = false;
 		LinearParser parser(res, err);
 		auto result = parser.read();
-		if (parser.hasError() || (! parser.isSuccesfull()))
+		if (parser.hasError() || (!parser.isSuccesfull()))
 		{
 			toreturn.error = parser.getErrors();
 			toreturn.isError = true;
@@ -85,18 +85,5 @@ namespace RequestParser
 		LoginResult(QString s, QString u, QString e, bool i) : session(s), uid(u), error(e), isError(i) {};
 		LoginResult(QString e) : session(), uid(), error(e), isError(true) {};
 	};
-	static LoginResult getLoginResult(const QString& res, const QString& err)
-	{
-		ConfirmationResponseParser parser(res, err);
-		auto result = parser.read();
-		if (parser.isSuccesfull())
-		{
-			return LoginResult(result->queryResult.first().at(0), result->queryResult.first().at(1), QString(), false);
-		}
-		else
-		{
-			return LoginResult(parser.getErrors());
-		}
-	}
-
+	LoginResult getLoginResult(const QString& res, const QString& err);
 }

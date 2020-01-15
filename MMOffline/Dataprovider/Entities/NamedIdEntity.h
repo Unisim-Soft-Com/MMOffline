@@ -1,8 +1,8 @@
 #pragma once
 #include "abs_entity.h"
 #include <QMetaType>
-
-
+#include <QtCore/QVector>
+#include <memory>
 
 class NamedIdEntity : public abs_entity
 {

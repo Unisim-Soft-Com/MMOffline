@@ -1,8 +1,6 @@
 #pragma once
 #include <QtWidgets/qstyleditemdelegate.h>
 
-
-
 class EntryDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

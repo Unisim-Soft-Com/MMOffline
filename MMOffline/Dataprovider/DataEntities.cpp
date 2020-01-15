@@ -10,7 +10,7 @@ const abs_entity* const associateTableWithData[PREDEFINED_TABLES_QUANTITY]
 	new DocumentEntryEntity()
 };
 
-int indexOfEntityById(int id, const QVector<DataEntity> & v)
+int indexOfEntityById(int id, const QVector<DataEntity>& v)
 {
 	for (int i = 0; i < v.count(); ++i)
 	{
@@ -19,7 +19,6 @@ int indexOfEntityById(int id, const QVector<DataEntity> & v)
 	}
 	return -1;
 }
-
 
 DataEntityListModel::DataEntityListModel(const QVector<DataEntity>& entities, QWidget* parent)
 	: QAbstractListModel(parent), innerList(entities)
@@ -112,7 +111,6 @@ void DataEntityListModel::mapClickToEntity(const QModelIndex& index)
 	emit dataEntityClicked(innerList.at(index.row()));
 }
 
-
 bool DataEntityFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
 	DataEntity temp = sourceModel()->index(sourceRow, 0, sourceParent).data(filterRole()).value<DataEntity>();
@@ -123,8 +121,9 @@ bool DataEntityFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 
 void DataEntityFilterModel::mapClickToEntity(const QModelIndex& index)
 {
+	detrace_METHCALL("mapClickToEntity");
 	if (!index.isValid())
-		return; 
+		return;
 	QVariant temp = mapToSource(index).data(Qt::DisplayRole);
 	DataEntity tde(nullptr);
 	tde = temp.value<DataEntity>();
@@ -164,11 +163,31 @@ bool DataCountingDataModel::assignQuantityUpdate(IdInt id, int q)
 {
 	if (quantityLinker.contains(id))
 	{
-		
+		quantityLinker[id] = q;
+		QModelIndex updated = createIndex(indexOfEntityById(id, innerList) - 1, 0);
+		QModelIndex postUpdated = createIndex(updated.row() + 1, 0);
+		dataChanged(updated, postUpdated);
+		return true;
+	}
+	return false;
+}
+
+void DataCountingDataModel::assingEmptyCounters(int def)
+{
+	for (DataEntity e : innerList)
+	{
+		quantityLinker[e->getId()] = def;
+	}
+}
+
+bool DataCountingDataModel::incrementQuantity(IdInt id, int q)
+{
+	if (quantityLinker.contains(id))
+	{
 		quantityLinker[id] += q;
-		QModelIndex updated = createIndex(indexOfEntityById(id, innerList)-1, 0);
-		QModelIndex postUpdated = createIndex(updated.row()+1, 0);
-		dataChanged(updated, postUpdated );
+		QModelIndex updated = createIndex(indexOfEntityById(id, innerList) - 1, 0);
+		QModelIndex postUpdated = createIndex(updated.row() + 1, 0);
+		dataChanged(updated, postUpdated);
 		return true;
 	}
 	return false;

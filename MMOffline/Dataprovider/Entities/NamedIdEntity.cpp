@@ -65,7 +65,7 @@ bool NamedIdEntity::fromSql(QueryPtr q)
 
 bool NamedIdEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return name.contains(qregexp.pattern());
+	return name.contains(qregexp.pattern(), Qt::CaseInsensitive);
 }
 
 IdInt NamedIdEntity::extractId() const
@@ -104,7 +104,6 @@ bool NamedIdEntity::compare(abs_entity* another) const
 		return false;
 	return id == temp->id;
 }
-
 
 int findNamedId(const QString& qstr, const NamedIdList& list)
 {

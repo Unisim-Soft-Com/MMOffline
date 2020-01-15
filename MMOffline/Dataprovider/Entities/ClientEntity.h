@@ -22,7 +22,7 @@ protected:
 public:
 	ClientEntity();
 	ClientEntity(IdInt id, QString name);
-
+	ClientEntity(const QStringList& list);
 };
 typedef std::shared_ptr<ClientEntity> Client;
 typedef QVector<Client> ClientList;

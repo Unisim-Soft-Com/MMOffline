@@ -51,7 +51,6 @@ void AbstractVariantSelectionWidget::init()
 	{
 		userButtons.push_back(new specwidgets::indexedButton(i, this));
 
-        userButtons.last()->setText(normalizeLine(elemAsString(i), 50));
 		userButtons.last()->setFont(scf);
 		mainLayout->addWidget(userButtons.last());
 		if (i % 2) {

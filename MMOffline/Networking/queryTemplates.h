@@ -2,7 +2,6 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-
 enum queryIDs
 {
 	Ping,
@@ -13,13 +12,15 @@ enum queryIDs
 	GetDepozits,
 	GetMeasures,
 	GetOptions,
-	// 2 args 
+	// 2 args
 	Login,
 	// 3 args
 	GetClients,
-	GetProducts
+	GetProducts,
 
+	PostDocument,
+	PostEntry
 };
-const int totalTemplates = GetProducts + 1;
+const int totalTemplates = PostEntry + 1;
 QMap<int, QString> _initTemplates();
 bool _checkArgQuantity(queryIDs id, int argc);

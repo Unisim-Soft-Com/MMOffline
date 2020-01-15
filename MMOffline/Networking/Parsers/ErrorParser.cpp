@@ -1,6 +1,5 @@
 #include "ErrorParser.h"
 
-
 namespace RequestParser
 {
 	bool containsError(QJsonObject* doc)

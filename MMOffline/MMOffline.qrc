@@ -91,5 +91,11 @@
         <file>res/UamobiUtillowres.ico</file>
         <file>res/login.png</file>
         <file>res/mlogs.png</file>
+        <file>res/okstate.png</file>
+        <file>res/errorstate.png</file>
+        <file>translations/mmoffline_en.qm</file>
+        <file>translations/mmoffline_ro.qm</file>
+        <file>translations/mmoffline_ru.qm</file>
+        <file>res/UNAOrders.png</file>
     </qresource>
 </RCC>

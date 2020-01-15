@@ -1,7 +1,5 @@
 #include "abs_entity.h"
 
-
-
 abs_entity::abs_entity(int ClassId)
 	: class_id(ClassId)
 {
@@ -19,7 +17,6 @@ bool abs_entity::fromUniJson(const uniform_json_object_representation& unijs)
 
 bool abs_entity::fromSqlQuery(QueryPtr q)
 {
-
 	return fromSql(q);
 }
 
@@ -43,7 +40,6 @@ IdInt abs_entity::getId() const
 	return extractId();
 }
 
-
 QString abs_entity::insertToDBHeader() const
 {
 	return getAssocTable()->allFieldsDeclaration();
@@ -61,7 +57,7 @@ QString abs_entity::insertionQuery() const
 
 QString abs_entity::insertionQuery(const QString another_table) const
 {
-	return  getAssocTable()->insert( getContentsForDb(), another_table);
+	return  getAssocTable()->insert(getContentsForDb(), another_table);
 }
 
 bool abs_entity::deepCompare(abs_entity* another) const
@@ -90,5 +86,5 @@ abs_entity* abs_entity::clone() const
 
 const QString dateSerializationFormat =
 "dd.MM.yyyy";
-const QString dateTimeSerializationFormat=
+const QString dateTimeSerializationFormat =
 "dd.MM.yyyy HH.mm.ss";

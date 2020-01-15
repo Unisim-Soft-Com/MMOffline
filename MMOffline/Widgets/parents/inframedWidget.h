@@ -49,7 +49,6 @@ public:
 	inframedWidget(QWidget* parent = nullptr);
 	virtual bool back();
 	virtual bool giveSettings();
-	virtual void handleBarcode(QString) {}
 	virtual bool isExpectingControl(int);	//	Enhanced: now false is returned if value was not used
 	filters::GeneralPurposeFilter* getFilter() { return keyfilter; };
 	virtual void show();

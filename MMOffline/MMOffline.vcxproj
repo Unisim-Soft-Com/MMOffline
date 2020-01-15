@@ -105,6 +105,7 @@
     <ClCompile Include="Dataprovider\Entities\GroupEntity.cpp" />
     <ClCompile Include="Dataprovider\Entities\NamedIdEntity.cpp" />
     <ClCompile Include="Dataprovider\Entities\ProductEntity.cpp" />
+    <ClCompile Include="Dataprovider\FileParser.cpp" />
     <ClCompile Include="Dataprovider\IdGenerator.cpp" />
     <ClCompile Include="Dataprovider\SqliteDataProvider.cpp" />
     <ClCompile Include="Dataprovider\TableHandlers.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Networking\Parsers\ErrorParser.cpp" />
     <ClCompile Include="Networking\Parsers\JsonUniresult.cpp" />
     <ClCompile Include="Networking\Parsers\LinearParser.cpp" />
+    <ClCompile Include="Networking\Parsers\RequestParser.cpp" />
     <ClCompile Include="Networking\queryTemplates.cpp" />
     <ClCompile Include="Networking\RequestAwaiter.cpp" />
     <ClCompile Include="Widgets\DocumentBranch\ClientSelectionWidget.cpp" />
@@ -125,16 +127,15 @@
     <ClCompile Include="Widgets\DocumentBranch\EntryCreationScreen.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\BigButtonsSpinbox.cpp" />
     <ClCompile Include="Widgets\ElementWidgets\MegaIconButton.cpp" />
-    <ClCompile Include="Widgets\ElementWidgets\ProcessingOverlay.cpp" />
-    <ClCompile Include="Widgets\ElementWidgets\ZebraListItemDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\ClientsDelegate.cpp" />
+    <ClCompile Include="Widgets\ExtendedDelegates\DelegateUtility.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\GroupDelegate.cpp" />
     <ClCompile Include="Widgets\ExtendedDelegates\ProductsDelegate.cpp" />
     <ClCompile Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.cpp" />
     <ClCompile Include="Widgets\LogBranch\LogBranchRoot.cpp" />
-    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp" />
+    <ClCompile Include="Widgets\ModeDefining\AssertionLabel.cpp" />
     <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp" />
     <ClCompile Include="Widgets\ModeDefining\SettingsScreen.cpp" />
     <ClCompile Include="Widgets\ModeDefining\StartingScreen.cpp" />
@@ -142,10 +143,7 @@
     <ClCompile Include="Widgets\MultibranchWidgets\GroupSelectionWidget.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionBranch.cpp" />
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionWidget.cpp" />
-    <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp" />
-    <ClCompile Include="Widgets\parents\AbstractListSelectionWidget.cpp" />
     <ClCompile Include="Widgets\parents\abstractNodeInterface.cpp" />
-    <ClCompile Include="Widgets\parents\AbstractVariantSelectionWidget.cpp" />
     <ClCompile Include="Widgets\parents\inframedWidget.cpp" />
     <ClCompile Include="Widgets\Syncing\SyncInfoWidget.cpp" />
     <ClCompile Include="Widgets\Syncing\SyncMenuWidget.cpp" />
@@ -153,7 +151,6 @@
     <ClCompile Include="Widgets\utils\ElementsStyles.cpp" />
     <ClCompile Include="Widgets\utils\EventsAndFilters.cpp" />
     <ClCompile Include="Widgets\utils\GlobalAppSettings.cpp" />
-    <ClCompile Include="Widgets\utils\SpecializedWidgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Dataprovider\DataEntities.h" />
@@ -165,6 +162,7 @@
     <QtMoc Include="Dataprovider\Entities\GroupEntity.h" />
     <ClInclude Include="Dataprovider\Entities\NamedIdEntity.h" />
     <ClInclude Include="Dataprovider\Entities\ProductEntity.h" />
+    <QtMoc Include="Dataprovider\FileParser.h" />
     <ClInclude Include="Dataprovider\IdGenerator.h" />
     <ClInclude Include="Dataprovider\SqliteDataProvider.h" />
     <ClInclude Include="Dataprovider\TableHandlers.h" />
@@ -180,7 +178,6 @@
     <QtMoc Include="Widgets\DocumentBranch\ClientSelectionWidget.h" />
     <QtMoc Include="Widgets\DocumentBranch\DocumentCreationScreen.h" />
     <QtMoc Include="Widgets\DocumentBranch\EntryCreationScreen.h" />
-    <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h" />
     <QtMoc Include="Widgets\ModeDefining\OnlineLoginWidget.h" />
     <QtMoc Include="Widgets\ModeDefining\StartingScreen.h" />
     <QtMoc Include="Widgets\ModeDefining\SettingsScreen.h" />
@@ -192,24 +189,19 @@
     <QtMoc Include="Widgets\ExtendedDelegates\EntryDelegate.h" />
     <QtMoc Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.h" />
     <QtMoc Include="Widgets\LogBranch\LogBranchRoot.h" />
-    <ClInclude Include="Widgets\LogBranch\LogsWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\GroupSelectionWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.h" />
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionBranch.h" />
+    <QtMoc Include="Widgets\ModeDefining\AssertionLabel.h" />
     <ClInclude Include="Widgets\parents\abstractNodeInterface.h" />
     <QtMoc Include="Widgets\Syncing\SyncMenuWidget.h" />
     <QtMoc Include="Widgets\Syncing\SyncInfoWidget.h" />
     <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h" />
     <ClInclude Include="Widgets\utils\ElementsStyles.h" />
     <ClInclude Include="Widgets\utils\GlobalAppSettings.h" />
-    <QtMoc Include="Widgets\utils\SpecializedWidgets.h" />
     <QtMoc Include="Widgets\utils\EventsAndFilters.h" />
     <QtMoc Include="Widgets\parents\inframedWidget.h" />
-    <QtMoc Include="Widgets\parents\AbstractVariantSelectionWidget.h" />
-    <QtMoc Include="Widgets\parents\AbstractListSelectionWidget.h" />
-    <QtMoc Include="Widgets\parents\AbstractCheckboxSelection.h" />
-    <QtMoc Include="Widgets\ElementWidgets\ProcessingOverlay.h" />
     <QtMoc Include="Widgets\ElementWidgets\MegaIconButton.h" />
     <QtMoc Include="Widgets\ElementWidgets\BigButtonsSpinbox.h" />
     <QtMoc Include="Networking\RequestAwaiter.h" />

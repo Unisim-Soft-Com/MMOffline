@@ -1,12 +1,8 @@
 #pragma once
-#include "Widgets/parents/inframedWidget.h"
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QBoxLayout>
-#include <QtWidgets/QLabel>
-#include "Widgets/ElementWidgets/MegaIconButton.h"
 #include "Networking/RequestAwaiter.h"
 #include "Widgets/parents/abstractNodeInterface.h"
 #include "Widgets/Syncing/SyncMenuWidget.h"
+#include <QtWidgets/QLineEdit>
 
 class OnlineLoginWidget : public inframedWidget, abstractNode
 {
@@ -23,7 +19,7 @@ protected:
 	QHBoxLayout* buttonLayout;
 	MegaIconButton* okButton;
 	MegaIconButton* backButton;
-	
+
 	RequestAwaiter* awaiter;
 
 	SyncMenuWidget* syncMenu;
@@ -32,6 +28,7 @@ protected:
 public:
 	OnlineLoginWidget(QWidget* parent);
 	virtual void show() override;
+	void fillTexts();
 protected slots:
 	void passwordConfirmed();
 	void processResponse();
@@ -39,5 +36,4 @@ protected slots:
 	void hideCurrent();
 signals:
 	void loginReady(QString login);
-
 };

@@ -83,18 +83,18 @@ TemplatedTableHandler* ProductEntity::getAssocTable() const
 QString ProductEntity::getContentsForDb() const
 {
 	return QStringLiteral("( ") +
-		QString::number(id) 
+		QString::number(id)
 		+ QStringLiteral(" , \"") +
 		name
-		+ QStringLiteral("\" , ")+
+		+ QStringLiteral("\" , ") +
 		QString::number(price)
-		+ QStringLiteral(" , ")+
+		+ QStringLiteral(" , ") +
 		QString::number(measure)
-		+ QStringLiteral(" , ")+
+		+ QStringLiteral(" , ") +
 		QString::number(groupId)
 		+ QStringLiteral(" , \"") +
-		 _serializeIdList(clientIds) +
-		 QStringLiteral("\" )");
+		_serializeIdList(clientIds) +
+		QStringLiteral("\" )");
 }
 
 abs_entity* ProductEntity::fabricate() const
@@ -150,9 +150,8 @@ ProductEntity::ProductEntity()
 	:abs_entity(Products), id(std::numeric_limits<int>::min()), name(),
 	price(0.0), measure(0),
 	groupId(0), clientIds()
-	
-{
 
+{
 }
 
 ProductEntity::ProductEntity(IdInt Id, QString Name, QString ShortName, double Price, double PriceWithTaxes)
@@ -161,7 +160,7 @@ ProductEntity::ProductEntity(IdInt Id, QString Name, QString ShortName, double P
 }
 
 ProductEntity::ProductEntity(const QStringList& flist)
-	:abs_entity(Products)
+	: abs_entity(Products)
 {
 	_listInit(flist);
 }
@@ -176,7 +175,7 @@ bool ProductEntity::compare(abs_entity* another) const
 
 bool ProductEntity::isLikeString(const QRegExp& qregexp) const
 {
-	if (name.contains(qregexp.pattern()))
+	if (name.contains(qregexp.pattern(), Qt::CaseInsensitive))
 	{
 		return true;
 	}

@@ -32,12 +32,11 @@ public:
 	virtual void initiateSession(QString login, QString password, RequestAwaiter* awaiter = nullptr) override;
 
 	// Inherited via DataUpdateEngine
-	virtual void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter ) override;
+	virtual void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter) override;
 	virtual void execQueryByAutofillTemplate(queryIDs id, RequestAwaiter* awaiter) override;
-	virtual void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter ) override;
-	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter ) override;
-	virtual void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter ) override;
+	virtual void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter) override;
+	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter) override;
+	virtual void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter) override;
 	virtual void execQueryByTemplate(queryIDs, int argc, QStringList argv, RequestAwaiter* awaiter) override;
 	virtual void setSession(QString& session, QString& uid) override;
 };
-

@@ -30,23 +30,23 @@ protected:
 public:
 	explicit GroupEntity();
 	explicit GroupEntity(QString name, IdInt Id = 0, IdInt SuperiorGroupId = 0);
+	explicit GroupEntity(QStringList& l);
 	const QVector<std::shared_ptr<GroupEntity> >& getSubgroups() const;
 	bool isTopLevel() const;
 	bool hasSubgroups() const;
-	bool appendIfOwned(const std::shared_ptr<GroupEntity> &);
+	bool appendIfOwned(const std::shared_ptr<GroupEntity>&);
 	bool owns(const std::shared_ptr<GroupEntity>&);
 	const  std::shared_ptr<GroupEntity>& getSubgroupIfExists(IdInt id) const;
 	const std::shared_ptr<GroupEntity>& getSubgroup(int index) const;
 	int countSubgroups() const;
 	bool operator==(const GroupEntity&) const;
-
 };
 typedef std::shared_ptr<GroupEntity> Group;
 typedef QVector<Group> GroupList;
 
 Q_DECLARE_METATYPE(Group);
 
-class GroupTreeModel: public QAbstractTableModel
+class GroupTreeModel : public QAbstractTableModel
 {
 	Q_OBJECT
 protected:

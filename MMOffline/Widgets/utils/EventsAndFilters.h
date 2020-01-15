@@ -56,6 +56,15 @@ namespace filters
 	public:
 		LineEditHelper(QObject* ob) : QObject(ob) {};
 	};
+	class SpinboxHelper : public QObject
+	{
+		Q_OBJECT
+	protected:
+		bool eventFilter(QObject* watched, QEvent* event) override;
+	public:
+		using QObject::QObject;
+	};
+
 	class GeneralPurposeFilter : public QObject
 	{
 		Q_OBJECT

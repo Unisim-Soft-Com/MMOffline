@@ -4,6 +4,21 @@
 #include <cmath>
 #include <QtWidgets/qcalendarwidget.h>
 #include <QKeyEvent>
+#include <QLineEdit>
+#include "debugtrace.h"
+
+#include "Widgets/utils/EventsAndFilters.h"
+
+class extDSP : public QDoubleSpinBox
+{
+public:
+	extDSP(QWidget* parent = nullptr)
+		: QDoubleSpinBox(parent)
+	{
+		lineEdit()->installEventFilter(new filters::SpinboxHelper(this));
+	}
+};
+
 void BigButtonsSpinbox::showEvent(QShowEvent* ev)
 {
 	QWidget::showEvent(ev);
@@ -20,18 +35,17 @@ void BigButtonsSpinbox::showEvent(QShowEvent* ev)
 				"QDateEdit::drop-down {"
 				"subcontrol-origin: padding;"
 				"subcontrol-position: center right;"
-				"width: " + QString::number((int)(coreSpinbox->width()/3)) + " px;"
+				"width: " + QString::number((int)(coreSpinbox->width() / 3)) + " px;"
 				"}"
-			;
+				;
 			tsp->setStyleSheet(tmp);
 		}
 	}
-
 }
 BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adaptH)
 	: QWidget(parent), mainLayout(new QGridLayout(this)),
 	buttonUp(new QPushButton(this)), buttonDown(new QPushButton(this)),
-	
+
 	keyFilter(new filters::CaptureBackFilter(this)),
 	coreSpinbox()
 {
@@ -44,7 +58,7 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 		coreSpinbox = new QTimeEdit(this);
 		break;
 	case floatspin:
-		coreSpinbox = new QDoubleSpinBox(this);
+		coreSpinbox = new extDSP(this);
 		break;
 	case datespin:
 		coreSpinbox = new QDateEdit(this);
@@ -63,8 +77,14 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 	buttonUp->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
 	buttonDown->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
 	coreSpinbox->setMinimumHeight(calculateAdaptiveButtonHeight(adaptH));
-	buttonUp->setMinimumWidth(calculateAdaptiveWidth(0.05));
-	buttonDown->setMinimumWidth(calculateAdaptiveWidth(0.05));
+#ifdef Q_OS_ANDROID
+	buttonUp->setMinimumWidth(calculateAdaptiveWidth(0.2));
+	buttonDown->setMinimumWidth(calculateAdaptiveWidth(0.2));
+#endif
+#ifdef Q_OS_WIN
+	buttonUp->setMinimumWidth(calculateAdaptiveButtonHeight(0.2) * 0.4);
+	buttonDown->setMinimumWidth(calculateAdaptiveButtonHeight(0.2) * 0.4);
+#endif
 	coreSpinbox->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum));
 	buttonUp->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 	buttonDown->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
@@ -75,7 +95,7 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 	QObject::connect(buttonDown, &QPushButton::pressed, coreSpinbox, &QSpinBox::stepDown);
 	QObject::connect(coreSpinbox, &QAbstractSpinBox::editingFinished, this, &BigButtonsSpinbox::editingDone);
 	QObject::connect(keyFilter, &filters::CaptureBackFilter::backRequired, this, &BigButtonsSpinbox::backRequire);
-	
+
 	switch (sptype)
 		//RTTI used to connect right signals
 	{
@@ -105,7 +125,10 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 		if (dsp != Q_NULLPTR)
 		{
 			dsp->setSpecialValueText("");
-            dsp->setDecimals(3);
+			dsp->setDecimals(3);
+#ifdef Q_OS_ANDROID
+			QObject::connect(dsp, &QDoubleSpinBox::editingFinished, QGuiApplication::inputMethod(), &QInputMethod::hide);
+#endif
 			QObject::connect(dsp, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &BigButtonsSpinbox::doubleValueChanged);
 		}
 		break;
@@ -116,10 +139,14 @@ BigButtonsSpinbox::BigButtonsSpinbox(spintype type, QWidget* parent, double adap
 		dsp = qobject_cast<QDateEdit*>(coreSpinbox);
 		if (dsp != Q_NULLPTR)
 		{
+			buttonUp->hide();
+			buttonDown->hide();
 			dsp->setSpecialValueText("");
 			dsp->setDate(QDate::currentDate());
 			dsp->setCalendarPopup(true);
+			dsp->setDisplayFormat(QStringLiteral("dd:MM:yyyy"));
 			QObject::connect(dsp, &QDateEdit::dateChanged, this, &BigButtonsSpinbox::dateChanged);
+			QObject::connect(dsp, &QDateEdit::dateChanged, qApp->inputMethod(), &QInputMethod::hide);
 		}
 		break;
 	}
@@ -290,6 +317,22 @@ double BigButtonsSpinbox::dvalue() const
 	return 0.0;
 }
 
+void BigButtonsSpinbox::setPrecision(int prec)
+{
+	switch (sptype)
+	{
+	case floatspin:
+	{
+		QDoubleSpinBox* dsp = qobject_cast<QDoubleSpinBox*>(coreSpinbox);
+		if (dsp != Q_NULLPTR)
+		{
+			dsp->setDecimals(prec);
+		}
+		break;
+	}
+	}
+}
+
 QTime BigButtonsSpinbox::time()
 {
 	if (sptype == timespin)
@@ -397,6 +440,7 @@ void BigButtonsSpinbox::dateChanged(const QDate& d)
 void BigButtonsSpinbox::setFocus() const
 {
 	coreSpinbox->setFocus();
+	coreSpinbox->selectAll();
 }
 
 void BigButtonsSpinbox::intValueChanged(int t)

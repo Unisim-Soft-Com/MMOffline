@@ -50,25 +50,30 @@ inline static QSize calculateAdaptiveSize(double Hpercent, double Wpercent)
 inline static QSize imitatePhoneSize(double HPercent)
 {
 	return QSize(
-		GEOMETRY_SOURCE->availableGeometry().height() * (HPercent*0.66),
+		GEOMETRY_SOURCE->availableGeometry().height() * (HPercent * 0.66),
 		GEOMETRY_SOURCE->availableGeometry().height() * HPercent
 	);
 }
 
+class FontAdapter
+{
+	int minheight;
+	int maxheight;
+	double minimumFontPercent;
+	static FontAdapter* _instance;
+public:
+	FontAdapter(int minheight, int maxheight, double minimumFontPercent);
+	const FontAdapter* instance() {
+		return _instance;
+	};
+	static QFont makeFont(double extrapercents);
+};
 
-
-
-
-QString makeGradientStylesheet(const QColor& first,const QColor& second, int max, int curr);
+QString makeGradientStylesheet(const QColor& first, const QColor& second, int max, int curr);
 QString& normalizeLine(QString& line, int maxSymb);
 
 QString countAdaptiveFont(double perc);
 QFont makeFont(double perc);
-
-
-
-
-
 
 extern const QString OK_BUTTONS_STYLESHEET;
 // All buttons which are made for confirmation (commit button is separated from simple confirm)
@@ -125,3 +130,7 @@ extern const QString CHECKBOX_BUTTON_STYLESHEET;
 // stylesheet for BIG checkboxes based on buttons
 
 extern const QString FRAMED_LABEL_STYLESHEET;
+
+extern const QString DOWNLOAD_BUTTON_STYLESHEET;
+
+extern const QString UPLOAD_BUTTON_STYLESHEET;

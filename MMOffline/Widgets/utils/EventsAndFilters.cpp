@@ -3,9 +3,11 @@
 #ifdef Q_OS_ANDROID
 #include <QInputMethod>
 #endif
+#define DEBUG
 #ifdef DEBUG
 #include <debugtrace.h>
 #endif
+#include <QLineEdit>
 
 bool filters::NoKeyEvents::eventFilter(QObject* object, QEvent* ev)
 {
@@ -70,14 +72,15 @@ bool filters::CaptureBackFilter::eventFilter(QObject* object, QEvent* ev)
 }
 bool filters::LineEditHelper::eventFilter(QObject* watched, QEvent* event)
 {
-	bool temp = QObject::eventFilter(watched, event);
 #ifdef Q_OS_ANDROID
 	if (event->type() == QEvent::KeyPress)
 	{
+		detrace_METHCALL("commiting text");
 		qApp->inputMethod()->commit();
+		return true;
 	}
 #endif
-	return temp;
+	return QObject::eventFilter(watched, event);
 }
 
 filters::GeneralPurposeFilter::CaptureFunction filters::GeneralPurposeFilter::makeCaptureFunction(captureTypes type)
@@ -246,7 +249,7 @@ filters::GeneralPurposeFilter::GeneralPurposeFilter(captureTypes type1, captureT
 	{
 		captureFunction = &GeneralPurposeFilter::captSome;
 		mytypes[0] = type1;
-		int i=0;
+		int i = 0;
 		if (type2 != All)
 		{
 			mytypes[i++] = type2;
@@ -269,4 +272,21 @@ filters::GeneralPurposeFilter::GeneralPurposeFilter(captureTypes type1, captureT
 			someCaptureFunctions[j] = makeCaptureFunction(mytypes[j]);
 		}
 	}
+}
+
+bool filters::SpinboxHelper::eventFilter(QObject* watched, QEvent* event)
+{
+	if (event->type() == QEvent::FocusIn || event->type() == QEvent::MouseButtonRelease)
+	{
+		detrace_METHCALL("call");
+		QLineEdit* asp = qobject_cast<QLineEdit*>(watched);
+		if (asp != Q_NULLPTR)
+		{
+			detrace_METHEXPL("selecting");
+			asp->selectAll();
+			qApp->inputMethod()->show();
+			return true;
+		}
+	}
+	return QObject::eventFilter(watched, event);
 }

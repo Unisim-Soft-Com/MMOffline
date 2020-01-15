@@ -99,7 +99,7 @@ bool DocumentEntity::fromSql(QueryPtr q)
 
 void DocumentEntity::_listInit(const QStringList& l)
 {
-	int i = l.count()-1;
+	int i = l.count() - 1;
 	bool ok = true;
 	switch (l.count())
 	{
@@ -124,7 +124,7 @@ void DocumentEntity::_listInit(const QStringList& l)
 		if (clientId > topDocumentId)
 			topDocumentId = clientId + 1;
 	case 3:
-		shippingDate =  QDate::fromString(l.at(i--), dateSerializationFormat);
+		shippingDate = QDate::fromString(l.at(i--), dateSerializationFormat);
 	case 2:
 		dateWhenCreated = QDateTime::fromString(l.at(i--), dateTimeSerializationFormat);
 	case 1:
@@ -142,7 +142,7 @@ void DocumentEntity::_listInit(const QStringList& l)
 DocumentEntity::DocumentEntity()
 	: abs_entity(Documents), documentId(0), dateWhenCreated(),
 	shippingDate(), clientId(0), clientName(), warehouseId(0),
-	warehouseName(), documentType(0), documentTypeName(), 
+	warehouseName(), documentType(0), documentTypeName(),
 	alreadyPaid(0.0), linkedEntries()
 {
 }
@@ -197,10 +197,9 @@ bool DocumentEntity::compare(abs_entity* another) const
 	return documentId == temp->documentId;
 }
 
-
 bool DocumentEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return clientName.contains(qregexp.pattern());
+	return clientName.contains(qregexp.pattern(), Qt::CaseInsensitive);
 }
 
 IdInt DocumentEntity::extractId() const
@@ -210,9 +209,8 @@ IdInt DocumentEntity::extractId() const
 
 bool DocumentEntity::linkEntry(DocumentEntry e)
 {
-	if (e->parentDocId != 0)
+	if (!e->parentDocId == documentId)
 		return false;
-	e->parentDocId = documentId;
 	linkedEntries.push_back(e);
 	return true;
 }
@@ -225,7 +223,6 @@ bool DocumentEntity::hisEntry(DocumentEntry e)
 DocumentsListModel::DocumentsListModel(const DocumentsList& doclist, QWidget* parent)
 	: QAbstractListModel(parent), innerList(doclist)
 {
-
 }
 
 int DocumentsListModel::rowCount(const QModelIndex& parent) const

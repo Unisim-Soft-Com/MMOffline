@@ -15,18 +15,14 @@
 #include "Widgets/utils/GlobalAppSettings.h"
 #include "queryTemplates.h"
 
-
 #include <QtWidgets/QMessageBox>
 #define DEBUG
-
-
 
 HttpUpdateEngine::HttpUpdateEngine(QString& Url, QObject* parent)
 	: DataUpdateEngine(parent), url(Url), nextQueryId(0), delay(0), queryTemplates(_initTemplates())
 {
-    class_id=1;
+	class_id = 1;
 }
-
 
 bool HttpUpdateEngine::sessionReady()
 {
@@ -42,7 +38,7 @@ void HttpUpdateEngine::initConnection()
 #ifdef DEBUG
 	//detrace_METHCALL("HttpUpdateEngine::initConnection");
 #endif
-	sendQuery("ping",nullptr);
+	sendQuery("ping", nullptr);
 }
 
 void HttpUpdateEngine::sendQuery(const QString& urlpath, RequestAwaiter* awaiter)
@@ -70,7 +66,7 @@ void HttpUpdateEngine::initiateSession(QString login, QString password, RequestA
 		awaiter);
 }
 
-void HttpUpdateEngine::execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter )
+void HttpUpdateEngine::execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter)
 {
 	if (_checkArgQuantity(id, 0) && !sessionId.isEmpty())
 	{
@@ -97,7 +93,7 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, RequestAwa
 	}
 }
 
-void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString arg2, RequestAwaiter* awaiter )
+void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString arg2, RequestAwaiter* awaiter)
 {
 	if (_checkArgQuantity(id, 2) && !sessionId.isEmpty())
 	{
@@ -107,7 +103,7 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString ar
 	}
 }
 
-void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter )
+void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter)
 {
 	if (_checkArgQuantity(id, 3) && !sessionId.isEmpty())
 	{
@@ -117,7 +113,7 @@ void HttpUpdateEngine::execQueryByTemplate(queryIDs id, QString arg1, QString ar
 	}
 }
 
-void HttpUpdateEngine::execQueryByTemplate(queryIDs id, int argc, QStringList argv, RequestAwaiter* awaiter )
+void HttpUpdateEngine::execQueryByTemplate(queryIDs id, int argc, QStringList argv, RequestAwaiter* awaiter)
 {
 	if (_checkArgQuantity(id, argc) && !sessionId.isEmpty())
 	{
@@ -149,6 +145,3 @@ const QString& HttpUpdateEngine::getUserID()
 {
 	return user_id;
 }
-
-
-

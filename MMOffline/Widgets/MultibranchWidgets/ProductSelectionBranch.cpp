@@ -1,7 +1,5 @@
 #include "ProductSelectionBranch.h"
 
-
-
 void ProductSelectionBranch::groupReady(GroupEntity g)
 {
 	Group t(dynamic_cast<GroupEntity*>(g.clone()));
@@ -24,7 +22,6 @@ ProductSelectionBranch::ProductSelectionBranch(QWidget* parent)
 	QObject::connect(productSelection, &ProductSelectionWidget::backRequired, this, &ProductSelectionBranch::hideCurrent);
 	QObject::connect(groupSelection, &GroupSelectionWidget::groupSelected, this, &ProductSelectionBranch::groupReady);
 	QObject::connect(productSelection, &ProductSelectionWidget::productObtained, this, &ProductSelectionBranch::productReady);
-
 }
 
 void ProductSelectionBranch::primeSelection(Client client)
@@ -42,6 +39,6 @@ void ProductSelectionBranch::hideCurrent()
 {
 	if (current == untouchable)
 		emit backRequired();
-	else if( current = productSelection)
+	else if (current = productSelection)
 		_hideCurrent(untouchable);
 }

@@ -1,6 +1,5 @@
 #include "GroupEntity.h"
 
-
 using namespace fieldPredefinitions;
 Group nullGroup(nullptr);
 uniform_json_object_representation GroupEntity::toJsonRepresentation() const
@@ -18,7 +17,8 @@ uniform_json_object_representation GroupEntity::toJsonRepresentation() const
 inline QPair<int, int> splitIndex(int i, int count);
 inline int joinIndex(const QModelIndex& ind, int count);
 inline bool assertIndex(const QModelIndex& ind, int count)
-{	return count <= joinIndex(ind, count);
+{
+	return count <= joinIndex(ind, count);
 }
 
 bool GroupEntity::fromJsonRepr(const uniform_json_object_representation& o)
@@ -63,7 +63,7 @@ bool GroupEntity::fromSql(QueryPtr q)
 
 bool GroupEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return name.contains(qregexp.pattern());
+	return name.contains(qregexp.pattern(), Qt::CaseInsensitive);
 }
 
 IdInt GroupEntity::extractId() const
@@ -99,7 +99,12 @@ GroupEntity::GroupEntity()
 GroupEntity::GroupEntity(QString Name, IdInt Id, IdInt SuperiorGroupId)
 	: abs_entity(Groups), name(Name), id(Id), superiorGroupId(SuperiorGroupId), subgroups()
 {
+}
 
+GroupEntity::GroupEntity(QStringList& l)
+	: abs_entity(Groups), name(""), id(0), superiorGroupId(0), subgroups()
+{
+	_listInit(l);
 }
 
 bool GroupEntity::isTopLevel() const
@@ -185,10 +190,10 @@ int GroupTreeModel::rowCount(const QModelIndex& parent) const
 	switch (currentVisibleLayer)
 	{
 	case 0:	//	top level layer has no group bound
-		return topLayerList.count()/2 + topLayerList.count() % 2;
+		return topLayerList.count() / 2 + topLayerList.count() % 2;
 	default:
-		return currentGroup->countSubgroups()/2 + currentGroup->countSubgroups() % 2;
-	}	
+		return currentGroup->countSubgroups() / 2 + currentGroup->countSubgroups() % 2;
+	}
 }
 
 int GroupTreeModel::columnCount(const QModelIndex& parent) const
@@ -196,9 +201,9 @@ int GroupTreeModel::columnCount(const QModelIndex& parent) const
 	switch (currentVisibleLayer)
 	{
 	case 0:
-		return ((topLayerList.count() > 1)? 2 : 1);
+		return ((topLayerList.count() > 1) ? 2 : 1);
 	default:
-		return (currentGroup->countSubgroups() > 1)? 2 : 1;
+		return (currentGroup->countSubgroups() > 1) ? 2 : 1;
 	}
 }
 
@@ -219,7 +224,7 @@ QVariant GroupTreeModel::data(const QModelIndex& index, int role) const
 			temp.setValue<QString>(topLayerList.at(joinIndex(index, topLayerList.count()))->name);
 			break;
 		default:
-			if (assertIndex(index, currentGroup->countSubgroups( )))
+			if (assertIndex(index, currentGroup->countSubgroups()))
 				return temp;
 			temp.setValue<QString>(currentGroup->getSubgroup(joinIndex(index, currentGroup->countSubgroups()))->name);
 		}
@@ -259,7 +264,7 @@ void GroupTreeModel::setList(const GroupList& l)
 	layersIds.clear();
 	currentVisibleLayer = 0;
 	QHash<uint, Group> templinker;
-	for (const Group & group : l)
+	for (const Group& group : l)
 	{
 		templinker.insert(group->id, group);
 	}
@@ -278,8 +283,6 @@ void GroupTreeModel::setList(const GroupList& l)
 			}
 		}
 	}
-	
-
 }
 
 void GroupTreeModel::clearLayers()
@@ -368,7 +371,7 @@ void GroupTreeModel::stepToUpperLevel()
 		beginResetModel();
 		Group temp = topLayerLinker.value(layersIds.at(0));
 		int i = 1;
-		while (i < layersIds.count() - 1 )
+		while (i < layersIds.count() - 1)
 		{
 			temp = temp->getSubgroupIfExists(layersIds.at(i));
 			++i;

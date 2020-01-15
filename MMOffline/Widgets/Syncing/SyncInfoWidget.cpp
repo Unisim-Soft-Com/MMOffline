@@ -6,7 +6,6 @@
 #include "debugtrace.h"
 #endif
 
-
 const QColor freshLogin(Qt::green);
 const QColor oldLogin(Qt::red);
 void SyncInfoWidget::setDate()
@@ -38,22 +37,25 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
 	previousLogin->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	
+
 	pendingChanges->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	currentLogin->setStyleSheet(FRAMED_LABEL_STYLESHEET);
 	currentLogin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	currentLogin->setWordWrap(true);
 	previousLogin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	previousLogin->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	previousLogin->setWordWrap(true);
 	lastSyncDate->setStyleSheet(FRAMED_LABEL_STYLESHEET);
 	lastSyncDate->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+	lastSyncDate->setWordWrap(true);
 	pendingChanges->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	pendingChanges->setStyleSheet(FRAMED_LABEL_STYLESHEET);
+	pendingChanges->setWordWrap(true);
 	errorLog->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	errorLog->setStyleSheet(ERROR_TEXT_STYLESHEET);
+	errorLog->setWordWrap(true);
 	downloadInfo->setAlignment(Qt::AlignCenter);
-	downloadInfo->setText(tr("Download progress"));
 	uploadInfo->setAlignment(Qt::AlignCenter);
-	uploadInfo->setText(tr("Upload progress"));
 	downloadProgress->setValue(0);
 	downloadProgress->setMaximum(100);
 	downloadProgress->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -65,10 +67,10 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	setDate();
 }
 
-void SyncInfoWidget::setInfopack(QString& newLogin, QString& pendingChange)
+void SyncInfoWidget::setInfopack(QString& newLogin, QString pendingChange)
 {
 	currentLogin->setText(tr("Current user: ") + newLogin);
-	previousLogin->setText(tr("Old user :") + AppSettings->localLogin);
+	previousLogin->setText(tr("Old user: ") + AppSettings->localLogin);
 	if (newLogin != AppSettings->localLogin)
 		previousLogin->setStyleSheet(ERROR_TEXT_STYLESHEET);
 	pendingChanges->setText(tr("Pending changes: ") + pendingChange);
@@ -82,6 +84,12 @@ void SyncInfoWidget::setErrorLog(const QString& error)
 void SyncInfoWidget::reload()
 {
 	setDate();
+}
+
+void SyncInfoWidget::fillTexts()
+{
+	downloadInfo->setText(tr("Download progress"));
+	uploadInfo->setText(tr("Upload progress"));
 }
 
 void SyncInfoWidget::setProgress(int step)

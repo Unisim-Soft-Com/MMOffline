@@ -33,7 +33,6 @@ TemplatedTableHandler* ClientEntity::getAssocTable() const
 	return predefinedTables + Clients;
 }
 
-
 QString ClientEntity::getContentsForDb() const
 {
 	return QStringLiteral("( ") + QString::number(id) + QStringLiteral(" , \"") + name + QStringLiteral("\" )");
@@ -52,7 +51,16 @@ ClientEntity::ClientEntity()
 ClientEntity::ClientEntity(IdInt Id, QString Name)
 	: abs_entity(Clients), id(Id), name(Name)
 {
+}
 
+ClientEntity::ClientEntity(const QStringList& list)
+{
+	if (list.count() != 2)
+		throw InitializationError(2);
+	bool ok;
+	id = list.first().toInt(&ok);
+	if (!ok) throw InitializationError(2);
+	name = list.last();
 }
 
 bool ClientEntity::compare(abs_entity* another) const
@@ -65,8 +73,7 @@ bool ClientEntity::compare(abs_entity* another) const
 
 bool ClientEntity::isLikeString(const QRegExp& qregexp) const
 {
-	
-	if (name.contains(qregexp.pattern()))
+	if (name.contains(qregexp.pattern(), Qt::CaseInsensitive))
 	{
 		return true;
 	}
@@ -81,7 +88,6 @@ IdInt ClientEntity::extractId() const
 {
 	return id;
 }
-
 
 bool ClientEntity::fromSql(QueryPtr q)
 {
@@ -109,7 +115,6 @@ ClientDataModel::ClientDataModel(QWidget* parent)
 ClientDataModel::ClientDataModel(const ClientList& clients, QWidget* parent)
 	: QAbstractListModel(parent), innerList(clients)
 {
-
 }
 
 int ClientDataModel::rowCount(const QModelIndex& parent) const

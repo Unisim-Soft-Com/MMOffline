@@ -9,27 +9,27 @@
 #endif
 const char* RECEIVER_SLOT_NAME = "requestIncoming";
 
-
 void removeRSE(QString* str)
 {
-	int cnt = 0;
-	auto strbeg = str->begin();
-	while (!(strbeg == str->end()))
+	if (str->startsWith(QChar('r')))
 	{
-		if ((*strbeg++) == QChar('{'))
+		int cnt = 0;
+		auto strbeg = str->begin();
+		while (!(strbeg == str->end()))
 		{
-			break;
+			if ((*strbeg++) == QChar('{'))
+			{
+				break;
+			}
+			++cnt;
 		}
-		cnt++;
+		str->remove(0, cnt);
+		str->chop(2);
 	}
-	str->remove(0,cnt);
-	str->chop(2);
-
-
 }
 
 RequestAwaiter::RequestAwaiter(int interval, QObject* parent)
-	: QObject(parent), timer(new QTimer(this)), awaiting(false), timeoutinterval(interval),awaitedReply(nullptr)
+	: QObject(parent), timer(new QTimer(this)), awaiting(false), timeoutinterval(interval), awaitedReply(nullptr)
 {
 #ifdef DEBUG
 	//detrace_METHEXPL("interval was:" << interval );
@@ -136,4 +136,3 @@ void RequestAwaiter::requestIncoming()
 void RequestAwaiter::replyError(QNetworkReply::NetworkError)
 {
 }
-

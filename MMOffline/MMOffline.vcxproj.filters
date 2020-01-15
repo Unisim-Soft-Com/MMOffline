@@ -124,21 +124,6 @@
     <ClCompile Include="Widgets\ElementWidgets\MegaIconButton.cpp">
       <Filter>Source Files\widgets\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\ElementWidgets\ProcessingOverlay.cpp">
-      <Filter>Source Files\widgets\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\ElementWidgets\ZebraListItemDelegate.cpp">
-      <Filter>Source Files\widgets\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\parents\AbstractVariantSelectionWidget.cpp">
-      <Filter>Source Files\widgets\parents</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\parents\AbstractCheckboxSelection.cpp">
-      <Filter>Source Files\widgets\parents</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\parents\AbstractListSelectionWidget.cpp">
-      <Filter>Source Files\widgets\parents</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\parents\abstractNodeInterface.cpp">
       <Filter>Source Files\widgets\parents</Filter>
     </ClCompile>
@@ -153,9 +138,6 @@
     </ClCompile>
     <ClCompile Include="Networking\RequestAwaiter.cpp">
       <Filter>Source Files\Networking</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\utils\SpecializedWidgets.cpp">
-      <Filter>Source Files\widgets\Elements</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\utils\ElementsStyles.cpp">
       <Filter>Source Files\util</Filter>
@@ -204,9 +186,6 @@
     </ClCompile>
     <ClCompile Include="Dataprovider\TableHandlers.cpp">
       <Filter>Source Files\LocalDataProviders</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\LogBranch\LogsWidget.cpp">
-      <Filter>Source Files\widgets\LogBranch</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\ModeDefining\OnlineLoginWidget.cpp">
       <Filter>Source Files\widgets\ModeDefining</Filter>
@@ -271,20 +250,32 @@
     <ClCompile Include="Widgets\LogBranch\LogBranchRoot.cpp">
       <Filter>Source Files\widgets\LogBranch</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Widgets\ExtendedDelegates\DocumentsDelegate.cpp">
       <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\ExtendedDelegates\EntryDelegate.cpp">
       <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
+    <ClCompile Include="Widgets\LogBranch\DocumentEntrySelectionSubbranch.cpp">
+      <Filter>Source Files\widgets\Multibranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\MultibranchWidgets\DocumentSelectionWidget.cpp">
+      <Filter>Source Files\widgets\LogBranch</Filter>
+    </ClCompile>
     <ClCompile Include="Widgets\MultibranchWidgets\ProductSelectionBranch.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\widgets\Multibranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ModeDefining\AssertionLabel.cpp">
+      <Filter>Source Files\widgets\LogBranch</Filter>
+    </ClCompile>
+    <ClCompile Include="Dataprovider\FileParser.cpp">
+      <Filter>Source Files\LocalDataProviders</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\Parsers\RequestParser.cpp">
+      <Filter>Source Files\Networking\Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="Widgets\ExtendedDelegates\DelegateUtility.cpp">
+      <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +287,6 @@
     <ClInclude Include="Widgets\parents\abstractNodeInterface.h">
       <Filter>Header Files\widgets\parents</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets\ElementWidgets\ZebraListItemDelegate.h">
-      <Filter>Header Files\widgets\Elements</Filter>
-    </ClInclude>
     <ClInclude Include="Widgets\utils\ElementsStyles.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -307,9 +295,6 @@
     </ClInclude>
     <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h">
       <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="Widgets\LogBranch\LogsWidget.h">
-      <Filter>Header Files\widgets\LogBranch</Filter>
     </ClInclude>
     <ClInclude Include="Networking\queryTemplates.h">
       <Filter>Header Files\Networking</Filter>
@@ -361,15 +346,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Widgets\parents\AbstractCheckboxSelection.h">
-      <Filter>Header Files\widgets\parents</Filter>
-    </QtMoc>
-    <QtMoc Include="Widgets\parents\AbstractListSelectionWidget.h">
-      <Filter>Header Files\widgets\parents</Filter>
-    </QtMoc>
-    <QtMoc Include="Widgets\parents\AbstractVariantSelectionWidget.h">
-      <Filter>Header Files\widgets\parents</Filter>
-    </QtMoc>
     <QtMoc Include="Widgets\parents\inframedWidget.h">
       <Filter>Header Files\widgets\parents</Filter>
     </QtMoc>
@@ -377,12 +353,6 @@
       <Filter>Header Files\widgets\Elements</Filter>
     </QtMoc>
     <QtMoc Include="Widgets\ElementWidgets\MegaIconButton.h">
-      <Filter>Header Files\widgets\Elements</Filter>
-    </QtMoc>
-    <QtMoc Include="Widgets\ElementWidgets\ProcessingOverlay.h">
-      <Filter>Header Files\widgets\Elements</Filter>
-    </QtMoc>
-    <QtMoc Include="Widgets\utils\SpecializedWidgets.h">
       <Filter>Header Files\widgets\Elements</Filter>
     </QtMoc>
     <QtMoc Include="Networking\dataupdateengine.h">
@@ -471,6 +441,12 @@
     </QtMoc>
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionBranch.h">
       <Filter>Header Files\widgets\Multibranch</Filter>
+    </QtMoc>
+    <QtMoc Include="Dataprovider\FileParser.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
+    </QtMoc>
+    <QtMoc Include="Widgets\ModeDefining\AssertionLabel.h">
+      <Filter>Header Files\widgets\ModeDefining</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

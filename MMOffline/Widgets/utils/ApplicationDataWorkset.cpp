@@ -4,8 +4,6 @@
 
 #include "Widgets/utils/GlobalAppSettings.h"
 
-
-DataWorkset * globalWorkset;
 DataWorkset::DataWorkset()
 	: networkingEngine(), dataprovider(nullptr)
 {
@@ -13,19 +11,10 @@ DataWorkset::DataWorkset()
 }
 DataWorkset* DataWorkset::instance()
 {
-	return globalWorkset;
+	if (_instanse == nullptr)
+	{
+		_instanse = new DataWorkset();
+	}
+	return _instanse;
 }
-
-
-
-
-
-void allocateGlobalWorkset()
-{
-	allocateGlobalSettings();
-	globalWorkset = new DataWorkset();
-}
-
-void dumpGlobalWorkset(QString filename)
-{
-}
+DataWorkset* DataWorkset::_instanse = nullptr;

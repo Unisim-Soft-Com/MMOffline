@@ -1,12 +1,11 @@
 #pragma once
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <QtCore/QVector>
 #include <memory>
 #include "ErrorParser.h"
 #include <QtCore/QJsonDocument>
 #include "JsonUniresult.h"
-
-
 
 struct uniform_parsing_result
 {
@@ -15,13 +14,11 @@ struct uniform_parsing_result
 	int alternativeResult;
 };
 
-
-
 typedef std::unique_ptr<uniform_parsing_result> uniresptr;
 QString makeParseresSnapshot(uniresptr* res);
 namespace RequestParser
 {
-	enum SystemAltResults {ErrorMessage = 10000};
+	enum SystemAltResults { ErrorMessage = 10000 };
 	class abs_parser
 	{
 	protected:
@@ -37,7 +34,7 @@ namespace RequestParser
 		virtual bool _parseThis();
 		bool doParsing();
 	public:
-		abs_parser( const QString& restext, const QString& errtext);
+		abs_parser(const QString& restext, const QString& errtext);
 		uniresptr read();
 		bool isSuccesfull();
 		int getType();
@@ -52,4 +49,3 @@ namespace RequestParser
 		ConfirmationResponseParser(const QString& restext, const QString errtext);
 	};
 }
-

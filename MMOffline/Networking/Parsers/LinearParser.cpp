@@ -3,12 +3,11 @@
 
 #include <qapplication.h>
 
-
-RequestParser::LinearParser::LinearParser( const QString& restext, const QString& errtext)
+RequestParser::LinearParser::LinearParser(const QString& restext, const QString& errtext)
 	: abs_parser(restext, errtext)
 {
 	uniresult->nameOf = "itemlist";
-	success =  doParsing();
+	success = doParsing();
 }
 
 bool RequestParser::LinearParser::_parseThis()

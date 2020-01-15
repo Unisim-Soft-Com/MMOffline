@@ -1,17 +1,13 @@
 #pragma once
-#include "Widgets/parents/inframedWidget.h"
 #include "Widgets/parents/abstractNodeInterface.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
-#include "Widgets/utils/GlobalAppSettings.h"
 #include "Widgets/MultibranchWidgets/DocumentSelectionWidget.h"
 #include "Widgets/LogBranch/DocumentEntrySelectionSubbranch.h"
-
 
 class LogBranchRoot : public inframedWidget, abstractNode
 {
 	Q_OBJECT
 protected:
-	enum actions {deleteDocument, editDocument};
+	enum actions { deleteDocument, editDocument };
 	QVBoxLayout* mainLayout;
 	DocumentSelectionWidget* docEditing;
 	EntryRedactingSubbranch* entryEditing;
@@ -23,6 +19,4 @@ protected slots:
 	void onDocInteractions(Document doc, int action);
 	void onDocChange(Document doc);
 	void hideCurrent();
-
-
 };

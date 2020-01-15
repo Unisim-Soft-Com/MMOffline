@@ -1,5 +1,6 @@
 #include "DocumentRootWidget.h"
 #include "Widgets/utils/ApplicationDataWorkset.h"
+
 DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	: inframedWidget(parent), abstractNode(),
 	mainLayout(new QVBoxLayout(this)),
@@ -8,7 +9,7 @@ DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	groupSelection(new GroupSelectionWidget(this)),
 	productSelection(new ProductSelectionWidget(this)),
 	entryCreation(new EntryCreationScreen(this)),
-		currentClient(), currentGroup(), isDocumentSaved(false)
+	currentClient(), currentGroup(), isDocumentSaved(false)
 {
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(clientSelection);
@@ -16,6 +17,9 @@ DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	mainLayout->addWidget(groupSelection);
 	mainLayout->addWidget(productSelection);
 	mainLayout->addWidget(entryCreation);
+
+	mainLayout->setSpacing(0);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
 	documentCreation->hide();
 	groupSelection->hide();
 	productSelection->hide();
@@ -23,18 +27,26 @@ DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	untouchable = clientSelection;
 	main = this;
 	current = clientSelection;
-	AppWorkset->dataprovider.loadDataAs<DocumentEntryEntity>();
-	QObject::connect(clientSelection, &ClientSelectionWidget::clientSelected, this, &DocumentRootWidget::clientConfirmed);
-	QObject::connect(documentCreation, &DocumentCreationScreen::documentCreated, this, &DocumentRootWidget::documentCreated);
-	QObject::connect(groupSelection, &GroupSelectionWidget::groupSelected, this, &DocumentRootWidget::groupSelected);
-	QObject::connect(productSelection, &ProductSelectionWidget::productObtained, this, &DocumentRootWidget::productSelected);
-	QObject::connect(entryCreation, &EntryCreationScreen::entryCreated, this, &DocumentRootWidget::entryCreated);
-	QObject::connect(clientSelection, &ClientSelectionWidget::backRequired, this, &DocumentRootWidget::hideCurrent);
-	QObject::connect(documentCreation, &DocumentCreationScreen::backRequired, this, &DocumentRootWidget::hideCurrent);
-	QObject::connect(groupSelection, &GroupSelectionWidget::backRequired, this, &DocumentRootWidget::hideCurrent);
-	QObject::connect(productSelection, &ProductSelectionWidget::backRequired, this, &DocumentRootWidget::hideCurrent);
-	QObject::connect(entryCreation, &EntryCreationScreen::backRequired, this, &DocumentRootWidget::hideCurrent);
-
+	QObject::connect(clientSelection, &ClientSelectionWidget::clientSelected, this,
+		&DocumentRootWidget::clientConfirmed);
+	QObject::connect(documentCreation, &DocumentCreationScreen::documentCreated, this,
+		&DocumentRootWidget::documentCreated);
+	QObject::connect(groupSelection, &GroupSelectionWidget::groupSelected, this,
+		&DocumentRootWidget::groupSelected);
+	QObject::connect(productSelection, &ProductSelectionWidget::productObtained, this,
+		&DocumentRootWidget::productSelected);
+	QObject::connect(entryCreation, &EntryCreationScreen::entryCreated, this,
+		&DocumentRootWidget::entryCreated);
+	QObject::connect(clientSelection, &ClientSelectionWidget::backRequired, this,
+		&DocumentRootWidget::hideCurrent);
+	QObject::connect(documentCreation, &DocumentCreationScreen::backRequired, this,
+		&DocumentRootWidget::hideCurrent);
+	QObject::connect(groupSelection, &GroupSelectionWidget::backRequired, this,
+		&DocumentRootWidget::hideCurrent);
+	QObject::connect(productSelection, &ProductSelectionWidget::backRequired, this,
+		&DocumentRootWidget::hideCurrent);
+	QObject::connect(entryCreation, &EntryCreationScreen::backRequired, this,
+		&DocumentRootWidget::hideCurrent);
 }
 
 void DocumentRootWidget::clientConfirmed(ClientEntity ce)
@@ -56,7 +68,6 @@ void DocumentRootWidget::hideCurrent()
 		_hideCurrent(groupSelection);
 	else if (current == entryCreation)
 		_hideCurrent(productSelection);
-
 }
 
 void DocumentRootWidget::documentCreated(Document doc)
@@ -70,7 +81,7 @@ void DocumentRootWidget::groupSelected(GroupEntity g)
 {
 	currentGroup = Group(new GroupEntity(g));
 	productSelection->primeSelection(currentGroup, currentClient);
-	
+
 	_hideCurrent(productSelection);
 }
 
@@ -84,12 +95,11 @@ void DocumentRootWidget::entryCreated(DocumentEntry entry)
 {
 	if (!isDocumentSaved)
 	{
-		AppWorkset->dataprovider.storeEntity(std::static_pointer_cast<abs_entity>(currentDocument));
+		AppWorkset->dataprovider.replaceData(std::static_pointer_cast<abs_entity>(currentDocument));
 		isDocumentSaved = true;
 		clientSelection->incrementDocCounter(currentDocument->clientId);
 	}
-	AppWorkset->dataprovider.storeEntity(entry);
-	productSelection->incrementQuantityCounter(entry->productId, entry->quantity);
+	AppWorkset->dataprovider.replaceData(entry);
+	productSelection->setQuantityCounter(entry->productId, entry->quantity);
 	hideCurrent();
 }
-

@@ -7,10 +7,9 @@
 #include "Entities/NamedIdEntity.h"
 #include <QtCore/QSortFilterProxyModel>
 
-extern const abs_entity * const associateTableWithData[PREDEFINED_TABLES_QUANTITY];
+extern const abs_entity* const associateTableWithData[PREDEFINED_TABLES_QUANTITY];
 
 typedef int (*IdExtractionPtr)(DataEntity);
-
 
 template<class DataEntityInh>
 QVector<DataEntity> downcastEntity(QVector<DataEntityInh>& other)
@@ -49,8 +48,7 @@ class DataEntityListModel : public QAbstractListModel
 protected:
 	QVector<DataEntity> innerList;
 public:
-	enum ExtendedRoles {SearchRole = Qt::UserRole + 1, QuantityView, DataCopyRole};
-
+	enum ExtendedRoles { SearchRole = Qt::UserRole + 1, QuantityView, DataCopyRole };
 
 	using QAbstractListModel::QAbstractListModel;
 	DataEntityListModel(const QVector<DataEntity>& clients, QWidget* parent);
@@ -93,5 +91,6 @@ public:
 	void assignQuantityInfo(QHash<IdInt, int>&& quinfo);
 	bool assignQuantityUpdate(DataEntity, int);
 	bool assignQuantityUpdate(IdInt, int);
-
+	void assingEmptyCounters(int def = 0);
+	bool incrementQuantity(IdInt, int);
 };

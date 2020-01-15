@@ -9,8 +9,6 @@
 #include "Widgets/parents/inframedWidget.h"
 #include "Dataprovider/DataEntities.h"
 
-
-
 class EntryCreationScreen : public inframedWidget
 {
 	Q_OBJECT

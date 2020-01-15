@@ -1,7 +1,6 @@
 #pragma once
 #include "Dataprovider/TableHandlers.h"
 
-
 namespace fieldPredefinitions
 {
 	extern const QStringList documentFields;
@@ -17,4 +16,5 @@ namespace ComplexFilters
 {
 	extern const QString ProductQuantityLinking;
 	extern const QString ClientQuantityLinking;
+	extern const QString TruncateGroupsWithoutProducts;
 }

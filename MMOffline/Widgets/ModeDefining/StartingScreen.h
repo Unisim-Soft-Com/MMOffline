@@ -1,15 +1,6 @@
 #pragma once
-#include "Widgets/parents/inframedWidget.h"
-#include <QtWidgets/QBoxLayout>
-#include "OnlineLoginWidget.h"
-#include "Widgets/ElementWidgets/MegaIconButton.h"
-#include "Widgets/parents/abstractNodeInterface.h"
-#include "Widgets/utils/GlobalAppSettings.h"
-#include <QtWidgets/QLabel>
 #include "Widgets/ModeDefining/OnlineLoginWidget.h"
 #include "Widgets/ModeDefining/SettingsScreen.h"
-#include "Widgets/LogBranch/LogsWidget.h"
-
 
 class StartingScreen : public inframedWidget, abstractNode
 {
@@ -31,11 +22,13 @@ protected:
 public:
 	StartingScreen(QWidget* parent);
 
-protected slots:;
+	void fillTexts();
+protected slots:
 	void toOnlineLogin();
 	void toSettings();
 	void hideCurrent();
 	void userLoggedIn(QString login);
+	void translationHappened(int);
 public slots:
 	void setInfoLabel();
 signals:

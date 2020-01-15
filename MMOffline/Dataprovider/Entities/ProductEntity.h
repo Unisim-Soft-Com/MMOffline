@@ -1,7 +1,7 @@
 #pragma once
 #include "abs_entity.h"
 #include <QtCore/QMetaType>
-
+#include <QtCore/QVector>
 class ProductEntity : public abs_entity
 {
 public:
@@ -25,8 +25,7 @@ protected:
 public:
 	ProductEntity();
 	ProductEntity(IdInt id, QString name, QString shortname = QString::null, double price = 0.0, double priceWithTaxes = 0.0);
-	ProductEntity(const QStringList & flist);
-
+	ProductEntity(const QStringList& flist);
 };
 typedef std::shared_ptr<ProductEntity> Product;
 typedef QVector<Product> ProductList;

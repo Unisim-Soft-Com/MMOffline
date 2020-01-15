@@ -1,29 +1,36 @@
 #pragma once
 #include <QStyleOptionViewItem>
 #include <QtGui/QPainter>
-inline QSize countOptimalSizeOfItem(const QStyleOptionViewItem& option)
-{
-	return QSize(option.rect.width(), option.fontMetrics.height() * 4);
-}
-inline QSize countWrappingBorder(const QString& str, const QStyleOptionViewItem& option)
-{
-	return QSize(option.fontMetrics.width(str) + 6, option.fontMetrics.height() + 6);
-}
+#include <Dataprovider/DataEntities.h>
 
-inline void setGradient(const QRect*r, QLinearGradient* g, const QColor & a,const QColor & b)
+inline void setGradient(const QRect* r, QLinearGradient* g, const QColor& a, const QColor& b)
 {
 	g->setColorAt(0, a);
 	g->setColorAt(1, b);
 	g->setStart(r->topLeft());
 	g->setFinalStop(r->bottomLeft());
 }
-inline void drawRect(const QRect& r, const QLinearGradient& gr, QPainter*p)
+inline void drawRect(const QRect& r, const QLinearGradient& gr, QPainter* p)
 {
 	p->setBrush(gr);
 	p->setOpacity(0.6);
 	p->drawRect(r);
 	p->setOpacity(1);
 }
+inline void drawRect(const QRect& r, const QColor& c, QPainter* p)
+{
+	p->setBrush(c);
+	p->drawRect(r);
+}
+inline void drawRect(const QRect& re, const int r, const int g, const int b, QPainter* p)
+{
+	p->setBrush(QColor(r, g, b));
+	p->drawRect(re);
+}
+
+extern const QColor bright_delegate_color;
+extern const QColor dark_delegate_color;
+
 template <class DataEntSub>
 std::shared_ptr<DataEntSub> upcastItem(const QModelIndex& index)
 {

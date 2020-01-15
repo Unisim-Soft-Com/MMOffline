@@ -1,7 +1,6 @@
 #pragma once
 #include <QtWidgets/QStyledItemDelegate>
 
-
 class GroupDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

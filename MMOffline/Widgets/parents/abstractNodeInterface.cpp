@@ -41,8 +41,6 @@ void abstractNode::_hideAny(inframedWidget* replacement)
 #endif
 }
 
-
-
 abstractDynamicNode::abstractDynamicNode()
 {
 }

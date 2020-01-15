@@ -1,5 +1,5 @@
 #include "LogBranchRoot.h"
-
+#include "Widgets/utils/ApplicationDataWorkset.h"
 LogBranchRoot::LogBranchRoot(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
 	docEditing(new DocumentSelectionWidget(this)), entryEditing(new EntryRedactingSubbranch(this))
@@ -18,7 +18,6 @@ LogBranchRoot::LogBranchRoot(QWidget* parent)
 	QObject::connect(entryEditing, &EntryRedactingSubbranch::backRequired, this, &LogBranchRoot::hideCurrent);
 	QObject::connect(docEditing, &DocumentSelectionWidget::DocumentSelected, this, &LogBranchRoot::onDocInteractions);
 	QObject::connect(entryEditing, &EntryRedactingSubbranch::editingFinished, this, &LogBranchRoot::onDocChange);
-
 }
 
 void LogBranchRoot::onDocInteractions(Document doc, int action)

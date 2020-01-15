@@ -3,11 +3,11 @@
 #include "Widgets/utils/ElementsStyles.h"
 #include "Widgets/ExtendedDelegates/DocumentsDelegate.h"
 #include "qmessagebox.h"
-
+#include <QScroller>
 DocumentSelectionWidget::DocumentSelectionWidget(QWidget* parent)
 	: mainLayout(new QVBoxLayout(this)), mainView(new QListView(this)),
 	coreModel(new DataEntityListModel(this)), filterModel(new DataEntityFilterModel(this)),
-	searchField(new QLineEdit(this)), buttonsLayout(new QHBoxLayout(this)), 
+	searchField(new QLineEdit(this)), buttonsLayout(new QHBoxLayout(this)),
 	backButton(new MegaIconButton(this)), editButton(new MegaIconButton(this)),
 	deleteButton(new MegaIconButton(this))
 {
@@ -36,14 +36,19 @@ DocumentSelectionWidget::DocumentSelectionWidget(QWidget* parent)
 	backButton->setIcon(QIcon(":/res/back.png"));
 	editButton->setIcon(QIcon(":/res/pencil.png"));
 	deleteButton->setIcon(QIcon(":/res/data.png"));
-	
+
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	editButton->setStyleSheet(CHANGE_BUTTONS_STYLESHEET);
 	deleteButton->setStyleSheet(DELETE_BUTTONS_STYLESHEET);
 
 	mainView->setItemDelegate(new DocumentsDelegate(this));
-
+	QScroller::grabGesture(mainView, QScroller::LeftMouseButtonGesture);
+	mainView->setVerticalScrollMode(QListView::ScrollPerPixel);
 	QObject::connect(searchField, &QLineEdit::textChanged, filterModel, &DataEntityFilterModel::setFilterFixedString);
+#ifdef Q_OS_ANDROID
+	searchField->setInputMethodHints(Qt::InputMethodHint::ImhNoPredictiveText);
+#endif
+	QObject::connect(mainView, &QListView::doubleClicked, this, &DocumentSelectionWidget::handleEdit);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &DocumentSelectionWidget::backRequired);
 	QObject::connect(editButton, &MegaIconButton::clicked, this, &DocumentSelectionWidget::handleEdit);
 	QObject::connect(deleteButton, &MegaIconButton::clicked, this, &DocumentSelectionWidget::handleDelete);
@@ -58,7 +63,7 @@ void DocumentSelectionWidget::handleEdit()
 {
 	if (mainView->currentIndex().isValid())
 	{
-		Document temp = 
+		Document temp =
 			std::dynamic_pointer_cast<DocumentEntity>(
 				mainView->currentIndex().data(DataEntityListModel::DataCopyRole).value<DataEntity>()
 				);
@@ -73,12 +78,11 @@ void DocumentSelectionWidget::handleDelete()
 {
 	if (mainView->currentIndex().isValid())
 	{
-		int userResponse = QMessageBox::information(this, 
+		int userResponse = QMessageBox::information(this,
 			tr("Delete document"), tr("Sure you want to delete?"),
 			QMessageBox::Ok, QMessageBox::Cancel);
 		if (userResponse != QMessageBox::Ok)
 			return;
-
 
 		Document temp =
 			std::dynamic_pointer_cast<DocumentEntity>(

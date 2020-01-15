@@ -4,7 +4,6 @@
 #include "DocumentEntryEntity.h"
 #include <QtCore/QAbstractListModel>
 
-
 class DocumentEntity : public abs_entity
 {
 public:
@@ -41,7 +40,6 @@ public:
 	bool unlinkEntry(DocumentEntry);
 	bool hisEntry(DocumentEntry);
 	void cleanEntryField();
-
 };
 typedef std::shared_ptr<DocumentEntity> Document;
 typedef QVector<Document> DocumentsList;
@@ -57,6 +55,5 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role) const override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
-
 };
 extern const QString documentIdAssertionQuery;

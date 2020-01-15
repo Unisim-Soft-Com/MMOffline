@@ -1,31 +1,76 @@
 #include "GlobalAppSettings.h"
 #include <QtCore/QSettings>
 #include <QtWidgets/qapplication.h>
-#include <cstring>
 // utility
+#define DEBUG
 
-std::shared_ptr<GlobalAppSettings> globalSettings;
+GlobalAppSettings* GlobalAppSettings::_instance = nullptr;
 
-const char* networkTraceFlag = "-nptr";
-const char* databaseTrackFlag = "-dbtr";	
-const int totalFlags = 2;
-const char * launchFlags[totalFlags] = {networkTraceFlag, databaseTrackFlag };
+#ifdef Q_OS_WIN
+const char* LOCAL_LOAD_PATH = "/UNAOrders/";
+#endif
+#ifdef Q_OS_ANDROID
+const char* LOCAL_LOAD_PATH = "/storage/emulated/0/UNAOrders/";
+#endif
+
+namespace Translations
+{
+	const char* langPaths[Russian + 1]
+	{
+		":/translations/mmoffline_en.qm",
+		":/translations/mmoffline_ro.qm",
+		":/translations/mmoffline_ru.qm"
+	};
+	void operator++(Languages& l)
+	{
+		if (l == Russian)
+			l = English;
+		else
+			l = static_cast<Languages>(l + 1);
+	}
+	Languages langFromString(const QString& str)
+	{
+		switch (str.count())
+		{
+		case 7:
+			if (str.startsWith(QChar('R')))
+				return Russian;
+			else
+				return English;
+		case 8:
+			return Romanian;
+		default:
+			return English;
+		}
+	}
+	QString langToString(const Languages l)
+	{
+		switch (l)
+		{
+		case Russian:
+			return QStringLiteral("Russian");
+		case Romanian:
+			return QStringLiteral("Romanian");
+		default:
+			return QStringLiteral("English");
+		}
+	}
+}
 
 void GlobalAppSettings::setTranslator()
 {
-	if (this->language == "Russian")
-	{
-		this->translator.load(":/translations/uamobi_ru.qm");
-	}
-	else if (this->language == "Romanian")
-	{
-		this->translator.load(":/translations/MMOffline_ro.qm");
-	}
-	else
-	{
-		this->translator.load(":/translations/MMOffline_en.qm");
-	}
+	using namespace Translations;
+	translator.load(langPaths[langFromString(language)]);
 	qApp->installTranslator(&translator);
+}
+
+void GlobalAppSettings::setTranslator(Translations::Languages lang)
+{
+	using namespace Translations;
+	QString temp(langPaths[lang]);
+	this->translator.load(langPaths[lang]);
+	qApp->installTranslator(&translator);
+	language = langToString(lang);
 }
 
 void GlobalAppSettings::dump()
@@ -37,6 +82,7 @@ void GlobalAppSettings::dump()
 	setting.setValue("local_user", localLogin);
 	setting.setValue("timeout_interval", timeoutint);
 	setting.setValue("last_sync", lastSyncDate);
+	setting.setValue("path_to_offline_load", filePath);
 }
 
 void GlobalAppSettings::switchLaunchArgument(int arg)
@@ -52,31 +98,17 @@ void GlobalAppSettings::switchLaunchArgument(int arg)
 	}
 }
 
-void GlobalAppSettings::parseLaunchArgs(int argc, char** argv)
+GlobalAppSettings* GlobalAppSettings::instance()
 {
-	for (int i = 0; i < argc; ++i)
+	if (_instance == nullptr)
 	{
-		if (strlen(argv[i]) == strlen(databaseTrackFlag))
-		{
-			for (int j = 0; j < totalFlags; ++j)
-			{
-				if (std::strncmp(argv[i], launchFlags[j], strlen(databaseTrackFlag)))
-				{
-					switchLaunchArgument(j);
-					break;
-				}
-			}
-		}
+		_instance = new GlobalAppSettings();
 	}
-}
-
-std::shared_ptr<GlobalAppSettings> GlobalAppSettings::instance()
-{
-	return globalSettings;
+	return _instance;
 }
 
 GlobalAppSettings::GlobalAppSettings()
-	:	HttpUrl(), alternativeUrls(), language("English"),
+	: HttpUrl(), alternativeUrls(), language("English"),
 	localLogin(), translator(), packetTracing(false), dbTracing(false)
 {
 	QSettings settings("settings.ini", QSettings::IniFormat);
@@ -86,15 +118,18 @@ GlobalAppSettings::GlobalAppSettings()
 	localLogin = settings.value("local_user", "").toString();
 	timeoutint = settings.value("timeout_interval", QVariant(10000)).toInt();
 	lastSyncDate = settings.value("last_sync", QVariant(QDate())).toDate();
+	filePath = settings.value("path_to_offline_load", LOCAL_LOAD_PATH).toString();
 	setTranslator();
+#ifdef DEBUG
+	packetTracing = true;
+	dbTracing = true;
+#else
+	packetTracing = false;
+	dbTracing = false;
+#endif
 }
 
 GlobalAppSettings::~GlobalAppSettings()
 {
 	dump();
-}
-
-void allocateGlobalSettings()
-{
-	globalSettings = std::shared_ptr<GlobalAppSettings>(new GlobalAppSettings());
 }

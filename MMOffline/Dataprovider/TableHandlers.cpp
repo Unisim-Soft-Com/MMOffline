@@ -4,12 +4,10 @@ namespace query_templates
 {
 	const QString QueryTemplateTable[NotAQuery]
 	{
-		QStringLiteral("drop table %1")
+		QStringLiteral("drop table %1"),
+		QStringLiteral("select count(*) from %1")
 	};
 }
-
-
-
 
 const QString& TemplatedTableHandler::assertAnotherName(const QString& another_name) const noexcept
 {
@@ -22,7 +20,7 @@ TemplatedTableHandler::TemplatedTableHandler()
 }
 
 TemplatedTableHandler::TemplatedTableHandler(QString t_decl, QString t_def, QStringList tfields, int primarykey)
-	: table_definition(t_def), table_declaration(t_decl), table_fields(tfields), primaryKeyField(primarykey), 
+	: table_definition(t_def), table_declaration(t_decl), table_fields(tfields), primaryKeyField(primarykey),
 	table_type(1)
 {
 }
@@ -55,10 +53,9 @@ QString TemplatedTableHandler::select_by_primary_key(const QString pkeyvalue, co
 	if (primaryKeyField == -1)
 		return QString::null;
 	const QString& name = assertAnotherName(another_name);
-	return select_all(name) + QStringLiteral(" where ") + table_fields.at(primaryKeyField) 
+	return select_all(name) + QStringLiteral(" where ") + table_fields.at(primaryKeyField)
 		+ QStringLiteral(" = ") + pkeyvalue;
 }
-
 
 QString TemplatedTableHandler::update(const QString& values, const QString another_name) const noexcept
 {
@@ -69,7 +66,7 @@ QString TemplatedTableHandler::update(const QString& values, const QString anoth
 QString TemplatedTableHandler::replace(const QString& values, const QString& another_name) const noexcept
 {
 	const QString& name = (another_name.isNull()) ? table_declaration : another_name;
-	return QStringLiteral("REPLACE INTO ") + name + QStringLiteral(" ( ") 
+	return QStringLiteral("REPLACE INTO ") + name + QStringLiteral(" ( ")
 		+ allFieldsDeclaration() + QStringLiteral(" ) VALUES ") + values;
 }
 
@@ -91,7 +88,7 @@ QString TemplatedTableHandler::delete_by_primary_key(const QString& pkeyvalue, c
 QString TemplatedTableHandler::drop(const QString another_name) const noexcept
 {
 	const QString& name = assertAnotherName(another_name);
-	return query_templates::QueryTemplateTable[query_templates::DropTableQuery].arg(another_name);
+	return query_templates::QueryTemplateTable[query_templates::DropTableQuery].arg(name);
 }
 
 QString TemplatedTableHandler::allFieldsDeclaration() const noexcept
@@ -99,7 +96,7 @@ QString TemplatedTableHandler::allFieldsDeclaration() const noexcept
 	return table_fields.join(" , ");
 }
 
-QString TemplatedTableHandler::insert( const QString & values, const QString another_name) const noexcept
+QString TemplatedTableHandler::insert(const QString& values, const QString another_name) const noexcept
 {
 	const QString& name = assertAnotherName(another_name);
 	return QStringLiteral("insert into ") + name + QStringLiteral(" (")
@@ -111,7 +108,7 @@ QString TemplatedTableHandler::makeIndex(const QString& another_name) const noex
 	if (primaryKeyField == -1)
 		return QString::null;
 	const QString& name = assertAnotherName(another_name);
-	return QStringLiteral("CREATE INDEX ") 	+ name + QStringLiteral("_index ON ") 
+	return QStringLiteral("CREATE INDEX ") + name + QStringLiteral("_index ON ")
 		+ name + "(" + table_fields.at(primaryKeyField) + ")";
 }
 

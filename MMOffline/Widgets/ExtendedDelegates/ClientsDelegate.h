@@ -1,9 +1,6 @@
 #pragma once
 #include <QtWidgets/qstyleditemdelegate.h>
 
-
-
-
 class ClientsDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

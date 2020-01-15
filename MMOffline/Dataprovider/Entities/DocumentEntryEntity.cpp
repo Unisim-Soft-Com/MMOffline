@@ -123,7 +123,7 @@ void DocumentEntryEntity::_listInit(const QStringList& l)
 		measure = l.at(i--).toInt(&ok);
 		if (!ok) break;
 	case 5:
-		price  = l.at(i--).toDouble(&ok); 
+		price = l.at(i--).toDouble(&ok);
 		if (!ok) break;
 	case 4:
 		productName = l.at(i--);
@@ -150,7 +150,6 @@ DocumentEntryEntity::DocumentEntryEntity()
 	productName(), price(0.0), measure(0), quantity(0.0), option1(0),
 	option2(0), option3(0), comment()
 {
-
 }
 
 DocumentEntryEntity::DocumentEntryEntity(IdInt ID)
@@ -175,11 +174,10 @@ bool DocumentEntryEntity::compare(abs_entity* another) const
 
 bool DocumentEntryEntity::isLikeString(const QRegExp& qregexp) const
 {
-	return productName.contains(qregexp.pattern());
+	return productName.contains(qregexp.pattern(), Qt::CaseInsensitive);
 }
 
 IdInt DocumentEntryEntity::extractId() const
 {
 	return entryId;
 }
-

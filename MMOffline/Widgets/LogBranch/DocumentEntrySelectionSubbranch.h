@@ -1,14 +1,4 @@
 #pragma once
-#include "Widgets/parents/inframedWidget.h"
-#include "Widgets/ElementWidgets/MegaIconButton.h"
-#include "Dataprovider/DataEntities.h"
-#include <QtWidgets/QListView>
-#include <QtWidgets/QBoxLayout>
-#include "Widgets/parents/abstractNodeInterface.h"
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QDoubleSpinBox>
 #include "Widgets/DocumentBranch/EntryCreationScreen.h"
 #include "Widgets/MultibranchWidgets/ProductSelectionBranch.h"
 
@@ -23,6 +13,8 @@ protected:
 	QHBoxLayout* headerPanel;
 	QDoubleSpinBox* summPaidField;
 	QComboBox* doctypeField;
+	QHBoxLayout* searchPanel;
+	QLabel* searchInfo;
 	QLineEdit* searchField;
 	QListView* entriesView;
 	QHBoxLayout* buttonsLayout;

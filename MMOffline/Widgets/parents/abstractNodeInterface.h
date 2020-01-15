@@ -1,5 +1,4 @@
 #pragma once
-#include <QtCore/QPointer>
 #include "widgets/parents/inframedWidget.h"
 #include <exception>
 #include <QtCore/QString>
@@ -10,7 +9,7 @@ private:
 	std::string msg = "Error upcasting inframed pointer with from type ";
 public:
 	CastFailedException(QString str) { msg += str.toStdString(); };
-	virtual const char* what() const override { return msg.c_str(); };
+	virtual const char* what() const noexcept override { return msg.c_str(); };
 };
 
 class abstractNode

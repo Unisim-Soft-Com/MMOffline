@@ -13,20 +13,26 @@ class ProductSelectionWidget : public inframedWidget
 	Q_OBJECT
 protected:
 	QVBoxLayout* mainLayout;
-	QLabel *info;
+	QLabel* info;
+	QHBoxLayout* searchPanel;
+	QLabel* searchInfo;
 	QLineEdit* searchLine;
 	QListView* productView;
 	DataCountingDataModel* dataModel;
 	DataEntityFilterModel* searchProxy;
 	ProductsDelegate* innerDelegate;
+	QHBoxLayout* buttonPanel;
 	MegaIconButton* backButton;
+	MegaIconButton* okButton;
 public:
 	ProductSelectionWidget(QWidget* parent);
 	void setDataLoadParameters(Group group, Client client);
 	void primeSelection(Group group, Client client);
 	void incrementQuantityCounter(int id, int q = 1);
+	void setQuantityCounter(int id, int q = 0);
 protected slots:
 	void productSelected(DataEntity product);
+	void okClicked();
 signals:
 	void productObtained(const Product);
 };

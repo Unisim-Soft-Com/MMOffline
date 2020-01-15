@@ -1,5 +1,6 @@
 #include "StartingScreen.h"
 #include <QApplication>
+
 StartingScreen::StartingScreen(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
@@ -22,7 +23,6 @@ StartingScreen::StartingScreen(QWidget* parent)
 	footerLayout->addWidget(quitButton);
 	footerLayout->addWidget(settingsButton);
 
-
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
 	innerLayout->setContentsMargins(0, 0, 0, 0);
@@ -38,17 +38,14 @@ StartingScreen::StartingScreen(QWidget* parent)
 
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-	setInfoLabel();
+	infoLabel->setWordWrap(true);
+
 	createDocumentButton->setIcon(QIcon(":/res/add.png"));
-	createDocumentButton->setText(tr("New document"));
 	onlineLoginButton->setIcon(QIcon(":/res/login.png"));
-	onlineLoginButton->setText(tr("Login"));
 	logsButton->setIcon(QIcon(":/res/mlogs.png"));
-	logsButton->setText(tr("Logs"));
 	settingsButton->setIcon(QIcon(":/res/settings.png"));
-	settingsButton->setText(tr("Settings"));
 	quitButton->setIcon(QIcon(":/res/exit.png"));
-	quitButton->setText(tr("Quit!"));
+	fillTexts();
 	QObject::connect(createDocumentButton, &MegaIconButton::clicked, this, &StartingScreen::documentCreationInitiated);
 	QObject::connect(onlineLoginButton, &MegaIconButton::clicked, this, &StartingScreen::toOnlineLogin);
 	QObject::connect(logsButton, &MegaIconButton::clicked, this, &StartingScreen::logsRequired);
@@ -57,15 +54,23 @@ StartingScreen::StartingScreen(QWidget* parent)
 	QObject::connect(settings, &SettingsScreen::backRequired, this, &StartingScreen::hideCurrent);
 	QObject::connect(onlineLogin, &OnlineLoginWidget::loginReady, this, &StartingScreen::userLoggedIn);
 	QObject::connect(quitButton, &MegaIconButton::clicked, qApp, QApplication::quit);
+	QObject::connect(settings, &SettingsScreen::translating, this, &StartingScreen::translationHappened);
 }
 
+void StartingScreen::fillTexts()
+{
+	createDocumentButton->setText(tr("New document"));
+	onlineLoginButton->setText(tr("Login"));
+	logsButton->setText(tr("Logs"));
+	settingsButton->setText(tr("Settings"));
+	quitButton->setText(tr("Quit!"));
+	setInfoLabel();
+}
 
 void StartingScreen::toOnlineLogin()
 {
 	_hideAny(onlineLogin);
 }
-
-
 
 void StartingScreen::toSettings()
 {
@@ -81,6 +86,12 @@ void StartingScreen::userLoggedIn(QString login)
 {
 	setInfoLabel();
 	_hideCurrent(innerWidget);
+}
+
+void StartingScreen::translationHappened(int)
+{
+	fillTexts();
+	onlineLogin->fillTexts();
 }
 
 void StartingScreen::setInfoLabel()

@@ -2,7 +2,7 @@
 #include <QPainter>
 #include "Dataprovider/DataEntities.h"
 #include "DelegateUtility.h"
-
+#include <cmath>
 void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
 	Product temp = upcastItem<ProductEntity>(index);
@@ -16,16 +16,11 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 			diff.x(),
 			option.rect.topLeft().y() + option.fontMetrics.height() * 1.1
 		));
-	QLinearGradient gr(textbox.topLeft(), textbox.bottomLeft());
-	gr.setColorAt(0, Qt::red);
-	gr.setColorAt(1, option.palette.highlight().color());
 
 	painter->save();
 	//	Id box
-	painter->setOpacity(0.6);
-	painter->setBrush(gr);
+	painter->setBrush(dark_delegate_color);
 	painter->drawRect(textbox);
-	painter->setOpacity(1);
 	painter->setPen(Qt::PenStyle::SolidLine);
 	painter->drawText(
 		textbox
@@ -33,16 +28,9 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	// Price box
 	textbox.setBottomRight(textbox.bottomRight() + diff);
 	textbox.setTopLeft(textbox.topLeft() + diff);
-	gr.setStart(textbox.topLeft());
-	gr.setFinalStop(textbox.bottomLeft());
-	gr.setColorAt(0, option.palette.brightText().color());
-	gr.setColorAt(1, option.palette.highlight().color());
-	painter->setBrush(gr);
-	painter->setOpacity(0.5);
 	painter->drawRect(textbox);
 	painter->setPen(Qt::SolidLine);
-	painter->setOpacity(1);
-	painter->drawText(textbox, Qt::AlignCenter, tr("Price: ") + QString::number(temp->price, 'g', 4));
+	painter->drawText(textbox, Qt::AlignCenter, tr("Price:") + QString::number(temp->price, 'g', 4));
 	// Quantity box
 	textbox.setTopLeft(
 		textbox.topLeft() + diff
@@ -50,26 +38,16 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	textbox.setBottomRight(
 		textbox.bottomRight() + diff
 	);
-	gr.setStart(textbox.topLeft());
-	gr.setFinalStop(textbox.bottomLeft());
-	painter->setOpacity(0.5);
 	painter->drawRect(textbox);
 	painter->setPen(Qt::SolidLine);
-	painter->setOpacity(1);
-	painter->drawText(textbox, Qt::AlignCenter, tr("Quantity: ") + QString::number(index.data(DataEntityListModel::QuantityView).toInt()));
+	painter->drawText(textbox, Qt::AlignCenter, tr("Quantity:") + QString::number(index.data(DataEntityListModel::QuantityView).toInt()));
 	// name box, occupies all remaining space
 	textbox.setTopLeft(
 		option.rect.topLeft() + QPoint(0, option.fontMetrics.height() * 1.1)
 	);
 	textbox.setBottomRight(option.rect.bottomRight());
-	gr.setStart(textbox.topLeft());
-	gr.setFinalStop(textbox.bottomLeft());
-	gr.setColorAt(1, option.palette.brightText().color());
-	gr.setColorAt(0, option.palette.highlight().color());
-	painter->setOpacity(0.8);
-	painter->setBrush(gr);
+	painter->setBrush(bright_delegate_color);
 	painter->drawRect(textbox);
-	painter->setOpacity(1);
 	painter->drawText(textbox, Qt::AlignCenter | Qt::TextWordWrap, temp->name);
 	painter->setBrush(Qt::NoBrush);
 	painter->setPen(QPen(Qt::black, 3));
@@ -80,7 +58,7 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 	{
 		painter->setBrush(option.palette.highlight());
 		painter->setPen(Qt::NoPen);
-		painter->setOpacity(0.3);
+		painter->setOpacity(0.4);
 		painter->drawRect(option.rect);
 	}
 
@@ -92,7 +70,7 @@ QSize ProductsDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
 	Product temp = upcastItem<ProductEntity>(index);
 	if (temp == nullptr)
 		return QSize(100, 50);
-	
+
 	double wdth = option.fontMetrics.averageCharWidth() * temp->name.length();
 	double tabs = 0;
 	if (option.rect.width() == 0)

@@ -14,7 +14,6 @@ private:
 	QSqlDatabase mainDatabase;
 	bool isSessionOpened;
 
-
 	bool executeQuery(const QString& sqlquery);
 	bool executeWithinSession(const QString& sqlquery);
 	QueryPtr runQuery(const QString& sqlquery);
@@ -22,9 +21,8 @@ private:
 	void assertAndCloseSession();
 	bool loadEntity(QueryPtr q, const DataEntity);
 public:
-	SqliteDataProvider(QObject * parent = nullptr);
+	SqliteDataProvider(QObject* parent = nullptr);
 	~SqliteDataProvider();
-
 
 	bool storeEntity(const DataEntity);
 	bool doesTableExist(const TableNames table);
@@ -36,92 +34,90 @@ public:
 	bool createTableFor(const DataEntity);
 	bool createTableFor(const DataEntity, const QString& tname);
 	bool pushData(const QVector<DataEntity>& data);
-	bool pushData(const QVector<DataEntity>& data, QString& table);
-	bool replaceData(const DataEntity, const QString & tname = QString::null);
+	bool pushData(const QVector<DataEntity>& data, QString table);
+	bool replaceData(const DataEntity, const QString& tname = QString::null);
 	bool removeOneEntity(const DataEntity, const QString& tname = QString::null);
 	void dropEverything();
-	QHash<IdInt, int> loadIdPairs( const QString& filter);
+	QHash<IdInt, int> loadIdPairs(const QString& filter);
 	QVector<DataEntity> loadDataFrom(const TableNames);
 	QStringList loadDataFrom(const QString table);
+	int countData(const QString& table);
 	int assertId(const QString& query, const int id);
 	void forcedCommit();
 
 	template <class DataEnt>
-	bool pushEntityList(const QVector<std::shared_ptr<DataEnt> >& elist)
+	bool pushEntityList(const QVector<std::shared_ptr<DataEnt> >& elist, QString tname = QString::null)
 	{
-		mainDatabase.open();
-		for (const std::shared_ptr<DataEnt> entity : elist)
+		if (elist.isEmpty()) return true;
+		assertAndOpenSession();
+		if (tname.isNull())
 		{
-			if (!doesTableExist(entity->getAssociatedTable()->declaration()))
-			{
-				if (!createTableFor(entity)) return false;
-			}
-			if (!executeWithinSession(entity->insertionQuery()))
-			{
-				mainDatabase.close();
-				return false;
-			}
+			tname = elist.first()->getAssociatedTable()->declaration();
 		}
-		if (isSessionOpened)
-			mainDatabase.close();
-		return true;
-	}
-	template <class DataEnt>
-	bool pushEntityList(const QVector<std::shared_ptr<DataEnt> >& elist, QString tname)
-	{
-		mainDatabase.open();
+		if (!doesTableExist(tname))
+		{
+			if (!createTableFor(elist.first(), tname)) return false;
+		}
 		for (const std::shared_ptr<DataEnt> entity : elist)
 		{
-			if (!doesTableExist(tname))
-			{
-				if (!createTableFor(entity, tname)) return false;
-			}
 			if (!executeWithinSession(entity->insertionQuery(tname)))
 			{
-				mainDatabase.close();
+				assertAndCloseSession();
 				return false;
 			}
 		}
-		if (isSessionOpened)
-			mainDatabase.close();
+		assertAndCloseSession();
 		return true;
 	}
 	template <class DataEnt>
-	QVector<DataEntity> loadDataAs()
+	QVector<DataEntity> loadDataAs(const QString& filter = QString::null, QString table = QString::null)
 	{
+		assertAndOpenSession();
 		QVector<DataEntity> toreturn;
 		DataEnt temp;
-		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all());
+		QueryPtr newQuery;
+		if (filter.isNull())
+		{
+			newQuery = runQuery(temp.getAssociatedTable()->select_all(table));
+		}
+		else
+		{
+			newQuery = runQuery(temp.getAssociatedTable()->select_filtered(filter, table));
+		}
 		if (newQuery == nullptr)
+		{
+			assertAndCloseSession();
 			return toreturn;
+		}
 		while (temp.fromSqlQuery(newQuery))
 		{
 			toreturn.push_back(DataEntity(temp.clone()));
 		}
+		assertAndCloseSession();
 		return toreturn;
 	}
 	template <class DataEnt>
-	QVector<DataEntity> loadDataFilteredAs(const QString & filter)
+	QVector<std::shared_ptr<DataEnt>> loadEntities(
+		const QString& filter = QString::null, const QString& tname = QString::null
+	)
 	{
-		QVector<DataEntity> toreturn;
-		DataEnt temp;
-		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_filtered(filter));
-		if (newQuery == nullptr)
-			return toreturn;
-		while (temp.fromSqlQuery(newQuery))
-		{
-			toreturn.push_back(DataEntity(temp.clone()));
-		}
-		return toreturn;
-	}
-	template <class DataEnt>
-	QVector<std::shared_ptr<DataEnt>> loadEntities()
-	{
+		assertAndOpenSession();
 		QVector<std::shared_ptr<DataEnt>> toreturn;
 		DataEnt temp;
-		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all());
+		QueryPtr newQuery;
+		if (filter.isNull())
+		{
+			newQuery = runQuery(temp.getAssociatedTable()->select_all(tname));
+		}
+		else
+		{
+			newQuery = runQuery(temp.getAssociatedTable()->select_filtered(filter, tname));
+		}
 		if (newQuery == nullptr)
+		{
+			assertAndCloseSession();
 			return toreturn;
+		}
 		while (temp.fromSqlQuery(newQuery))
 		{
 			toreturn.push_back(std::shared_ptr<DataEnt>((static_cast<DataEnt*>(temp.clone()))));
@@ -129,52 +125,7 @@ public:
 		assertAndCloseSession();
 		return toreturn;
 	}
-	template<class DataEnt>
-	QVector<std::shared_ptr<DataEnt>> loadEntitiesFromTable(QString name)
-	{
-		QVector<std::shared_ptr<DataEnt>> toreturn;
-		DataEnt temp;
-		QueryPtr newQuery = runQuery(temp.getAssociatedTable()->select_all(name));
-		if (newQuery == nullptr)
-			return toreturn;
-		while (temp.fromSqlQuery(newQuery))
-		{
-			toreturn.push_back(std::shared_ptr<DataEnt>((static_cast<DataEnt*>(temp.clone()))));
-		}
-		assertAndCloseSession();
-		return toreturn;
-	}
-	template <class DataEnt>
-	QVector<DataEntity> loadDataFromTableAs(QString tname)
-	{
-		DataEnt temp;
-		QVector<DataEntity> toreturn;
 
-		auto newQuery = runQuery(temp.getAssociatedTable()->select_all(tname));
-		if (newQuery == nullptr)
-			return toreturn;
-		while (temp.fromSqlQuery(newQuery))
-		{
-			toreturn.push_back(DataEntity(temp.clone()));
-		}
-		assertAndCloseSession();
-		return toreturn;
-	}
-	template <class DataEnt>
-	QVector<DataEntity> loadDataWithFieldFilter(const QString& filter)
-	{
-		DataEnt temp;
-		QVector<DataEntity> toreturn;
-		auto newQuery = runQuery(temp.getAssociatedTable()->select_filtered(filter));
-		if (newQuery == nullptr)
-			return toreturn;
-		while (temp.fromSqlQuery(newQuery))
-		{
-			toreturn.push_back(DataEntity(temp.clone()));
-		}
-		assertAndCloseSession();
-		return toreturn;
-	}
 	template <class DataEnt>
 	bool recreateTable()
 	{
@@ -186,7 +137,7 @@ public:
 		}
 		return executeQuery(d.getAssociatedTable()->definition());
 	}
-	
+
 	template <class DataEnt>
 	std::shared_ptr<DataEnt> loadEntityById(IdInt id, const QString another_name = QString::null)
 	{
@@ -200,10 +151,55 @@ public:
 		assertAndCloseSession();
 		return temp;
 	}
+
+	template <class DataEnt>
+	std::shared_ptr<DataEnt> loadEntityAs(const QString& filter, const QString& tname = QString::null)
+	{
+		assertAndOpenSession();
+		std::shared_ptr<DataEnt> temp(new DataEnt());
+		auto newQuery = runQuery(
+			temp->getAssociatedTable()->select_filtered(filter, tname));
+		if (newQuery == nullptr)
+		{
+			assertAndCloseSession();
+			return temp;
+		}
+		try
+		{
+			temp->fromSqlQuery(newQuery);
+		}
+		catch (InitializationError & ie)
+		{
+			temp.reset(new DataEnt());
+		}
+		assertAndCloseSession();
+		return temp;
+	}
+
 	template <class DataEnt>
 	bool removeEntitiesFiltered(const QString filter, const QString another_name = QString::null)
 	{
 		DataEnt temp;
 		return executeQuery(temp.getAssociatedTable()->delete_filtered(filter, another_name));
+	}
+	template <class DataEnt>
+	QVector<std::shared_ptr<DataEnt> > loadEntitiesWithForcedQuery(const QString query)
+	{
+		assertAndOpenSession();
+		QVector<std::shared_ptr<DataEnt>> toreturn;
+		DataEnt temp;
+		QueryPtr newQuery;
+		newQuery = runQuery(query);
+		if (newQuery == nullptr)
+		{
+			assertAndCloseSession();
+			return toreturn;
+		}
+		while (temp.fromSqlQuery(newQuery))
+		{
+			toreturn.push_back(std::shared_ptr<DataEnt>((static_cast<DataEnt*>(temp.clone()))));
+		}
+		assertAndCloseSession();
+		return toreturn;
 	}
 };

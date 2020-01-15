@@ -1,7 +1,6 @@
 #include "abs_parser.h"
 #include <QtCore/QTextStream>
 
-
 namespace RequestParser {
 	bool abs_parser::_parseThis()
 	{

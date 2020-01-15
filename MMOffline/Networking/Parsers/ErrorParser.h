@@ -2,10 +2,6 @@
 #include <QtCore/QJsonObject>
 #include "Networking/queryTemplates.h"
 
-
-
-
-
 struct parsedError
 {
 	bool isError;

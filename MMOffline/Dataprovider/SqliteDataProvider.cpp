@@ -34,7 +34,6 @@ bool SqliteDataProvider::executeQuery(const QString& sqlquery)
 	return true;
 }
 
-
 bool SqliteDataProvider::executeWithinSession(const QString& sqlquery)
 {
 	if (sqlquery.isEmpty() || sqlquery.isNull())
@@ -62,7 +61,6 @@ bool SqliteDataProvider::executeWithinSession(const QString& sqlquery)
 	mainDatabase.commit();
 	return true;
 }
-
 
 QueryPtr SqliteDataProvider::runQuery(const QString& sqlquery)
 {
@@ -102,8 +100,7 @@ void SqliteDataProvider::assertAndCloseSession()
 	}
 }
 
-
-SqliteDataProvider::SqliteDataProvider(QObject * parent)
+SqliteDataProvider::SqliteDataProvider(QObject* parent)
 	: QObject(parent), mainDatabase(), isSessionOpened(false)
 {
 	mainDatabase = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), DATABASE_PATH);
@@ -181,7 +178,6 @@ bool SqliteDataProvider::createTableFor(const DataEntity entity, const QString& 
 	return executeQuery(entity->getAssociatedTable()->makeIndex(tname));
 }
 
-
 QVector<DataEntity> SqliteDataProvider::loadDataFrom(const TableNames table)
 {
 	QVector<DataEntity> toreturn;
@@ -190,7 +186,7 @@ QVector<DataEntity> SqliteDataProvider::loadDataFrom(const TableNames table)
 	if (newQuery == nullptr)
 	{
 #ifdef DEBUG
-		detrace_METHPERROR("loadDataFrom " + QString::number(table)," returned null query");
+		detrace_METHPERROR("loadDataFrom " + QString::number(table), " returned null query");
 #endif
 		return toreturn;
 	}
@@ -223,6 +219,26 @@ QStringList SqliteDataProvider::loadDataFrom(const QString table)
 	return toreturn;
 }
 
+int SqliteDataProvider::countData(const QString& table)
+{
+	assertAndOpenSession();
+	if (!doesTableExist(table))
+	{
+		return 0;
+	}
+	auto newQuery = runQuery(query_templates::QueryTemplateTable[query_templates::CountElementsQuery].arg(table));
+	if (!newQuery->next())
+	{
+		return 0;
+	}
+	bool ok;
+	int res = newQuery->value(0).toInt(&ok);
+	assertAndCloseSession();
+	if (!ok)
+		return 0;
+	return res;
+}
+
 int SqliteDataProvider::assertId(const QString& query, const int id)
 {
 	auto newQuery = runQuery(query.arg(id));
@@ -237,7 +253,7 @@ int SqliteDataProvider::assertId(const QString& query, const int id)
 
 void SqliteDataProvider::forcedCommit()
 {
-	mainDatabase.open(); 
+	mainDatabase.open();
 	mainDatabase.commit();
 	mainDatabase.close();
 	isSessionOpened = false;
@@ -263,7 +279,7 @@ bool SqliteDataProvider::pushData(const QVector<DataEntity>& data)
 	return true;
 }
 
-bool SqliteDataProvider::pushData(const QVector<DataEntity>& data, QString& table)
+bool SqliteDataProvider::pushData(const QVector<DataEntity>& data, QString table)
 {
 	assertAndOpenSession();
 	for (DataEntity entity : data)
@@ -284,7 +300,7 @@ bool SqliteDataProvider::pushData(const QVector<DataEntity>& data, QString& tabl
 }
 
 bool SqliteDataProvider::replaceData(const DataEntity d, const QString& tname)
-{	
+{
 	return executeQuery(d->getAssociatedTable()->replace(d->insertToDBValues(), tname));
 }
 

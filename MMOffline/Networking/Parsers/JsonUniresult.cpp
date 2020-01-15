@@ -1,7 +1,6 @@
 #include "JsonUniresult.h"
 #include <QTextStream>
 
-
 QString joinFields(const QHash<QString, QString>& h, const QStringList& l, const char* delimiter)
 {
 	if (l.isEmpty())
@@ -13,7 +12,6 @@ QString joinFields(const QHash<QString, QString>& h, const QStringList& l, const
 	}
 	return result;
 }
-
 
 QString NotAResult(QString::null);
 uniform_json_object_representation::uniform_json_object_representation()
@@ -50,7 +48,7 @@ uniform_json_object_representation::uniform_json_object_representation(QJsonObje
 		switch (val.type())
 		{
 		case QJsonValue::String:
-			fields.insert(key,val.toString());
+			fields.insert(key, val.toString());
 			break;
 		case QJsonValue::Type::Double:
 			fields.insert(key, QString::number(val.toDouble()));
@@ -63,7 +61,7 @@ uniform_json_object_representation::uniform_json_object_representation(QJsonObje
 }
 
 uniform_json_object_representation::uniform_json_object_representation(QStringList fn, QStringList f)
-	: fieldNames(fn), fields() ,sizeOfThis(fn.count())
+	: fieldNames(fn), fields(), sizeOfThis(fn.count())
 {
 	int min = std::min(fn.count(), f.count());
 	for (int i = 0; i < min; ++i)
@@ -211,6 +209,5 @@ QString uniform_json_object_representation::makeTableDefinition() const
 
 QString uniform_json_object_representation::makeTableInsertion() const
 {
-	return QStringLiteral("( ") + joinFields(fields, fieldNames, " , ") + QStringLiteral(" )"); 
+	return QStringLiteral("( ") + joinFields(fields, fieldNames, " , ") + QStringLiteral(" )");
 }
-

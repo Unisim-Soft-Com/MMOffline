@@ -3,8 +3,6 @@
 #include "Widgets/MultibranchWidgets/ProductSelectionWidget.h"
 #include "Widgets/parents/abstractNodeInterface.h"
 
-
-
 class ProductSelectionBranch : public inframedWidget, abstractNode
 {
 	Q_OBJECT
@@ -24,5 +22,4 @@ protected slots:
 	void hideCurrent();
 signals:
 	void selectionDone(Product);
-
 };

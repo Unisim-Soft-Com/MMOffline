@@ -3,7 +3,6 @@
 #include <memory>
 #include <qmetatype.h>
 
-
 class DocumentEntryEntity : public abs_entity
 {
 public:
@@ -34,7 +33,6 @@ public:
 	explicit DocumentEntryEntity();
 	explicit DocumentEntryEntity(IdInt ID);
 	explicit DocumentEntryEntity(const QStringList&);
-
 
 	// Inherited via abs_entity
 	virtual bool compare(abs_entity* another) const override;

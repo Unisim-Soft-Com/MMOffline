@@ -1,7 +1,6 @@
 #pragma once
 #include <QtWidgets/qstyleditemdelegate.h>
 
-
 class ProductsDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

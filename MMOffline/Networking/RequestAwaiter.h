@@ -2,7 +2,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 #include <QtNetwork/QNetworkReply>
-#include <QtCore/QLinkedList>
 /*
 	This file contains Awaiter class - a simple solution to await request. It has dataupdateengine-compatible interface and
 	can wait until response will arrive - or timeout happens. method isAwaiting provides simple interface - when it returns
@@ -12,8 +11,6 @@
 	Update: new signal added - is emitted when request is received, but without arguments
 
 */
-
-
 
 /*TODO: exception on deleteLater*/
 

@@ -4,15 +4,14 @@
 #include "Widgets/utils/ApplicationDataWorkset.h"
 #include "Networking/Parsers/RequestParser.h"
 
-
 OnlineLoginWidget::OnlineLoginWidget(QWidget* parent)
-:inframedWidget(parent), abstractNode(),  mainLayout(new QVBoxLayout(this)),
-innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
-errorLog(new QLabel(innerWidget)), loginInfo(new QLabel(innerWidget)),
-loginField(new QLineEdit(innerWidget)), passwordInfo(new QLabel(innerWidget)),
-passwordField(new QLineEdit(innerWidget)), buttonLayout(new QHBoxLayout(innerWidget)),
-okButton(new MegaIconButton(innerWidget)), backButton(new MegaIconButton(innerWidget)),
-awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMenuWidget(this))
+	:inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
+	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
+	errorLog(new QLabel(innerWidget)), loginInfo(new QLabel(innerWidget)),
+	loginField(new QLineEdit(innerWidget)), passwordInfo(new QLabel(innerWidget)),
+	passwordField(new QLineEdit(innerWidget)), buttonLayout(new QHBoxLayout(innerWidget)),
+	okButton(new MegaIconButton(innerWidget)), backButton(new MegaIconButton(innerWidget)),
+	awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMenuWidget(this))
 {
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
@@ -28,7 +27,6 @@ awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMen
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
 
-
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
 	main = this;
@@ -39,18 +37,14 @@ awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMen
 
 	errorLog->setStyleSheet(ERROR_TEXT_STYLESHEET);
 	loginInfo->setAlignment(Qt::AlignCenter);
-	loginInfo->setText(tr("write your login:"));
 	loginField->setText(GlobalAppSettings::instance()->localLogin);
-	passwordInfo->setText(tr("write your password:"));
 	passwordInfo->setAlignment(Qt::AlignCenter);
 	passwordField->setEchoMode(QLineEdit::Password);
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
-	backButton->setText(tr("back"));
 	backButton->setIcon(QIcon(":/res/back.png"));
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
-	okButton->setText(tr("Ok!"));
 	okButton->setIcon(QIcon(":/res/submit.png"));
-
+	fillTexts();
 	QObject::connect(loginField, &QLineEdit::returnPressed, passwordField, QOverload<>::of(&QLineEdit::setFocus));
 	QObject::connect(passwordField, &QLineEdit::returnPressed, this, &OnlineLoginWidget::passwordConfirmed);
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &OnlineLoginWidget::passwordConfirmed);
@@ -73,6 +67,15 @@ void OnlineLoginWidget::show()
 	inframedWidget::show();
 }
 
+void OnlineLoginWidget::fillTexts()
+{
+	loginInfo->setText(tr("write your login:"));
+	okButton->setText(tr("Ok!"));
+	backButton->setText(tr("back"));
+	passwordInfo->setText(tr("write your password:"));
+	syncMenu->fillTexts();
+}
+
 void OnlineLoginWidget::processResponse()
 {
 	auto resp = RequestParser::getLoginResult(awaiter->restext, awaiter->errtext);
@@ -83,6 +86,9 @@ void OnlineLoginWidget::processResponse()
 	else
 	{
 		DataWorkset::instance()->networkingEngine->setSession(resp.session, resp.uid);
+		AppSettings->localLogin = pendingLogin;
+
+		AppSettings->dump();
 		syncMenu->setLogin(pendingLogin);
 		_hideAny(syncMenu);
 		pendingLogin.clear();

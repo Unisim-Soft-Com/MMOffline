@@ -5,7 +5,7 @@
 #include <qstylepainter.h>
 specwidgets::indexedButton::indexedButton(int Index, QWidget* parent) : QPushButton(parent), index(Index)
 {
-	if (!QObject::connect(this, &QPushButton::clicked, this, &indexedButton::clickCapt)) throw  std::exception("no connection in indexed button");
+    QObject::connect(this, &QPushButton::clicked, this, &indexedButton::clickCapt);
 }
 void specwidgets::indexedButton::setIndex(int Index)
 {

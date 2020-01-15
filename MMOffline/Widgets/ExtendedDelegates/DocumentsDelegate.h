@@ -1,8 +1,6 @@
 #pragma once
 #include <QtWidgets/qstyleditemdelegate.h>
 
-
-
 class DocumentsDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT

@@ -23,7 +23,7 @@ public:
 	QString at(int ind) const;
 	QString toString() const;
 	int size() const;
-	const QStringList & keys() const;
+	const QStringList& keys() const;
 	const QString value(QString key) const;
 	const QString value(QLatin1String) const;
 	void setKeys(QStringList&);

@@ -25,14 +25,14 @@ namespace query_templates
 	enum QueryTemplates
 	{
 		DropTableQuery,
+		CountElementsQuery,
 		NotAQuery
 	};
 
 	extern const QString QueryTemplateTable[NotAQuery];
 }
 
-
-class TemplatedTableHandler 
+class TemplatedTableHandler
 {
 protected:
 	QString table_definition;
@@ -45,7 +45,7 @@ protected:
 
 public:
 	TemplatedTableHandler();
-	TemplatedTableHandler( QString t_def, QString t_decl, QStringList tfields, int primarykey = -1);
+	TemplatedTableHandler(QString t_def, QString t_decl, QStringList tfields, int primarykey = -1);
 	QString declaration() const noexcept;		//	returns declaration of the table which is used to create it in database
 	QString definition(const QString another_name = QString::null) const noexcept;
 	QString select_all(const QString another_name = QString::null) const noexcept;
@@ -57,9 +57,8 @@ public:
 	QString delete_by_primary_key(const QString& pkeyvalue, const QString another_name = QString::null) const noexcept;
 	QString drop(const QString another_name = QString::null) const noexcept;
 	QString allFieldsDeclaration() const noexcept;
-	QString insert( const QString& values, const QString another_name = QString::null) const noexcept;
+	QString insert(const QString& values, const QString another_name = QString::null) const noexcept;
 	QString makeIndex(const QString& another_name = QString::null) const noexcept;
 	TemplatedTableHandler clone(QString newName);
 	int getType() const noexcept { return table_type; };	//	returns type of this table
 };
-

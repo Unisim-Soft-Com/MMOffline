@@ -3,12 +3,14 @@
 #include "Widgets/ExtendedDelegates/EntryDelegate.h"
 #include "Widgets/utils/ApplicationDataWorkset.h"
 #include <qmessagebox.h>
+#include <QScroller>
 
 EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	: inframedWidget(parent), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
 	docInfo(new QLabel(innerWidget)), headerPanel(new QHBoxLayout(innerWidget)),
-	summPaidField(new QDoubleSpinBox(innerWidget)),doctypeField(new QComboBox(innerWidget)),
+	summPaidField(new QDoubleSpinBox(innerWidget)), doctypeField(new QComboBox(innerWidget)),
+	searchPanel(new QHBoxLayout(innerWidget)), searchInfo(new QLabel(innerWidget)),
 	searchField(new QLineEdit(innerWidget)), entriesView(new QListView(innerWidget)),
 	buttonsLayout(new QHBoxLayout(innerWidget)), backButton(new MegaIconButton(innerWidget)),
 	editButton(new MegaIconButton(innerWidget)), deleteButton(new MegaIconButton(innerWidget)),
@@ -24,7 +26,9 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	innerLayout->addLayout(headerPanel);
 	headerPanel->addWidget(summPaidField);
 	headerPanel->addWidget(doctypeField);
-	innerLayout->addWidget(searchField);
+	innerLayout->addLayout(searchPanel);
+	searchPanel->addWidget(searchInfo);
+	searchPanel->addWidget(searchField);
 	innerLayout->addWidget(entriesView);
 	innerLayout->addLayout(buttonsLayout);
 	buttonsLayout->addWidget(backButton);
@@ -42,25 +46,32 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	innerLayout->setContentsMargins(0, 0, 0, 0);
 	buttonsLayout->setContentsMargins(0, 0, 0, 0);
 	headerPanel->setContentsMargins(0, 0, 0, 0);
-
+	headerPanel->setMargin(2);
 	current = innerWidget;
 	untouchable = innerWidget;
 	main = this;
 	entryCreation->hide();
 	productSelection->hide();
 
-	docInfo->setFont(makeFont(0.02));
-	
+	entriesView->setFont(QFont("Times new Roman", 20, 20));
+	docInfo->setFont(makeFont(1.5));
+	docInfo->setAlignment(Qt::AlignCenter);
+	docInfo->setWordWrap(true);
+
 	summPaidField->setDecimals(2);
 	summPaidField->setMinimum(0);
 	summPaidField->setMaximum(1000000);
+	summPaidField->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
-	doctypes = AppWorkset->dataprovider.loadEntitiesFromTable<NamedIdEntity>("Tips");
+	doctypes = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Tips");
 	for (NamedId dtype : doctypes)
 	{
 		doctypeField->addItem(dtype->name);
 	}
-	
+
+	searchInfo->setText(tr("Search:"));
+	searchInfo->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
+
 	filterModel->setSourceModel(innerModel);
 	filterModel->setFilterRole(DataEntityListModel::SearchRole);
 	entriesView->setModel(filterModel);
@@ -81,7 +92,12 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	deleteButton->setStyleSheet(DELETE_BUTTONS_STYLESHEET);
 	addButton->setStyleSheet(COMMIT_BUTTONS_STYLESHEET);
 
+	QScroller::grabGesture(entriesView, QScroller::LeftMouseButtonGesture);
+	entriesView->setVerticalScrollMode(QListView::ScrollPerPixel);
 	QObject::connect(searchField, &QLineEdit::textChanged, filterModel, &DataEntityFilterModel::setFilterFixedString);
+#ifdef Q_OS_ANDROID
+	searchField->setInputMethodHints(Qt::InputMethodHint::ImhNoPredictiveText);
+#endif
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::finishRedacting);
 	QObject::connect(editButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::handleEdit);
 	QObject::connect(deleteButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::handleDelete);
@@ -90,7 +106,8 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	QObject::connect(entryCreation, &EntryCreationScreen::backRequired, this, &EntryRedactingSubbranch::hideCurrent);
 	QObject::connect(productSelection, &ProductSelectionBranch::backRequired, this, &EntryRedactingSubbranch::hideCurrent);
 	QObject::connect(productSelection, &ProductSelectionBranch::selectionDone, this, &EntryRedactingSubbranch::handleSelectedProduct);
-
+	QObject::connect(entriesView, &QListView::doubleClicked, this, &EntryRedactingSubbranch::handleEdit);
+	QObject::connect(searchField, &QLineEdit::returnPressed, qApp->inputMethod(), &QInputMethod::hide);
 }
 
 void EntryRedactingSubbranch::setDocument(Document doc)
@@ -99,7 +116,7 @@ void EntryRedactingSubbranch::setDocument(Document doc)
 	summPaidField->setValue(doc->alreadyPaid);
 	doctypeField->setCurrentIndex(findNamedId(doc->documentTypeName, doctypes));
 	docInfo->setText(doc->clientName);
-	innerModel->setData(AppWorkset->dataprovider.loadDataFilteredAs<DocumentEntryEntity>(
+	innerModel->setData(AppWorkset->dataprovider.loadDataAs<DocumentEntryEntity>(
 		QStringLiteral(" parentDocId = ") + QString::number(doc->documentId)
 		));
 	searchField->clear();
@@ -124,7 +141,7 @@ void EntryRedactingSubbranch::handleDelete()
 		if (userResponse != QMessageBox::Ok)
 			return;
 		DataEntity temp =
-				entriesView->currentIndex().data(DataEntityListModel::DataCopyRole).value<DataEntity>();
+			entriesView->currentIndex().data(DataEntityListModel::DataCopyRole).value<DataEntity>();
 		if (temp != nullptr)
 		{
 			AppWorkset->dataprovider.removeOneEntity(temp);
@@ -151,7 +168,7 @@ void EntryRedactingSubbranch::handleEdit()
 void EntryRedactingSubbranch::handleEditedEntry(DocumentEntry e)
 {
 	AppWorkset->dataprovider.replaceData(e);
-	innerModel->setData(AppWorkset->dataprovider.loadDataFilteredAs<DocumentEntryEntity>(
+	innerModel->setData(AppWorkset->dataprovider.loadDataAs<DocumentEntryEntity>(
 		QStringLiteral(" parentDocId = ") + QString::number(currentDocument->documentId)
 		));
 	searchField->clear();
@@ -187,20 +204,19 @@ void EntryRedactingSubbranch::finishRedacting()
 		isReplaceRequired = true;
 		currentDocument->alreadyPaid = summPaidField->value();
 	}
-		int index = findNamedId(doctypeField->currentText(), doctypes);
-		if (index != -1)
+	int index = findNamedId(doctypeField->currentText(), doctypes);
+	if (index != -1)
+	{
+		if (currentDocument->documentType != doctypes.at(index)->id)
 		{
-			if (currentDocument->documentType != doctypes.at(index)->id)
-			{
-				isReplaceRequired = true;
-				currentDocument->documentType = doctypes.at(index)->id;
-				currentDocument->documentTypeName = doctypes.at(index)->name;
-			}
+			isReplaceRequired = true;
+			currentDocument->documentType = doctypes.at(index)->id;
+			currentDocument->documentTypeName = doctypes.at(index)->name;
 		}
+	}
 
-		if (isReplaceRequired)
-			emit editingFinished(currentDocument);
-		else
-			emit backRequired();
+	if (isReplaceRequired)
+		emit editingFinished(currentDocument);
+	else
+		emit backRequired();
 }
-

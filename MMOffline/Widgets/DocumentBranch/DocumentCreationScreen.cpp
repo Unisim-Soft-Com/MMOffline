@@ -2,43 +2,53 @@
 #include "Widgets/utils/ApplicationDataWorkset.h"
 #include "Widgets/utils/ElementsStyles.h"
 
-
-
-
 DocumentCreationScreen::DocumentCreationScreen(QWidget* parent)
 	: inframedWidget(parent), mainLayout(new QVBoxLayout(this)),
 	clientInfo(new QLabel(this)), formLayout(new QFormLayout(this)),
 	idInfo(new QLabel(this)),
-	dateSpinBox(new QDateEdit(this)),
+	dateSpinBox(new BigButtonsSpinbox(BigButtonsSpinbox::datespin, this, 0.05)),
 	depozitField(new QComboBox(this)), tipField(new QComboBox(this)),
 	contactField(new QLineEdit(this)),
-	summPaidField(new QSpinBox(this)),
+	summPaidField(new BigButtonsSpinbox(BigButtonsSpinbox::floatspin, this)),
 	buttonLayout(new QHBoxLayout(this)), backButton(new MegaIconButton(this)),
 	okButton(new MegaIconButton(this)), depozits(), tips(), currentDocument(nullptr)
 {
 	this->setLayout(mainLayout);
-	this->setFont(QFont("Times New Roman", 17, 17));
+	this->setFont(makeFont(1));
 	mainLayout->addWidget(clientInfo);
-	formLayout->setContentsMargins(4, 4, 5, 5);
-	clientInfo->setAlignment(Qt::AlignCenter);
+
+	mainLayout->setSpacing(0);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	buttonLayout->setSpacing(0);
+	buttonLayout->setContentsMargins(0, 0, 0, 0);
+	formLayout->setContentsMargins(0, 7, 0, 7);
+	formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	mainLayout->addStretch(0);
 	mainLayout->addLayout(formLayout);
+	mainLayout->addStretch(0);
 	mainLayout->addLayout(buttonLayout);
+	formLayout->setLabelAlignment(Qt::AlignTop);
 	formLayout->addRow(tr("Client id: "), idInfo);
 	formLayout->addRow(tr("Shipping date"), dateSpinBox);
 	formLayout->addRow(tr("depozit"), depozitField);
 	formLayout->addRow(tr("tip"), tipField);
 	//formLayout->addRow(tr("contact"), contactField);
 	formLayout->addRow(tr("summ paid"), summPaidField);
-	formLayout->setRowWrapPolicy(QFormLayout::RowWrapPolicy::WrapLongRows);
-	formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow);
-	formLayout->setFormAlignment(Qt::AlignCenter | Qt::AlignTop);
-	formLayout->setLabelAlignment(Qt::AlignRight);
-	dateSpinBox->setCalendarPopup(true);
+	formLayout->setContentsMargins(8, 8, 8, 8);
+#ifdef Q_OS_ANDROID
+	clientInfo->setFont(makeFont(2));
+#else
+	clientInfo->setFont(makeFont(1.3));
+#endif
+	clientInfo->setWordWrap(true);
+	clientInfo->setAlignment(Qt::AlignCenter);
+
+	//dateSpinBox->setCalendarPopup(true);
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
 	contactField->hide();
-	depozits = AppWorkset->dataprovider.loadEntitiesFromTable<NamedIdEntity>("Depozits");
-	tips = AppWorkset->dataprovider.loadEntitiesFromTable<NamedIdEntity>("Tips");
+	depozits = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Depozits");
+	tips = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Tips");
 
 	okButton->setText(tr("Ok"));
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
@@ -48,6 +58,7 @@ DocumentCreationScreen::DocumentCreationScreen(QWidget* parent)
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	summPaidField->setMinimum(0);
 	summPaidField->setMaximum(50000);
+	summPaidField->setPrecision(2);
 	for (NamedId dep : depozits)
 	{
 		depozitField->addItem(dep->name);
@@ -58,6 +69,7 @@ DocumentCreationScreen::DocumentCreationScreen(QWidget* parent)
 	}
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &DocumentCreationScreen::okPressed);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &DocumentCreationScreen::backRequired);
+	//	QObject::connect(dateSpinBox, &QDateEdit::dateChanged, qApp->inputMethod(), &QInputMethod::hide);
 }
 
 void DocumentCreationScreen::primeCreation(Client client)
@@ -71,7 +83,7 @@ void DocumentCreationScreen::primeCreation(Client client)
 	{
 		clientInfo->setText(client->name);
 		idInfo->setText(QString::number(client->id));
-		currentDocument.reset(new DocumentEntity( IdGenerator::generateId()));
+		currentDocument.reset(new DocumentEntity(IdGenerator::generateId()));
 		currentDocument->clientId = client->id;
 		currentDocument->clientName = client->name;
 		currentDocument->dateWhenCreated = QDateTime::currentDateTime();

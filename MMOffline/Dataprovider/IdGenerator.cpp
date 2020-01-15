@@ -6,11 +6,10 @@
 IdGenerator::IdGenerator()
 	: rngGenerator(std::random_device()()), randint(0, 1023), shiftBorder(10)
 {
-
 }
 
 IdGenerator::IdGenerator(int shBorder, int seed)
-	: rngGenerator(seed), randint(0, std::pow(2, shBorder)-1), shiftBorder(shBorder)
+	: rngGenerator(seed), randint(0, std::pow(2, shBorder) - 1), shiftBorder(shBorder)
 {
 }
 
@@ -21,7 +20,7 @@ IdInt IdGenerator::generate()
 	newId <<= shiftBorder;
 	unsigned int t = randint(rngGenerator);
 	newId += t;
-	return newId; 
+	return newId;
 }
 
 void IdGenerator::seedGenerator(unsigned int seed)

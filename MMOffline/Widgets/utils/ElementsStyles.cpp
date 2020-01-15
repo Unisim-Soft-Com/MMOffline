@@ -9,9 +9,11 @@
 QString QLabelColorizationTemplate = QStringLiteral("QLabel {"
 	"color: %1;"
 	"border: 3px solid black;"
-"}");
+	"}");
 
-QString makeGradientStylesheet(const QColor& first,const QColor& second, int max, int curr)
+FontAdapter* FontAdapter::_instance = nullptr;
+
+QString makeGradientStylesheet(const QColor& first, const QColor& second, int max, int curr)
 {
 	if (curr >= max)
 	{
@@ -31,14 +33,14 @@ QString makeGradientStylesheet(const QColor& first,const QColor& second, int max
 }
 QString& normalizeLine(QString& line, int maxSymb)
 {
-    int inserts = line.length() / maxSymb;
-    if (inserts <= 0)
-        return line;
-    for (int i = 1; i <= inserts; ++i)
-    {
-        line.insert(i * maxSymb + i - 1, "\n");
-    }
-    return line;
+	int inserts = line.length() / maxSymb;
+	if (inserts <= 0)
+		return line;
+	for (int i = 1; i <= inserts; ++i)
+	{
+		line.insert(i * maxSymb + i - 1, "\n");
+	}
+	return line;
 }
 
 QString countAdaptiveFont(double perc)
@@ -48,7 +50,7 @@ QString countAdaptiveFont(double perc)
 
 QFont makeFont(double perc)
 {
-	return QFont("Arial", GEOMETRY_SOURCE->availableGeometry().height() * perc);
+	return FontAdapter::makeFont(perc);
 }
 
 const QString OK_BUTTONS_STYLESHEET(QStringLiteral("QPushButton {"
@@ -226,4 +228,44 @@ const QString FRAMED_LABEL_STYLESHEET(
 		"border: 3px solid black;"
 		"}"
 	)
+);
+
+FontAdapter::FontAdapter(int mh, int mah, double mfp)
+	: minheight(mh), maxheight(mah), minimumFontPercent(mfp)
+{
+	if (_instance == nullptr)
+		_instance = this;
+#ifdef  Q_OS_WIN
+	minimumFontPercent = mfp * 0.6;
+#endif //  Q_OS_WIN
+}
+
+QFont FontAdapter::makeFont(double extrapercents)
+{
+	if (_instance == nullptr)
+		return QFont();
+	int currentHeight = GEOMETRY_SOURCE->availableGeometry().height();
+	currentHeight *= _instance->minimumFontPercent;
+	currentHeight *= extrapercents;
+	if (currentHeight < _instance->minheight)
+		currentHeight = _instance->minheight;
+	else
+		if (currentHeight > _instance->maxheight)
+			currentHeight = _instance->maxheight;
+	return QFont("Times new Roman", currentHeight);
+}
+
+const QString DOWNLOAD_BUTTON_STYLESHEET =
+QStringLiteral(
+	"QPushButton{ "
+	"background-color: #fff77d;"
+	"border: 1px solid gray;"
+	"}"
+);
+
+const QString UPLOAD_BUTTON_STYLESHEET = QStringLiteral(
+	"QPushButton{ "
+	"background-color: #d0ff85;"
+	"border: 1px solid gray;"
+	"}"
 );

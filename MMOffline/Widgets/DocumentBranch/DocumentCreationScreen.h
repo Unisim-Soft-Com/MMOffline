@@ -17,15 +17,15 @@ protected:
 	QLabel* clientInfo;
 	QFormLayout* formLayout;
 	QLabel* idInfo;
-	QDateEdit* dateSpinBox;
+	BigButtonsSpinbox* dateSpinBox;
 	QComboBox* depozitField;
 	QComboBox* tipField;
 	QLineEdit* contactField;
-	QSpinBox* summPaidField;
+	BigButtonsSpinbox* summPaidField;
 	QHBoxLayout* buttonLayout;
 	MegaIconButton* backButton;
 	MegaIconButton* okButton;
-	
+
 	NamedIdList depozits;
 	NamedIdList tips;
 
@@ -38,5 +38,4 @@ protected slots:
 	void okPressed();
 signals:
 	void documentCreated(Document);
-	
 };
