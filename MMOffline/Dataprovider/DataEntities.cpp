@@ -1,16 +1,18 @@
 #include "DataEntities.h"
 #include <QWidget>
 
-#include "debugtrace.h"
 const abs_entity* const associateTableWithData[PREDEFINED_TABLES_QUANTITY]
 {
 	new ClientEntity(),
 	new ProductEntity(),
+	new GroupEntity(),
+	new NamedIdEntity(),
 	new DocumentEntity(),
 	new DocumentEntryEntity()
 };
 
 int indexOfEntityById(int id, const QVector<DataEntity>& v)
+// This utility fuction finds vector index by it's id
 {
 	for (int i = 0; i < v.count(); ++i)
 	{
@@ -121,7 +123,6 @@ bool DataEntityFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 
 void DataEntityFilterModel::mapClickToEntity(const QModelIndex& index)
 {
-	detrace_METHCALL("mapClickToEntity");
 	if (!index.isValid())
 		return;
 	QVariant temp = mapToSource(index).data(Qt::DisplayRole);

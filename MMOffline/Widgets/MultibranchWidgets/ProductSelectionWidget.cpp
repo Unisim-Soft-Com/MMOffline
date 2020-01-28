@@ -1,7 +1,9 @@
 #include "ProductSelectionWidget.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
 #include "Widgets/utils/ElementsStyles.h"
 #include <QScroller>
+
+// This filter allows to select right products using group and client ids
 const QString productFilter = "groupId = %1 and clientIds like \"%%2%\"";
 
 ProductSelectionWidget::ProductSelectionWidget(QWidget* parent)
@@ -12,6 +14,7 @@ ProductSelectionWidget::ProductSelectionWidget(QWidget* parent)
 	buttonPanel(new QHBoxLayout(this)),
 	backButton(new MegaIconButton(this)), okButton(new MegaIconButton(this))
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(info);
 	mainLayout->addLayout(searchPanel);
@@ -22,47 +25,54 @@ ProductSelectionWidget::ProductSelectionWidget(QWidget* parent)
 	buttonPanel->addWidget(backButton);
 	buttonPanel->addWidget(okButton);
 
+	// removing margins to save space
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	buttonPanel->setSpacing(0);
 	buttonPanel->setContentsMargins(0, 0, 0, 0);
 
+	// setting up labels appearance
 	searchInfo->setText(tr("Search: "));
 	searchInfo->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
 
+	// setting up models without loading data
 	searchProxy->setSourceModel(dataModel);
 	searchProxy->setFilterRole(Qt::UserRole);
 	searchProxy->setFilterFixedString("");
+	// setting up view appearance
 	productView->setModel(searchProxy);
 	productView->setFont(QFont("Times new Roman", 20, 20));
 	productView->setItemDelegate(innerDelegate);
+	QScroller::grabGesture(productView, QScroller::LeftMouseButtonGesture);
+	productView->setVerticalScrollMode(QListView::ScrollPerPixel);
+
+	//	setting up buttons appearance
 	backButton->setIcon(QIcon(":/res/back.png")); backButton->setText(tr("back"));
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	okButton->setIcon(QIcon(":/res/submit.png"));
 	okButton->setText(tr("OK"));
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
 
-	QScroller::grabGesture(productView, QScroller::LeftMouseButtonGesture);
-	productView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	// connecting slots
 	QObject::connect(productView, &QListView::doubleClicked, searchProxy, &DataEntityFilterModel::mapClickToEntity);
 	QObject::connect(searchProxy, &DataEntityFilterModel::dataEntityClicked, this, &ProductSelectionWidget::productSelected);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &ProductSelectionWidget::backRequired);
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &ProductSelectionWidget::okClicked);
 	QObject::connect(searchLine, &QLineEdit::textChanged, searchProxy, &DataEntityFilterModel::setFilterFixedString);
+	// removing text prediction to allow instant search
 #ifdef Q_OS_ANDROID
 	searchLine->setInputMethodHints(Qt::InputMethodHint::ImhNoPredictiveText);
 #endif
 }
 
-void ProductSelectionWidget::setDataLoadParameters(Group group, Client client)
-{
-}
 
 void ProductSelectionWidget::primeSelection(Group group, Client client)
 {
-	dataModel->setData(AppWorkset->dataprovider.loadDataAs<ProductEntity>(
+	auto temp = AppData->loadDataAs(DataEntity(new ProductEntity()),
 		productFilter.arg(group->id).arg(client->id)
-		));
+	);
+	std::sort(temp.begin(), temp.end(), [](const DataEntity a, const DataEntity b) { return !a->sortingCompare(&(*(b))); });
+	dataModel->setData(temp);
 	dataModel->assingEmptyCounters();
 	searchLine->clear();
 	searchProxy->setSourceModel(dataModel);
@@ -71,12 +81,12 @@ void ProductSelectionWidget::primeSelection(Group group, Client client)
 	searchProxy->setFilterFixedString("");
 }
 
-void ProductSelectionWidget::incrementQuantityCounter(int id, int q)
+void ProductSelectionWidget::incrementQuantityCounter(IdInt id, int q)
 {
 	dataModel->incrementQuantity(id, q);
 }
 
-void ProductSelectionWidget::setQuantityCounter(int id, int q)
+void ProductSelectionWidget::setQuantityCounter(IdInt id, int q)
 {
 	dataModel->assignQuantityUpdate(id, q);
 }

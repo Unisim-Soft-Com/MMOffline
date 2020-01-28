@@ -5,18 +5,12 @@
 
 MMOffline::MMOffline()
 	: inframedWidget(nullptr),
-	abstractDynamicNode(),
-	docroot(),
-	startingScreen(new StartingScreen(this)),
-	logsBranch()
+	abstractDynamicNode(new StartingScreen(this), new QVBoxLayout(this))
 {
-	mainLayout = new QVBoxLayout(this);
+	// binding layout
 	this->setLayout(mainLayout);
-	mainLayout->setContentsMargins(0, 0, 0, 0);
-	mainLayout->setSpacing(0);
-	mainLayout->addWidget(startingScreen);
-	currentlyOpened = startingScreen;
-	untouchable = startingScreen;
+
+	// connecting slots using upcasting current. We don't need to connect anything except current because it's all unallocated.
 	QObject::connect(_upCO<StartingScreen>(), &StartingScreen::documentCreationInitiated, this, &MMOffline::toDocumentRoot);
 	QObject::connect(_upCO<StartingScreen>(), &StartingScreen::logsRequired, this, &MMOffline::toLogs);
 }
@@ -24,7 +18,6 @@ MMOffline::MMOffline()
 void MMOffline::toDocumentRoot()
 {
 	_hideAnyWithDelete(new DocumentRootWidget(this));
-	docroot = currentlyOpened;
 	QObject::connect(currentlyOpened, &inframedWidget::backRequired, this, &MMOffline::toStart);
 }
 
@@ -36,6 +29,5 @@ void MMOffline::toStart()
 void MMOffline::toLogs()
 {
 	_hideAnyWithDelete(new LogBranchRoot(this));
-	logsBranch = currentlyOpened;
 	QObject::connect(currentlyOpened, &inframedWidget::backRequired, this, &MMOffline::toStart);
 }

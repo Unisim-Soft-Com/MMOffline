@@ -165,6 +165,32 @@ ProductEntity::ProductEntity(const QStringList& flist)
 	_listInit(flist);
 }
 
+bool ProductEntity::higherThan(const abs_entity* another) const
+{
+	if (class_id == another->myType())
+	{
+		const ProductEntity* temp = dynamic_cast<const ProductEntity*>(another);
+		bool higher = false;
+		int max = (temp->name.count() > name.count()) ? name.count() : temp->name.count();
+		max = (max > 5) ? 5 : max;
+		for (int i = 0; (i < max); ++i)
+		{
+			if (name.at(i).toCaseFolded() == temp->name.at(i).toCaseFolded())
+				continue;
+			higher = name.at(i).toCaseFolded() > temp->name.at(i).toCaseFolded();
+			max = -1;
+			break;
+		}
+		if (max > 0)
+			return id > another->getId();
+		return higher;
+	}
+	else
+	{
+		return id > another->getId();
+	}
+}
+
 bool ProductEntity::compare(abs_entity* another) const
 {
 	auto temp = dynamic_cast<ProductEntity*>(another);

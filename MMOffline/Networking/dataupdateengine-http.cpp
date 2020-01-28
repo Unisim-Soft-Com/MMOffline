@@ -19,11 +19,10 @@
 #define DEBUG
 
 HttpUpdateEngine::HttpUpdateEngine(QString& Url, QObject* parent)
-	: DataUpdateEngine(parent), url(Url), nextQueryId(0), delay(0), queryTemplates(_initTemplates())
+	: QObject(parent), url(Url), nextQueryId(0),  queryTemplates(_initTemplates())
 {
-	class_id = 1;
 }
-
+HttpUpdateEngine* HttpUpdateEngine::_instanse = nullptr;
 bool HttpUpdateEngine::sessionReady()
 {
 	return !sessionId.isEmpty();
@@ -133,6 +132,15 @@ void HttpUpdateEngine::setSession(QString& session, QString& uid)
 {
 	sessionId = session;
 	user_id = uid;
+}
+
+HttpUpdateEngine* HttpUpdateEngine::instanse()
+{
+	if (_instanse == nullptr)
+	{
+		_instanse = new HttpUpdateEngine(AppSettings->HttpUrl, nullptr);
+	}
+	return _instanse;
 }
 
 void HttpUpdateEngine::setUrl(QString& Url)

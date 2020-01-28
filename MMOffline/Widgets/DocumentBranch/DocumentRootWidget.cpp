@@ -1,5 +1,5 @@
 #include "DocumentRootWidget.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
 
 DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	: inframedWidget(parent), abstractNode(),
@@ -11,6 +11,7 @@ DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	entryCreation(new EntryCreationScreen(this)),
 	currentClient(), currentGroup(), isDocumentSaved(false)
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(clientSelection);
 	mainLayout->addWidget(documentCreation);
@@ -18,15 +19,22 @@ DocumentRootWidget::DocumentRootWidget(QWidget* parent)
 	mainLayout->addWidget(productSelection);
 	mainLayout->addWidget(entryCreation);
 
+	// removing margins to save space
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
+
+	// hiding everything except client selection
 	documentCreation->hide();
 	groupSelection->hide();
 	productSelection->hide();
 	entryCreation->hide();
+
+	// client selection becomes inner-view of this branch
 	untouchable = clientSelection;
 	main = this;
 	current = clientSelection;
+
+	// connecting widgets with root
 	QObject::connect(clientSelection, &ClientSelectionWidget::clientSelected, this,
 		&DocumentRootWidget::clientConfirmed);
 	QObject::connect(documentCreation, &DocumentCreationScreen::documentCreated, this,
@@ -93,13 +101,14 @@ void DocumentRootWidget::productSelected(Product p)
 
 void DocumentRootWidget::entryCreated(DocumentEntry entry)
 {
+	// document is saved only when at least one entry added
 	if (!isDocumentSaved)
 	{
-		AppWorkset->dataprovider.replaceData(std::static_pointer_cast<abs_entity>(currentDocument));
+		AppData->replaceData(std::static_pointer_cast<abs_entity>(currentDocument));
 		isDocumentSaved = true;
 		clientSelection->incrementDocCounter(currentDocument->clientId);
 	}
-	AppWorkset->dataprovider.replaceData(entry);
+	AppData->replaceData(entry);
 	productSelection->setQuantityCounter(entry->productId, entry->quantity);
 	hideCurrent();
 }

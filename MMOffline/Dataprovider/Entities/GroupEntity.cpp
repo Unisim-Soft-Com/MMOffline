@@ -1,6 +1,8 @@
 #include "GroupEntity.h"
 
 using namespace fieldPredefinitions;
+
+// This group pointer is used to allow QVariant be null, but valid, passing validity check
 Group nullGroup(nullptr);
 uniform_json_object_representation GroupEntity::toJsonRepresentation() const
 {
@@ -14,8 +16,11 @@ uniform_json_object_representation GroupEntity::toJsonRepresentation() const
 		}
 	);
 }
+// splits index, making it two-dimensional
 inline QPair<int, int> splitIndex(int i, int count);
+// joins index, making it one-dimensional
 inline int joinIndex(const QModelIndex& ind, int count);
+// checks if index is valid after joining it
 inline bool assertIndex(const QModelIndex& ind, int count)
 {
 	return count <= joinIndex(ind, count);
@@ -166,6 +171,11 @@ bool GroupEntity::operator==(const GroupEntity& another) const
 	return id == another.id;
 }
 
+bool GroupEntity::higherThan(const abs_entity* another) const
+{
+	return id > another->getId();
+}
+
 bool GroupEntity::compare(abs_entity* another) const
 {
 	auto temp = dynamic_cast<GroupEntity*>(another);
@@ -295,79 +305,86 @@ void GroupTreeModel::clearLayers()
 }
 
 void GroupTreeModel::stepToNextLayer(const QModelIndex& index)
+// this method is used for going lower throught the tree
 {
 	Group temp;
 	beginResetModel();
 	switch (currentVisibleLayer)
 	{
-	case 0:
+	case 0:		//	if toplevel
 	{
 		if (assertIndex(index, topLayerList.count()))
 			return;
 		temp = topLayerList.at(joinIndex(index, topLayerList.count()));
 		currentGroup = topLayerList.at(joinIndex(index, topLayerList.count()));
+		// going lower
 		if (!currentGroup->hasSubgroups())
+			// if no subgroups in current group
 		{
 			emit groupSelected(currentGroup);
 			endResetModel();
-			emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
+			// emit signal, leave model untouched
 			return;
 		}
 		break;
 	}
-	default:
+	default:	//	if not toplevel
 	{
 		temp = topLayerLinker.value(layersIds.at(0));
 		int i = 1;
+		// going to selected group. This code fragment possibly is renundant, because of currentGroup
 		while (i < layersIds.count())
 		{
 			temp = temp->getSubgroupIfExists(layersIds.at(i));
 			++i;
 		}
+		// end of fragment
 		if (assertIndex(index, temp->countSubgroups()))
 		{
 			endResetModel();
 			return;
 		}
 		if (!temp->getSubgroup(joinIndex(index, temp->countSubgroups()))->hasSubgroups())
+			// if no subgroups, emit signal, leave model untouched
 		{
 			emit groupSelected(temp->getSubgroup(joinIndex(index, temp->countSubgroups())));
 			endResetModel();
-			emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
 			return;
 		}
 		if (layersIds.contains(temp->getSubgroup(joinIndex(index, temp->countSubgroups()))->id))
+			// if circular node found - emit signal, leave model untouched
 		{
 			endResetModel();
 			emit groupSelected(temp->getSubgroup(joinIndex(index, temp->countSubgroups())));
 			return;
 		}
+		// current group is now selected one
 		currentGroup = temp->getSubgroup(joinIndex(index, temp->countSubgroups()));
 	}
 	}
+	// increase layer counter, remember group id and stop model reset
 	++currentVisibleLayer;
 	layersIds.push(currentGroup->id);
 	endResetModel();
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
 }
 
 void GroupTreeModel::stepToUpperLevel()
+// Steps up
 {
 	switch (currentVisibleLayer)
 	{
-	case 0:
+	case 0:		// if toplevel, emit no next level signal
 		layersIds.clear();
 		emit backRequired();
 		return;
-	case 1:
+	case 1:	//	else if this is first level, clear current group and show top level
 		beginResetModel();
 		layersIds.clear();
 		--currentVisibleLayer;
 		currentGroup = Group();
 		endResetModel();
-		emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
 		return;
-	default:
+	default: // else - perform restoring previous group using layers stack
 		beginResetModel();
 		Group temp = topLayerLinker.value(layersIds.at(0));
 		int i = 1;
@@ -383,7 +400,6 @@ void GroupTreeModel::stepToUpperLevel()
 	endResetModel();
 	if (!layersIds.isEmpty())
 		layersIds.pop();
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount(), columnCount()));
 }
 
 inline int joinIndex(const QModelIndex& ind, int count)

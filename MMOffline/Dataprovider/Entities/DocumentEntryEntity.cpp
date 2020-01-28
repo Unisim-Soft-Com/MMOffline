@@ -164,6 +164,11 @@ DocumentEntryEntity::DocumentEntryEntity(const QStringList& l)
 	_listInit(l);
 }
 
+bool DocumentEntryEntity::higherThan(const abs_entity* another) const
+{
+	return entryId > another->getId();
+}
+
 bool DocumentEntryEntity::compare(abs_entity* another) const
 {
 	auto temp = dynamic_cast<DocumentEntryEntity*>(another);

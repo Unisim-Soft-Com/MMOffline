@@ -4,6 +4,7 @@
 namespace RequestParser
 {
 	class LinearParser : public abs_parser
+		// This parser looks for plain one-dimensional array of json objects
 	{
 	protected:
 		// Inherited via abs_parser

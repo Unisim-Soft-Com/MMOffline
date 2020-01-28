@@ -1,23 +1,35 @@
 #include "LogBranchRoot.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
+
+
+
 LogBranchRoot::LogBranchRoot(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)),
-	docEditing(new DocumentSelectionWidget(this)), entryEditing(new EntryRedactingSubbranch(this))
+	docEditing(new DocumentSelectionWidget(this)), entryEditing(new DocumentRedactingSubbranch(this))
 {
+	
+	// setting up abstract node interfaces. DocEditing widget is considered as inner-view of branch
 	current = docEditing;
 	main = this;
 	untouchable = docEditing;
+
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(untouchable);
 	mainLayout->addWidget(entryEditing);
+
+	// removing margins to save space
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
+	
+	// hiding subbranch
 	entryEditing->hide();
 
+	// connecting slots
 	QObject::connect(docEditing, &DocumentSelectionWidget::backRequired, this, &LogBranchRoot::hideCurrent);
-	QObject::connect(entryEditing, &EntryRedactingSubbranch::backRequired, this, &LogBranchRoot::hideCurrent);
+	QObject::connect(entryEditing, &DocumentRedactingSubbranch::backRequired, this, &LogBranchRoot::hideCurrent);
 	QObject::connect(docEditing, &DocumentSelectionWidget::DocumentSelected, this, &LogBranchRoot::onDocInteractions);
-	QObject::connect(entryEditing, &EntryRedactingSubbranch::editingFinished, this, &LogBranchRoot::onDocChange);
+	QObject::connect(entryEditing, &DocumentRedactingSubbranch::editingFinished, this, &LogBranchRoot::onDocChange);
 }
 
 void LogBranchRoot::onDocInteractions(Document doc, int action)
@@ -26,24 +38,28 @@ void LogBranchRoot::onDocInteractions(Document doc, int action)
 	{
 	case deleteDocument:
 	{
-		AppWorkset->dataprovider.removeOneEntity(doc);
-		AppWorkset->dataprovider.removeEntitiesFiltered<DocumentEntryEntity>("parentDocId = " + QString::number(doc->documentId));
+		// direct delete from database. No need to care about deleting item from DocumentSelection
+		AppData->removeOneEntity(doc);
+		AppData->removeEntitiesFiltered(DataEntity(new DocumentEntryEntity()), "parentDocId = " + QString::number(doc->documentId));
 		return;
 	}
 	case editDocument:
 	{
+		// priming editing and showing subbranch
 		entryEditing->setDocument(doc);
 		_hideAny(entryEditing);
 		return;
 	}
 	default:
+		// here can be added more actions
 		return;
 	}
 }
 
 void LogBranchRoot::onDocChange(Document doc)
 {
-	AppWorkset->dataprovider.replaceData(doc);
+	// direct replacing of the document in the database and in the selection
+	AppData->replaceData(doc);
 	docEditing->replaceDocument(doc);
 	_hideCurrent(untouchable);
 }

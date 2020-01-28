@@ -48,7 +48,7 @@ ClientEntity::ClientEntity()
 {
 }
 
-ClientEntity::ClientEntity(IdInt Id, QString Name)
+ClientEntity::ClientEntity(const IdInt Id, const QString Name)
 	: abs_entity(Clients), id(Id), name(Name)
 {
 }
@@ -61,6 +61,34 @@ ClientEntity::ClientEntity(const QStringList& list)
 	id = list.first().toInt(&ok);
 	if (!ok) throw InitializationError(2);
 	name = list.last();
+}
+
+bool ClientEntity::higherThan(const abs_entity* another) const
+{
+	if (class_id == another->myType())
+	{
+		const ClientEntity* temp = dynamic_cast<const ClientEntity*>(another);
+		bool higher = false;
+		int max = (temp->name.count() > name.count()) ? name.count() : temp->name.count();
+		max = (max > 5) ? 5 : max;
+		for (int i = 0; (i < max); ++i)
+		{
+			if (name.at(i).toCaseFolded() == temp->name.at(i).toCaseFolded())
+			{
+				continue;
+			}
+			higher = name.at(i).toCaseFolded() > temp->name.at(i).toCaseFolded();
+			max = -1;
+			break;
+		}
+		if (max > 0)
+			return id > another->getId();
+		return higher;
+	}
+	else
+	{
+		return id > another->getId();
+	}
 }
 
 bool ClientEntity::compare(abs_entity* another) const

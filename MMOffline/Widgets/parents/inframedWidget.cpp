@@ -16,19 +16,26 @@ bool inframedWidget::isExpectingControl(int val)
 inframedWidget::inframedWidget(QWidget* parent)
 	: QWidget(parent), keyfilter(new filters::GeneralPurposeFilter(filters::GeneralPurposeFilter::infPack, this))
 {
-#ifndef Q_OS_ANDROID
+	GeneralPurposeFilter* temp = qobject_cast<GeneralPurposeFilter*>(keyfilter);
 	QObject::installEventFilter(keyfilter);
-	QObject::connect(keyfilter, &GeneralPurposeFilter::backPressed, this, &inframedWidget::backReaction);
-	QObject::connect(keyfilter, &GeneralPurposeFilter::returnPressed, this, &inframedWidget::returnReaction);
-	QObject::connect(keyfilter, &GeneralPurposeFilter::numberPressed, this, &inframedWidget::controlReaction);
-#endif
+	QObject::connect(temp, &GeneralPurposeFilter::backPressed, this, &inframedWidget::backReaction);
+	QObject::connect(temp, &GeneralPurposeFilter::returnPressed, this, &inframedWidget::returnReaction);
+	QObject::connect(temp, &GeneralPurposeFilter::numberPressed, this, &inframedWidget::controlReaction);
+}
+inframedWidget::inframedWidget(bool listen, QWidget* parent)
+	: QWidget(parent), keyfilter(nullptr)
+{
+	if (listen)
+	{
+		GeneralPurposeFilter * temp = new filters::GeneralPurposeFilter(GeneralPurposeFilter::infPack, this);
+		QObject::installEventFilter(keyfilter);
+		QObject::connect(temp, &GeneralPurposeFilter::backPressed, this, &inframedWidget::backReaction);
+		QObject::connect(temp, &GeneralPurposeFilter::returnPressed, this, &inframedWidget::returnReaction);
+		QObject::connect(temp, &GeneralPurposeFilter::numberPressed, this, &inframedWidget::controlReaction);
+		keyfilter = temp;
+	}
 }
 bool inframedWidget::back()
-{
-	return false;
-}
-
-bool inframedWidget::giveSettings()
 {
 	return false;
 }
@@ -44,13 +51,26 @@ void inframedWidget::installEventFilter(QObject* obj)
 	{
 		if (keyfilter != nullptr) {
 			removeEventFilter(keyfilter);
-#ifndef Q_OS_ANDROID
 			keyfilter->deleteLater();
-#endif
 		}
 		QWidget::installEventFilter(obj);
 		return;
 	}
+}
+
+void inframedWidget::disableListening()
+{
+	if (keyfilter != nullptr)
+	{
+		removeEventFilter(keyfilter);
+		keyfilter->deleteLater();
+		keyfilter = nullptr;
+	}
+}
+
+bool inframedWidget::isListening()
+{
+	return keyfilter == nullptr;
 }
 
 void inframedWidget::returnReaction()

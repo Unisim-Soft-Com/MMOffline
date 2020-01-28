@@ -1,7 +1,8 @@
 #include "EntryCreationScreen.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
 #include "Widgets/utils/ElementsStyles.h"
 
+// This query is appended to select_filtered to check if product is unique
 const QString entryLoadQuery
 = QStringLiteral(" parentDocId = %1 and productId = %2");
 
@@ -15,8 +16,8 @@ EntryCreationScreen::EntryCreationScreen(QWidget* parent)
 	buttonLayout(new QHBoxLayout(this)), backButton(new MegaIconButton(this)),
 	okButton(new MegaIconButton(this)), measures(), options(), operatedProduct()
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
-	this->setFont(makeFont(1));
 	mainLayout->addWidget(productInfo);
 	mainLayout->addStretch(0);
 	mainLayout->addLayout(formLayout);
@@ -27,26 +28,34 @@ EntryCreationScreen::EntryCreationScreen(QWidget* parent)
 	formLayout->addRow(tr("Measure: "), measureField);
 	formLayout->addRow(tr("Quantity: "), quantitySpinbox);
 	formLayout->addRow(tr("Option: "), foptionField);
+	
+	// These option can be usefull later
 	//formLayout->addRow(tr("Option: "), soptionField);
 	//formLayout->addRow(tr("Option: "), toptionField);
+
 	formLayout->addRow(tr("Comment: "), commentField);
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
+
+	// saving space by disabling margins
 	formLayout->setContentsMargins(0, 6, 0, 6);
 	formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	buttonLayout->setSpacing(0);
 	buttonLayout->setContentsMargins(0, 0, 0, 0);
+
+	// scaling fonts
+	this->setFont(makeFont(1));
 #ifdef Q_OS_ANDROID
 	productInfo->setFont(makeFont(2));
 #else
 	productInfo->setFont(makeFont(1.3));
 #endif
+
+	// setting up labels and buttons appearance
 	productInfo->setAlignment(Qt::AlignCenter);
 	productInfo->setWordWrap(true);
-	quantitySpinbox->setMinimum(0);
-	quantitySpinbox->setMaximum(1000000);
 	backButton->setText(tr("back"));
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	backButton->setIcon(QIcon(":/res/back.png"));
@@ -54,8 +63,13 @@ EntryCreationScreen::EntryCreationScreen(QWidget* parent)
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
 	okButton->setIcon(QIcon(":/res/submit.png"));
 
-	measures = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Measures");
-	options = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Options");
+	// setting up spinbox settings
+	quantitySpinbox->setMinimum(0);
+	quantitySpinbox->setMaximum(1000000);
+
+	// loading measures and options dictionaries, then filling comboboxes
+	measures = AppData->loadEntities<NamedIdEntity>(QString::null, "Measures");
+	options = AppData->loadEntities<NamedIdEntity>(QString::null, "Options");
 	for (NamedId& id : measures)
 	{
 		measureField->addItem(id->name);
@@ -67,9 +81,11 @@ EntryCreationScreen::EntryCreationScreen(QWidget* parent)
 		toptionField->addItem(id->name);
 	}
 
+	// hiding unnecessary option comboboxes
 	soptionField->hide();
 	toptionField->hide();
 
+	// connecting elements
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &EntryCreationScreen::confirmed);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &EntryCreationScreen::backRequired);
 }
@@ -81,10 +97,12 @@ void EntryCreationScreen::primeEntryCreation(Product p, Document doc)
 	operatedProduct.reset(new ProductEntity(*p));
 	priceInfo->setText(QString::number(operatedProduct->price));
 	productInfo->setText(operatedProduct->name);
-	currentEntry = AppWorkset->dataprovider.loadEntityAs<DocumentEntryEntity>(
+	// uniqueness check
+	currentEntry = AppData->loadEntityAs<DocumentEntryEntity>(
 		entryLoadQuery.arg(doc->documentId).arg(p->id)
 		);
 	if (currentEntry->entryId == 0)
+		// if not found - make new
 	{
 		currentEntry->productName = p->name;
 		currentEntry->entryId = IdGenerator::generateId();
@@ -93,6 +111,7 @@ void EntryCreationScreen::primeEntryCreation(Product p, Document doc)
 		currentEntry->productId = p->id;
 	}
 	else
+		// else use old
 	{
 		priceInfo->setText(QString::number(operatedProduct->price));
 		productInfo->setText(operatedProduct->name);
@@ -117,13 +136,16 @@ void EntryCreationScreen::primeEntryCreation(DocumentEntry e)
 {
 	if (e == nullptr)
 		return;
-	operatedProduct = AppWorkset->dataprovider.loadEntityById<ProductEntity>(e->productId);
-	Document doc = AppWorkset->dataprovider.loadEntityById<DocumentEntity>(e->parentDocId);
+	// obtaining document and product by their id
+	operatedProduct = AppData->loadEntityById<ProductEntity>(e->productId);
+	Document doc = AppData->loadEntityById<DocumentEntity>(e->parentDocId);
 	if (operatedProduct == nullptr || doc == nullptr)
+		// if they does not exist - desync error appeared. Editing is not possible
 	{
 		emit backRequired();
 		return;
 	}
+	// setting fields
 	priceInfo->setText(QString::number(operatedProduct->price));
 	productInfo->setText(operatedProduct->name);
 	currentEntry = e;

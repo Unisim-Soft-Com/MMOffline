@@ -14,10 +14,17 @@ IdGenerator::IdGenerator(int shBorder, int seed)
 }
 
 IdInt IdGenerator::generate()
+// generates new GUID
 {
 	IdInt newId;
+	// time sinse epoch obtained
 	newId = std::chrono::system_clock::now().time_since_epoch().count();
+	// time shifted left until reaches border. More times value is shifted - more space for random number,
+	// which increases dispersion in the same time moment, lesser space for time itself, which increases dispersion
+	// for all time period
 	newId <<= shiftBorder;
+	// right null bytes are filled with random number. This increases dispersion in the same ms:
+	// because with very high probability numbers will be different with previous generations
 	unsigned int t = randint(rngGenerator);
 	newId += t;
 	return newId;
@@ -33,15 +40,15 @@ void IdGenerator::setShiftBorder(int border)
 	shiftBorder = border;
 	randint = std::uniform_int_distribution<int>(0, std::pow(2, border) - 1);
 }
-IdGenerator mainGenerator;
+IdGenerator* IdGenerator::_instanse = new IdGenerator;
 IdGenerator* const IdGenerator::instance()
 {
-	return &mainGenerator;
+	return _instanse;
 }
 
 IdInt IdGenerator::generateId()
 {
-	return mainGenerator.generate();
+	return _instanse->generate();
 }
 
 IdInt IdGenerator::generateId(int shBorder, int seed)

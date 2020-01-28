@@ -35,6 +35,17 @@ TemplatedTableHandler abs_entity::getRenamedTable(TableNames tname) const
 	return getAssocTable()->clone(predefinedDBNames.at(tname));
 }
 
+bool abs_entity::sortingCompare(const abs_entity* another) const
+{
+	return higherThan(another);
+}
+
+bool abs_entity::sortingCompare(const std::shared_ptr<abs_entity> another) const
+{
+	return higherThan(&(*(another)));
+}
+
+
 IdInt abs_entity::getId() const
 {
 	return extractId();

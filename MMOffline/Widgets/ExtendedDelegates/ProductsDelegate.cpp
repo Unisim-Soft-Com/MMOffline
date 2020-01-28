@@ -67,6 +67,7 @@ void ProductsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 
 QSize ProductsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+//	final size: 1.1 * font height + flexible box for wrapping text
 	Product temp = upcastItem<ProductEntity>(index);
 	if (temp == nullptr)
 		return QSize(100, 50);

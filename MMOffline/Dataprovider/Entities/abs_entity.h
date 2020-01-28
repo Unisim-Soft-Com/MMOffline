@@ -55,6 +55,9 @@ protected:
 	// This method must implement deep check of an object, from type to full data identity.
 	// Usually this can be implemented as   return (myType() == o->myType() && getId() == o->getId());
 	virtual bool compare(abs_entity* another) const = 0;
+	// This method must decide which entity must be placed higher in view or hash map.
+	// do not make it too slow - perfect is O(1)
+	virtual bool higherThan(const abs_entity* another) const = 0;
 public:
 	//This constructor is allowing to skip class_id initialization because class_id operations
 	//can be replaced with RTTI
@@ -90,6 +93,9 @@ public:
 	TemplatedTableHandler getRenamedTable(const QString& tname) const;
 	//Deprecated - returns copy of associated table with name obtained from predefined names
 	TemplatedTableHandler getRenamedTable(TableNames tname) const;
+	// this operator used for sorting and placing into hash maps
+	bool sortingCompare(const abs_entity* another) const;
+	bool sortingCompare(const std::shared_ptr<abs_entity> another) const;
 };
 
 // Shared pointer to this is used as polymorthic object, so operations with DataEntity are very common

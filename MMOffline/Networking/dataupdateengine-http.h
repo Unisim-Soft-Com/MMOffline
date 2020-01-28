@@ -1,27 +1,40 @@
 #pragma once
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include "dataupdateengine.h"
+#include "Networking/RequestAwaiter.h"
+#include "Networking/queryTemplates.h"
 
-class HttpUpdateEngine : public DataUpdateEngine
+/*
+	This file contains engine that is used for requesting data from provided url.
+	It stores system values and query templates.
+	Singletone pattern
+*/
+
+#define AppNetwork HttpUpdateEngine::instanse()
+
+class HttpUpdateEngine : protected QObject
+	// Sends requests by templates
 {
 	Q_OBJECT
 private:
-	QString url;
-	uint nextQueryId;
-	qint64 delay;
-	QString sessionId;
-	QString user_id;
-	QNetworkAccessManager netManager;
+	QString url;		//	base url. Queries are attached to this url
+	uint nextQueryId;	//	next id of the query
+	QString sessionId;	//	session id used for most requests
+	QString user_id;	//	id of logged user
+	QNetworkAccessManager netManager;	//	manager for inner usage
 
-	QMap<int, QString> queryTemplates;
+	QMap<int, QString> queryTemplates;	//	templates of queries
+
+	static HttpUpdateEngine* _instanse;
 public:
 	HttpUpdateEngine(QString& Url, QObject* parent);
+	// getters and setters
 	QString getUrl();
-	virtual void setUrl(QString& url) override;
-	virtual const QString& getUserID() override;
+	void setUrl(QString& url);
+	const QString& getUserID();
 	bool sessionReady();
-	virtual void sendQuery
+	// sends query using url and connects reply object to awaiter
+	void sendQuery
 	(
 		const QString& urlpath,
 		RequestAwaiter* awaiter
@@ -29,14 +42,15 @@ public:
 public slots:
 	void initConnection();
 public:
-	virtual void initiateSession(QString login, QString password, RequestAwaiter* awaiter = nullptr) override;
-
 	// Inherited via DataUpdateEngine
-	virtual void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter) override;
-	virtual void execQueryByAutofillTemplate(queryIDs id, RequestAwaiter* awaiter) override;
-	virtual void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter) override;
-	virtual void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter) override;
-	virtual void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter) override;
-	virtual void execQueryByTemplate(queryIDs, int argc, QStringList argv, RequestAwaiter* awaiter) override;
-	virtual void setSession(QString& session, QString& uid) override;
+	void initiateSession(QString login, QString password, RequestAwaiter* awaiter = nullptr);
+	void execQueryByTemplate(queryIDs id, RequestAwaiter* awaiter);
+	void execQueryByAutofillTemplate(queryIDs id, RequestAwaiter* awaiter);
+	void execQueryByTemplate(queryIDs id, QString arg1, RequestAwaiter* awaiter);
+	void execQueryByTemplate(queryIDs ud, QString arg1, QString arg2, RequestAwaiter* awaiter);
+	void execQueryByTemplate(queryIDs, QString arg1, QString arg2, QString arg3, RequestAwaiter* awaiter);
+	void execQueryByTemplate(queryIDs, int argc, QStringList argv, RequestAwaiter* awaiter);
+	void setSession(QString& session, QString& uid);
+
+	static HttpUpdateEngine* instanse();
 };

@@ -278,11 +278,11 @@ bool filters::SpinboxHelper::eventFilter(QObject* watched, QEvent* event)
 {
 	if (event->type() == QEvent::FocusIn || event->type() == QEvent::MouseButtonRelease)
 	{
-		detrace_METHCALL("call");
+		//detrace_METHCALL("call");
 		QLineEdit* asp = qobject_cast<QLineEdit*>(watched);
 		if (asp != Q_NULLPTR)
 		{
-			detrace_METHEXPL("selecting");
+			//detrace_METHEXPL("selecting");
 			asp->selectAll();
 			qApp->inputMethod()->show();
 			return true;

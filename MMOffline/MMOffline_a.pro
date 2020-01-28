@@ -3,28 +3,30 @@
 # ------------------------------------------------------
 
 TEMPLATE = app
-TARGET = MMOffline
-DESTDIR = ../Win32/Release
-CONFIG += release
+TARGET = UNAOrders
+QT       += core gui sql network widgets
+CONFIG += debug
 LIBS += -L"."
 DEPENDPATH += .
 MOC_DIR += .
-OBJECTS_DIR += release
 UI_DIR += ./GeneratedFiles
 RCC_DIR += .
-win32:RC_FILE = MMOffline.rc
-TRANSLATIONS += translations/mmoffline_en.ts \
-    translations/mmoffline_ro.ts \
-    translations/mmoffline_ru.ts
+TRANSLATIONS += mmoffline_ru.ts \
+    mmoffline_en.ts \
+    mmoffline_ro.ts
 HEADERS += ./MMOffline.h \
     ./Widgets/parents/abstractNodeInterface.h \
     ./Widgets/parents/inframedWidget.h \
+    ./Dataprovider/FileParser.h \
+    ./Widgets/ModeDefining/AssertionLabel.h \
+    ./Widgets/ElementWidgets/ZebraListItemDelegate.h \
+    ./Widgets/utils/SpecializedWidgets.h \
+    ./Widgets/ElementWidgets/ProcessingOverlay.h \
     ./Widgets/ElementWidgets/MegaIconButton.h \
     ./Widgets/ElementWidgets/BigButtonsSpinbox.h \
     ./Widgets/ModeDefining/OnlineLoginWidget.h \
     ./Widgets/ModeDefining/StartingScreen.h \
     ./Widgets/ModeDefining/SettingsScreen.h \
-    ./Widgets/ModeDefining/AssertionLabel.h \
     ./Widgets/MultibranchWidgets/GroupSelectionWidget.h \
     ./Widgets/MultibranchWidgets/ProductSelectionWidget.h \
     ./Widgets/MultibranchWidgets/DocumentSelectionWidget.h \
@@ -46,6 +48,7 @@ HEADERS += ./MMOffline.h \
     ./Networking/queryTemplates.h \
     ./Networking/RequestAwaiter.h \
     ./Networking/dataupdateengine-http.h \
+    ./Networking/dataupdateengine.h \
     ./Networking/Parsers/abs_parser.h \
     ./Networking/Parsers/ErrorParser.h \
     ./Networking/Parsers/JsonUniresult.h \
@@ -58,37 +61,38 @@ HEADERS += ./MMOffline.h \
     ./Dataprovider/IdGenerator.h \
     ./Dataprovider/SqliteDataProvider.h \
     ./Dataprovider/TableHandlers.h \
-    ./Dataprovider/FileParser.h \
     ./Dataprovider/Entities/abs_entity.h \
-    ./Dataprovider/Entities/DocumentEntity.h \
     ./Dataprovider/Entities/DocumentEntryEntity.h \
     ./Dataprovider/Entities/FieldTablesPredefines.h \
     ./Dataprovider/Entities/NamedIdEntity.h \
     ./Dataprovider/Entities/ProductEntity.h \
     ./Dataprovider/DataEntities.h \
     ./Dataprovider/Entities/ClientEntity.h \
+    ./Dataprovider/Entities/DocumentEntity.h \
     ./Dataprovider/Entities/GroupEntity.h
 SOURCES += ./main.cpp \
     ./MMOffline.cpp \
+    ./Widgets/LogBranch/DocumentEntrySelectionSubbranch.cpp \
+    ./Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp \
+    ./Widgets/MultibranchWidgets/ProductSelectionBranch.cpp \
     ./Widgets/ElementWidgets/BigButtonsSpinbox.cpp \
     ./Widgets/ElementWidgets/MegaIconButton.cpp \
+    ./Widgets/ElementWidgets/ProcessingOverlay.cpp \
+    ./Widgets/ElementWidgets/ZebraListItemDelegate.cpp \
+    ./Widgets/utils/SpecializedWidgets.cpp \
     ./Widgets/parents/abstractNodeInterface.cpp \
+    ./Widgets/ModeDefining/AssertionLabel.cpp \
     ./Widgets/parents/inframedWidget.cpp \
     ./Widgets/ModeDefining/OnlineLoginWidget.cpp \
     ./Widgets/ModeDefining/SettingsScreen.cpp \
     ./Widgets/ModeDefining/StartingScreen.cpp \
     ./Widgets/LogBranch/LogBranchRoot.cpp \
-    ./Widgets/ModeDefining/AssertionLabel.cpp \
-    ./Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp \
     ./Widgets/DocumentBranch/ClientSelectionWidget.cpp \
-    ./Widgets/LogBranch/DocumentEntrySelectionSubbranch.cpp \
     ./Widgets/MultibranchWidgets/GroupSelectionWidget.cpp \
-    ./Widgets/MultibranchWidgets/ProductSelectionBranch.cpp \
     ./Widgets/MultibranchWidgets/ProductSelectionWidget.cpp \
     ./Widgets/Syncing/SyncInfoWidget.cpp \
     ./Widgets/Syncing/SyncMenuWidget.cpp \
     ./Widgets/ExtendedDelegates/ClientsDelegate.cpp \
-    ./Widgets/ExtendedDelegates/DelegateUtility.cpp \
     ./Widgets/ExtendedDelegates/DocumentsDelegate.cpp \
     ./Widgets/ExtendedDelegates/EntryDelegate.cpp \
     ./Widgets/ExtendedDelegates/GroupDelegate.cpp \
@@ -98,20 +102,18 @@ SOURCES += ./main.cpp \
     ./Widgets/DocumentBranch/EntryCreationScreen.cpp \
     ./Networking/dataupdateengine-http.cpp \
     ./Networking/Parsers/JsonUniresult.cpp \
-    ./Networking/queryTemplates.cpp \
     ./Networking/RequestAwaiter.cpp \
     ./Networking/Parsers/abs_parser.cpp \
     ./Networking/Parsers/ErrorParser.cpp \
     ./Networking/Parsers/LinearParser.cpp \
-    ./Networking/Parsers/RequestParser.cpp \
     ./debugtrace.cpp \
     ./Widgets/utils/ElementsStyles.cpp \
     ./Widgets/utils/EventsAndFilters.cpp \
     ./Widgets/utils/GlobalAppSettings.cpp \
-    ./Dataprovider/FileParser.cpp \
     ./Dataprovider/IdGenerator.cpp \
     ./Dataprovider/SqliteDataProvider.cpp \
     ./Dataprovider/TableHandlers.cpp \
+    ./Networking/queryTemplates.cpp \
     ./Dataprovider/DataEntities.cpp \
     ./Dataprovider/Entities/abs_entity.cpp \
     ./Dataprovider/Entities/ClientEntity.cpp \
@@ -120,5 +122,23 @@ SOURCES += ./main.cpp \
     ./Dataprovider/Entities/FieldTablesPredefines.cpp \
     ./Dataprovider/Entities/GroupEntity.cpp \
     ./Dataprovider/Entities/NamedIdEntity.cpp \
-    ./Dataprovider/Entities/ProductEntity.cpp
+    ./Dataprovider/Entities/ProductEntity.cpp \
+    ./Dataprovider/FileParser.cpp \
+    Networking/Parsers/RequestParser.cpp \
+    Widgets/ExtendedDelegates/DelegateUtility.cpp
 RESOURCES += MMOffline.qrc
+
+QMAKE_LINK += -nostdlib++
+DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew \
+    android/gradlew.bat \
+    android/res/values/libs.xml
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/android
+}

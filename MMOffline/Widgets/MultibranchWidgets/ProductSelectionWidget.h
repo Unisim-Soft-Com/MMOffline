@@ -8,7 +8,17 @@
 #include "Widgets/ExtendedDelegates/ProductsDelegate.h"
 #include <QLineEdit>
 
+/*
+	This widget allows user to pick product from database. This widget must be primed.
+	This widget can perform counting of affected products with corresponding data.
+	
+	Affected tables:
+	V	Products
+*/
+
+
 class ProductSelectionWidget : public inframedWidget
+	// allows to pick product
 {
 	Q_OBJECT
 protected:
@@ -26,12 +36,17 @@ protected:
 	MegaIconButton* okButton;
 public:
 	ProductSelectionWidget(QWidget* parent);
-	void setDataLoadParameters(Group group, Client client);
+
+	// loads fresh data based on provided variables
 	void primeSelection(Group group, Client client);
-	void incrementQuantityCounter(int id, int q = 1);
-	void setQuantityCounter(int id, int q = 0);
+	// increments counter of the product with provided id
+	void incrementQuantityCounter(IdInt id, int q = 1);
+	// rewrites counter of the product with provided id
+	void setQuantityCounter(IdInt id, int q = 0);
 protected slots:
+	// converts abstract entity to product, then emits it
 	void productSelected(DataEntity product);
+	// wrapper for okButton
 	void okClicked();
 signals:
 	void productObtained(const Product);

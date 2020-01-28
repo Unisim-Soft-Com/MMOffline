@@ -12,7 +12,6 @@
 
 */
 
-/*TODO: exception on deleteLater*/
 
 extern const char* RECEIVER_SLOT_NAME; // char string used in dataupdeng to call slot using Qmetacall
 

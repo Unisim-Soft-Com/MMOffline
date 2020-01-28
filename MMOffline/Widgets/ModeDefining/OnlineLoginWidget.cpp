@@ -1,7 +1,7 @@
 #include "OnlineLoginWidget.h"
 #include "Widgets/utils/GlobalAppSettings.h"
 #include "Widgets/utils/ElementsStyles.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Networking/dataupdateengine-http.h"
 #include "Networking/Parsers/RequestParser.h"
 
 OnlineLoginWidget::OnlineLoginWidget(QWidget* parent)
@@ -13,6 +13,7 @@ OnlineLoginWidget::OnlineLoginWidget(QWidget* parent)
 	okButton(new MegaIconButton(innerWidget)), backButton(new MegaIconButton(innerWidget)),
 	awaiter(new RequestAwaiter(AppSettings->timeoutint, this)), syncMenu(new SyncMenuWidget(this))
 {
+	// Allocating widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
 	innerWidget->setLayout(innerLayout);
@@ -27,31 +28,40 @@ OnlineLoginWidget::OnlineLoginWidget(QWidget* parent)
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
 
+	// removing margins to avoid space loss
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
+	// setting up abstract node interfaces
 	main = this;
 	current = innerWidget;
 	untouchable = innerWidget;
+	// setting up subbranch
 	mainLayout->addWidget(syncMenu);
 	syncMenu->hide();
 
+	// setting up labels and buttons appearance
 	errorLog->setStyleSheet(ERROR_TEXT_STYLESHEET);
 	loginInfo->setAlignment(Qt::AlignCenter);
-	loginField->setText(GlobalAppSettings::instance()->localLogin);
 	passwordInfo->setAlignment(Qt::AlignCenter);
-	passwordField->setEchoMode(QLineEdit::Password);
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	backButton->setIcon(QIcon(":/res/back.png"));
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
 	okButton->setIcon(QIcon(":/res/submit.png"));
 	fillTexts();
+
+	// setting up login&password values
+	loginField->setText(GlobalAppSettings::instance()->localLogin);
+	passwordField->setEchoMode(QLineEdit::Password);
+
+	// connecting slots
 	QObject::connect(loginField, &QLineEdit::returnPressed, passwordField, QOverload<>::of(&QLineEdit::setFocus));
 	QObject::connect(passwordField, &QLineEdit::returnPressed, this, &OnlineLoginWidget::passwordConfirmed);
 	QObject::connect(okButton, &MegaIconButton::clicked, this, &OnlineLoginWidget::passwordConfirmed);
 	QObject::connect(backButton, &MegaIconButton::clicked, this, &OnlineLoginWidget::backRequired);
 	QObject::connect(awaiter, &RequestAwaiter::requestReceived, this, &OnlineLoginWidget::processResponse);
 	QObject::connect(awaiter, &RequestAwaiter::requestTimeout, this, &OnlineLoginWidget::was_timeout);
-	QObject::connect(syncMenu, &SyncMenuWidget::backRequired, this, &OnlineLoginWidget::backRequired);
+	// because of this login window is not showing again
+	QObject::connect(syncMenu, &SyncMenuWidget::backRequired, this, &OnlineLoginWidget::hideCurrent);
 }
 
 void OnlineLoginWidget::show()
@@ -85,11 +95,11 @@ void OnlineLoginWidget::processResponse()
 	}
 	else
 	{
-		DataWorkset::instance()->networkingEngine->setSession(resp.session, resp.uid);
+		AppNetwork->setSession(resp.session, resp.uid);
+		syncMenu->setLogin(pendingLogin, AppSettings->localLogin);
 		AppSettings->localLogin = pendingLogin;
-
 		AppSettings->dump();
-		syncMenu->setLogin(pendingLogin);
+		emit loginReady(AppSettings->localLogin);
 		_hideAny(syncMenu);
 		pendingLogin.clear();
 	}
@@ -103,6 +113,7 @@ void OnlineLoginWidget::was_timeout()
 void OnlineLoginWidget::hideCurrent()
 {
 	_hideCurrent(innerWidget);
+	emit backRequired();
 }
 
 void OnlineLoginWidget::passwordConfirmed()
@@ -114,5 +125,5 @@ void OnlineLoginWidget::passwordConfirmed()
 	}
 	if (awaiter->isAwaiting()) return;
 	pendingLogin = loginField->text();
-	DataWorkset::instance()->networkingEngine->initiateSession(loginField->text(), passwordField->text(), awaiter);
+	AppNetwork->initiateSession(loginField->text(), passwordField->text(), awaiter);
 }

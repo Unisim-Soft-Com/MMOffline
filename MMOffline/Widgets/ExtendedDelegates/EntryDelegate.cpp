@@ -9,7 +9,11 @@ void EntryDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 	DocumentEntry d = upcastItem<DocumentEntryEntity>(index);
 	if (d == nullptr)
 		return;
+
+	// painting begins
 	painter->save();
+
+	// drawing first textbox for price
 	QRect textbox(
 		QPoint(
 			option.rect.bottomLeft().x(), option.rect.bottomLeft().y() - ((option.fontMetrics.height() + 6)))
@@ -19,6 +23,7 @@ void EntryDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 	drawRect(textbox, bright_delegate_color, painter);
 	painter->drawText(textbox, Qt::AlignCenter, tr("Price:") + QString::number(d->price));
 
+	// drawing second textbox for quantity
 	textbox.setTopLeft(textbox.topRight());
 	textbox.setBottomRight(QPoint(
 		option.rect.topLeft().x() + (option.rect.width() * 0.66666666),
@@ -27,16 +32,20 @@ void EntryDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 	drawRect(textbox, bright_delegate_color, painter);
 	painter->drawText(textbox, Qt::AlignCenter, tr("Quantity:") + QString::number(d->quantity));
 
+	// drawing third textbox for total price of all entry
 	textbox.setTopLeft(textbox.topRight());
 	textbox.setBottomRight(option.rect.bottomRight());
 	drawRect(textbox, bright_delegate_color, painter);
 	painter->drawText(textbox, Qt::AlignCenter, /*tr("Summ:") +*/ QString::number(d->quantity * d->price, 'g', 4));
 
+	// drawing flexible square for product name
 	textbox.setTopLeft(option.rect.topLeft());
 	textbox.setBottomRight(QPoint(option.rect.bottomRight().x(), option.rect.bottomRight().y() - ((option.fontMetrics.height() + 6))));
 
 	drawRect(textbox, dark_delegate_color, painter);
 	painter->drawText(textbox, Qt::TextWordWrap | Qt::AlignCenter, d->productName);
+
+	// drawing selection box
 	if (option.state.testFlag(QStyle::State_Selected))
 	{
 		painter->setBrush(option.palette.highlight());
@@ -48,6 +57,7 @@ void EntryDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
 QSize EntryDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	// final size is 1 * font height + enough space to wrap product name
 	DocumentEntry d = upcastItem<DocumentEntryEntity>(index);
 	if (d == nullptr)
 		return QSize(100, 50);

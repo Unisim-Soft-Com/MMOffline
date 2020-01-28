@@ -10,6 +10,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	settingsButton(new MegaIconButton(innerWidget)), quitButton(new MegaIconButton(innerWidget)),
 	onlineLogin(new OnlineLoginWidget(this)), settings(new SettingsScreen(this))
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
 	mainLayout->addWidget(onlineLogin);
@@ -23,6 +24,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	footerLayout->addWidget(quitButton);
 	footerLayout->addWidget(settingsButton);
 
+	// removing margins to avoid space loss
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
 	innerLayout->setContentsMargins(0, 0, 0, 0);
@@ -30,12 +32,14 @@ StartingScreen::StartingScreen(QWidget* parent)
 	footerLayout->setContentsMargins(0, 0, 0, 0);
 	footerLayout->setSpacing(0);
 
+	// setting up abstractNode
 	current = innerWidget;
 	untouchable = innerWidget;
 	main = this;
 	settings->hide();
 	onlineLogin->hide();
 
+	// setting up labels and buttons
 	infoLabel->setAlignment(Qt::AlignCenter);
 	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	infoLabel->setWordWrap(true);
@@ -46,6 +50,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	settingsButton->setIcon(QIcon(":/res/settings.png"));
 	quitButton->setIcon(QIcon(":/res/exit.png"));
 	fillTexts();
+	// connecting slots
 	QObject::connect(createDocumentButton, &MegaIconButton::clicked, this, &StartingScreen::documentCreationInitiated);
 	QObject::connect(onlineLoginButton, &MegaIconButton::clicked, this, &StartingScreen::toOnlineLogin);
 	QObject::connect(logsButton, &MegaIconButton::clicked, this, &StartingScreen::logsRequired);
@@ -79,13 +84,13 @@ void StartingScreen::toSettings()
 
 void StartingScreen::hideCurrent()
 {
-	_hideCurrent(innerWidget);
+	if (!_hideCurrent(innerWidget))
+		qApp->quit();
 }
 
 void StartingScreen::userLoggedIn(QString login)
 {
 	setInfoLabel();
-	_hideCurrent(innerWidget);
 }
 
 void StartingScreen::translationHappened(int)

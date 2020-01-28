@@ -48,6 +48,7 @@ inline static QSize calculateAdaptiveSize(double Hpercent, double Wpercent)
 }
 
 inline static QSize imitatePhoneSize(double HPercent)
+// sets window size in vertical projection using screen height
 {
 	return QSize(
 		GEOMETRY_SOURCE->availableGeometry().height() * (HPercent * 0.66),
@@ -56,23 +57,28 @@ inline static QSize imitatePhoneSize(double HPercent)
 }
 
 class FontAdapter
+	// creates scaled fonts
 {
-	int minheight;
-	int maxheight;
-	double minimumFontPercent;
+	int minheight;		//	minimum height of letter
+	int maxheight;		//	maximum height of letter
+	double minimumFontPercent;	// default font percent, which used to create original scaling
 	static FontAdapter* _instance;
 public:
 	FontAdapter(int minheight, int maxheight, double minimumFontPercent);
 	const FontAdapter* instance() {
 		return _instance;
 	};
+	// creates scaled font by using adapter. Extra percents are relational to calculated minheight
 	static QFont makeFont(double extrapercents);
 };
 
+// asserts value, creating gradient stylesheet which are curr * max/100 percents between two colors
 QString makeGradientStylesheet(const QColor& first, const QColor& second, int max, int curr);
+
+// better use wordWrap, this meant only for QPushButtons with too long names
 QString& normalizeLine(QString& line, int maxSymb);
 
-QString countAdaptiveFont(double perc);
+// old call for FontAdapter::makeFont
 QFont makeFont(double perc);
 
 extern const QString OK_BUTTONS_STYLESHEET;
@@ -130,7 +136,10 @@ extern const QString CHECKBOX_BUTTON_STYLESHEET;
 // stylesheet for BIG checkboxes based on buttons
 
 extern const QString FRAMED_LABEL_STYLESHEET;
+// extra frame for labels
 
 extern const QString DOWNLOAD_BUTTON_STYLESHEET;
+// more soft colors
 
 extern const QString UPLOAD_BUTTON_STYLESHEET;
+// softer colors

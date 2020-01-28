@@ -1,6 +1,7 @@
 #include "queryTemplates.h"
 #include <QtCore/QSettings>
 
+
 const QString queryTemplates[totalTemplates]
 {
 	QStringLiteral("Ping"),

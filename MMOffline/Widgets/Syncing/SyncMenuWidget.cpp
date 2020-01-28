@@ -1,7 +1,8 @@
 #include "SyncMenuWidget.h"
 #include "Widgets/utils/GlobalAppSettings.h"
 #include "Widgets/utils/ElementsStyles.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
+#include "Networking/dataupdateengine-http.h"
 #include "Networking/Parsers/RequestParser.h"
 #include <QMessageBox>
 #ifdef DEBUG
@@ -9,8 +10,12 @@
 #endif
 
 using namespace RequestParser;
+
+// this format is used for sending date \ datetimes through url to avoid url corruption
 const QString dateSendFormat = QStringLiteral("dd_MM_yyyy");
 const QString dateTimeSendFormat = QStringLiteral("dd_MM_yyyy_HH_mm_ss");
+
+
 void SyncMenuWidget::_assertEnd()
 {
 	if (isFullSync)
@@ -20,15 +25,19 @@ void SyncMenuWidget::_assertEnd()
 		case SyncInfoWidget::uploadEnd:
 			synchrostep = 0;
 			receiveData();
+			//	after upload must be download
 			return;
 		case SyncInfoWidget::downloadEnd:
 			synchrostep = 0;
 			isFullSync = false;
+			emit syncCompleted();
+			// after download must be emitted signal
 			return;
 		}
 	}
 	else
 	{
+		//normal operation end - unlock buttons
 		synchrostep = 0;
 	}
 }
@@ -41,39 +50,18 @@ int SyncMenuWidget::_count_upload_progress()
 
 bool SyncMenuWidget::_send_data_request()
 {
-#ifdef DEBUG
-	detrace_METHCALL("_send_data_request");
-#endif
 	switch (synchrostep)
 	{
 	case -1:
+		//	-1 is error code, it must stop syncing and unlock buttons
 		synchrostep = 0;
 		return false;
 	case SyncInfoWidget::PostingDocument:
-	{
-		QStringList buffer;
-		Document d = docsToUpload.at(currentDoc);
-		buffer << QString::number(d->documentId) << d->dateWhenCreated.toString(dateTimeSendFormat)
-			<< d->shippingDate.toString(dateSendFormat) << QString::number(d->clientId)
-			<< QString::number(d->warehouseId) << QString::number(d->documentType) << QString::number(d->alreadyPaid);
-		AppWorkset->networkingEngine->execQueryByTemplate(PostDocument, 7, buffer, awaiter);
-		return false;
-	}
+		return _post_document();
 	case SyncInfoWidget::PostingEntry:
-	{
-		QStringList buffer;
-		DocumentEntry e = docsToUpload.at(currentDoc)->linkedEntries.at(currentEntry);
-		buffer << QString::number(e->parentDocId) << QString::number(e->entryId)
-			<< QString::number(e->productId) << QString::number(e->price)
-			<< QString::number(e->measure) << QString::number(e->quantity) <<
-			QString::number(e->option1) << QString::number(e->option2) <<
-			QString::number(e->option3) << e->comment;
-		AppWorkset->networkingEngine->execQueryByTemplate(PostEntry, 10, buffer, awaiter);
-		return false;
-	}
-
+		return _post_entry();
 	case SyncInfoWidget::GettingClients:
-		AppWorkset->networkingEngine->execQueryByTemplate(
+		AppNetwork->execQueryByTemplate(
 			GetClients,
 			"0",
 			"100",
@@ -82,26 +70,26 @@ bool SyncMenuWidget::_send_data_request()
 		);
 		return false;
 	case SyncInfoWidget::GettingGroups:
-		AppWorkset->networkingEngine->execQueryByTemplate(
+		AppNetwork->execQueryByTemplate(
 			GetGroups,
 			awaiter
 		);
 		return false;
 	case SyncInfoWidget::GettingTips:
-		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetTips, awaiter);
+		AppNetwork->execQueryByAutofillTemplate(GetTips, awaiter);
 		return false;
 	case SyncInfoWidget::GettingDepozits:
-		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetDepozits, awaiter);
+		AppNetwork->execQueryByAutofillTemplate(GetDepozits, awaiter);
 		return false;
 	case SyncInfoWidget::GettingMeasures:
-		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetMeasures, awaiter);
+		AppNetwork->execQueryByAutofillTemplate(GetMeasures, awaiter);
 		return false;
 	case SyncInfoWidget::GettingOptions:
-		AppWorkset->networkingEngine->execQueryByAutofillTemplate(GetOptions, awaiter);
+		AppNetwork->execQueryByAutofillTemplate(GetOptions, awaiter);
 		return false;
 	case SyncInfoWidget::GettingProducts:
-		AppWorkset->networkingEngine->execQueryByTemplate(GetProducts,
-			AppWorkset->networkingEngine->getUserID(),
+		AppNetwork->execQueryByTemplate(GetProducts,
+			AppNetwork->getUserID(),
 			QString::number(entriesFrom),
 			QString::number(entriesTo),
 			awaiter);
@@ -112,51 +100,53 @@ bool SyncMenuWidget::_send_data_request()
 
 bool SyncMenuWidget::_process_clients_response()
 {
-#ifdef DEBUG
-	detrace_METHCALL("_process_clients_response");
-#endif
+	// refreshing mainloop
 	qApp->processEvents();
 	ListedEntitiesResponse resp;
 	switch (synchrostep)
 	{
 	case -1:
+		// error code, must stop syncing
 		synchrostep = 0;
 		break;
 	case SyncInfoWidget::PostingDocument:
+		// checking if result text has returned document id
 		if (awaiter->restext.toLongLong() == docsToUpload.at(currentDoc)->documentId)
 		{
+			// if yes, continue 
 			syncInfo->setProgress(_count_upload_progress());
 			return true;
 		}
 		return false;
 	case SyncInfoWidget::PostingEntry:
+		// checking if result text has returned entry id, if yes - continue
 		if (awaiter->restext.toLongLong() == docsToUpload.at(currentDoc)->linkedEntries.at(currentEntry)->entryId)
 			return true;
 		return false;
 	case SyncInfoWidget::GettingClients:
-		resp = parseAndInterpretListAs<ClientEntity>(awaiter->restext, awaiter->errtext);
+		resp = parseAndInterpretListAs(awaiter->restext, awaiter->errtext, DataEntity(new ClientEntity()));
 		if (_assertError(resp.isError, resp.error)) return false;
 		dClients = upcastEntityVector<ClientEntity>(resp.data);
 		currentClientId = 0;
-		AppWorkset->dataprovider.pushData(resp.data);
+		AppData->pushData(resp.data);
 		return true;
 	case SyncInfoWidget::GettingMeasures:
 	case SyncInfoWidget::GettingDepozits:
 	case SyncInfoWidget::GettingOptions:
 	case SyncInfoWidget::GettingTips:
-		resp = parseAndInterpretListAs<NamedIdEntity>(awaiter->restext, awaiter->errtext);
+		resp = parseAndInterpretListAs(awaiter->restext, awaiter->errtext, DataEntity(new NamedIdEntity()));
 		if (_assertError(resp.isError, resp.error)) return false;
-		AppWorkset->dataprovider.pushData(resp.data, _subdictionaryNameConversion());
+		AppData->pushData(resp.data, _subdictionaryNameConversion());
 		return true;
 	case SyncInfoWidget::GettingGroups:
-		resp = parseAndInterpretListAs<GroupEntity>(awaiter->restext, awaiter->errtext);
+		resp = parseAndInterpretListAs(awaiter->restext, awaiter->errtext, DataEntity(new GroupEntity()));
 		if (_assertError(resp.isError, resp.error)) return false;
-		AppWorkset->dataprovider.pushData(resp.data);
+		AppData->pushData(resp.data);
 		return true;
 	case SyncInfoWidget::GettingProducts:
-		resp = parseAndInterpretListAs<ProductEntity>(awaiter->restext, awaiter->errtext);
+		resp = parseAndInterpretListAs(awaiter->restext, awaiter->errtext, DataEntity(new ProductEntity()));
 		if (_assertError(resp.isError, resp.error)) return false;
-		AppWorkset->dataprovider.pushData(resp.data);
+		AppData->pushData(resp.data);
 		entriesFrom += 50;
 		entriesTo += 50;
 		return !resp.data.isEmpty();
@@ -165,32 +155,39 @@ bool SyncMenuWidget::_process_clients_response()
 }
 bool SyncMenuWidget::_next_step()
 {
-	if (synchrostep == -1)
-		return false;
 	switch (synchrostep)
 	{
+	case -1:
+		// error code, must stop synchronization
+		synchrostep = 0;
+		return false;
 	case SyncInfoWidget::PostingDocument:
 	{
 		if (docsToUpload.count() > currentDoc)
+			// if there is more documents to sync - must nullify entry index and continue as PostingEntry
 		{
 			currentEntry = 0;
 			synchrostep = SyncInfoWidget::PostingEntry;
 			return true;
 		}
+		// else - stop
 		return false;
 	}
 	case SyncInfoWidget::PostingEntry:
 	{
 		++currentEntry;
 		if (docsToUpload.at(currentDoc)->linkedEntries.count() > currentEntry)
+			// if there is more entries - continue sending
 		{
 			return true;
 		}
 		else
+			// try to post document
 		{
 			synchrostep = SyncInfoWidget::PostingDocument;
 			++currentDoc;
 			if (docsToUpload.count() <= currentDoc)
+				// if no documents to post - end upload
 			{
 				synchrostep = SyncInfoWidget::uploadEnd;
 				_upload_complete();
@@ -217,7 +214,6 @@ bool SyncMenuWidget::_next_step()
 		synchrostep = SyncInfoWidget::GettingProducts;
 		break;
 	case SyncInfoWidget::GettingProducts:
-
 		synchrostep = SyncInfoWidget::downloadEnd;
 		break;
 	default:
@@ -231,7 +227,8 @@ bool SyncMenuWidget::_next_step()
 void SyncMenuWidget::_download_complete()
 {
 	AppSettings->lastSyncDate = QDate::currentDate();
-	AppWorkset->dataprovider.forcedCommit();
+	AppData->forcedCommit();
+	syncInfo->reload();
 	_assertEnd();
 }
 void SyncMenuWidget::_upload_complete()
@@ -239,10 +236,10 @@ void SyncMenuWidget::_upload_complete()
 	if (synchrostep != SyncInfoWidget::uploadEnd)
 		return;
 	syncInfo->setProgress(99);
-	AppWorkset->dataprovider.recreateTable<DocumentEntity>();
-	AppWorkset->dataprovider.recreateTable<DocumentEntryEntity>();
+	AppData->recreateTable(DataEntity(new DocumentEntity()));
+	AppData->recreateTable(DataEntity(new DocumentEntryEntity()));
 	AppSettings->lastSyncDate = QDate::currentDate();
-	syncInfo->setInfopack(AppSettings->localLogin, 0);
+	syncInfo->setInfopack(AppSettings->localLogin,AppSettings->localLogin, QStringLiteral("0"));
 	syncInfo->setProgress(SyncInfoWidget::uploadEnd);
 	_assertEnd();
 }
@@ -272,6 +269,28 @@ QString SyncMenuWidget::_subdictionaryNameConversion()
 		return QString();
 	}
 }
+bool SyncMenuWidget::_post_document()
+{
+	QStringList buffer;
+	Document d = docsToUpload.at(currentDoc);
+	buffer << QString::number(d->documentId) << d->dateWhenCreated.toString(dateTimeSendFormat)
+		<< d->shippingDate.toString(dateSendFormat) << QString::number(d->clientId)
+		<< QString::number(d->warehouseId) << QString::number(d->documentType) << QString::number(d->alreadyPaid);
+	AppNetwork->execQueryByTemplate(PostDocument, 7, buffer, awaiter);
+	return false;
+}
+bool SyncMenuWidget::_post_entry()
+{
+	QStringList buffer;
+	DocumentEntry e = docsToUpload.at(currentDoc)->linkedEntries.at(currentEntry);
+	buffer << QString::number(e->parentDocId) << QString::number(e->entryId)
+		<< QString::number(e->productId) << QString::number(e->price)
+		<< QString::number(e->measure) << QString::number(e->quantity) <<
+		QString::number(e->option1) << QString::number(e->option2) <<
+		QString::number(e->option3) << e->comment;
+	AppNetwork->execQueryByTemplate(PostEntry, 10, buffer, awaiter);
+	return false;
+}
 SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 	:inframedWidget(parent),
 	mainLayout(new QVBoxLayout(this)),
@@ -282,9 +301,11 @@ SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 	syncButton(new MegaIconButton(this)),
 	backButton(new MegaIconButton(this)),
 	awaiter(new RequestAwaiter(AppSettings->timeoutint, this)),
+	previousLogin(),
 	synchrostep(0), entriesFrom(0), entriesTo(100), dClients(),
 	currentClientId(0), repeatingQuery(false), docsToUpload(), currentDoc(0), currentEntry(0), isFullSync(false)
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(syncInfo);
 	mainLayout->addLayout(partialActionsLayout);
@@ -295,6 +316,7 @@ SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 	partialActionsLayout->addWidget(sendButton);
 	partialActionsLayout->addWidget(receiveButton);
 
+	// setting appearance for buttons
 	syncButton->setIcon(QIcon(":/res/upload.png"));
 
 	receiveButton->setIcon(QIcon(":/res/netDownload.png"));
@@ -305,7 +327,9 @@ SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
 	backButton->setIcon(QIcon(":/res/back.png"));
+	fillTexts();
 
+	// connecting slots
 	QObject::connect(syncButton, &MegaIconButton::clicked, this, &SyncMenuWidget::makeFullSync);
 	QObject::connect(receiveButton, &MegaIconButton::clicked, this, &SyncMenuWidget::receiveData);
 	QObject::connect(sendButton, &MegaIconButton::clicked, this, &SyncMenuWidget::sendData);
@@ -313,10 +337,11 @@ SyncMenuWidget::SyncMenuWidget(QWidget* parent)
 	QObject::connect(awaiter, &RequestAwaiter::requestReceived, this, &SyncMenuWidget::operate_on_response);
 }
 
-void SyncMenuWidget::setLogin(QString& nlogin)
+void SyncMenuWidget::setLogin(QString& nlogin, QString& ologin)
 {
-	syncInfo->setInfopack(nlogin,
-		QString::number(AppWorkset->dataprovider.countData(predefinedDBNames[Documents])));
+	previousLogin = ologin;
+	syncInfo->setInfopack(nlogin, ologin,
+		QString::number(AppData->countData(predefinedDBNames[Documents])));
 }
 
 void SyncMenuWidget::fillTexts()
@@ -334,7 +359,18 @@ void SyncMenuWidget::sendData()
 		return;
 	synchrostep = SyncInfoWidget::uploadStart;
 	syncInfo->setProgress(synchrostep);
-	docsToUpload = AppWorkset->dataprovider.loadEntities<DocumentEntity>();
+	if (!(AppSettings->localLogin == previousLogin))
+	{
+		int res = QMessageBox::warning(this, tr("Warning"), tr("Non equal login warning"),
+			QMessageBox::Ok, QMessageBox::Cancel);
+		if (res == QMessageBox::Cancel)
+		{
+			synchrostep = 0;
+			syncInfo->setProgress(synchrostep);
+			return;
+		}
+	}
+	docsToUpload = AppData->loadEntities<DocumentEntity>();
 	if (docsToUpload.isEmpty())
 	{
 		syncInfo->setProgress(100);
@@ -346,7 +382,7 @@ void SyncMenuWidget::sendData()
 	DocEntryList entries;
 	for (Document d : docsToUpload)
 	{
-		entries = AppWorkset->dataprovider.loadEntities<DocumentEntryEntity>("parentDocId = " + QString::number(d->documentId));
+		entries = AppData->loadEntities<DocumentEntryEntity>("parentDocId = " + QString::number(d->documentId));
 		for (DocumentEntry e : entries)
 		{
 			d->linkEntry(e);
@@ -376,10 +412,10 @@ void SyncMenuWidget::receiveData()
 	currentClientId = -1;
 	entriesFrom = 0;
 	entriesTo = 50;
-	AppWorkset->dataprovider.dropEverything();
-	AppWorkset->dataprovider.recreateTable<DocumentEntity>();
-	AppWorkset->dataprovider.recreateTable<DocumentEntryEntity>();
-	AppWorkset->dataprovider.forcedCommit();
+	AppData->dropEverything();
+	AppData->recreateTable(DataEntity(new DocumentEntity()));
+	AppData->recreateTable(DataEntity(new DocumentEntryEntity()));
+	AppData->forcedCommit();
 	_next_step();
 	repeatingQuery = _send_data_request();
 }

@@ -11,13 +11,18 @@ ProductSelectionBranch::ProductSelectionBranch(QWidget* parent)
 	: inframedWidget(parent), abstractNode(), mainLayout(new QVBoxLayout(this)), groupSelection(new GroupSelectionWidget(this)),
 	productSelection(new ProductSelectionWidget(this)), currentClient(nullptr)
 {
+	// emplacing subwidgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(groupSelection);
 	mainLayout->addWidget(productSelection);
+	
+	// setting up abstract node interfaces
 	main = this;
 	current = groupSelection;
 	untouchable = groupSelection;
 	productSelection->hide();
+
+	// connecting slots
 	QObject::connect(groupSelection, &GroupSelectionWidget::backRequired, this, &ProductSelectionBranch::hideCurrent);
 	QObject::connect(productSelection, &ProductSelectionWidget::backRequired, this, &ProductSelectionBranch::hideCurrent);
 	QObject::connect(groupSelection, &GroupSelectionWidget::groupSelected, this, &ProductSelectionBranch::groupReady);
@@ -37,8 +42,6 @@ void ProductSelectionBranch::productReady(Product p)
 
 void ProductSelectionBranch::hideCurrent()
 {
-	if (current == untouchable)
+	if (!_hideCurrent(untouchable))
 		emit backRequired();
-	else if (current = productSelection)
-		_hideCurrent(untouchable);
 }

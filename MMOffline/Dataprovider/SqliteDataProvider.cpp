@@ -3,12 +3,9 @@
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 #include "qapplication.h"
-#define DEBUG
-#ifdef DEBUG
 #include "debugtrace.h"
-#endif
 #include <QtSql/qsqldatabase.h>
-
+#include "Widgets/utils/GlobalAppSettings.h"
 bool SqliteDataProvider::executeQuery(const QString& sqlquery)
 {
 	if (sqlquery.isEmpty() || sqlquery.isNull())
@@ -16,15 +13,15 @@ bool SqliteDataProvider::executeQuery(const QString& sqlquery)
 	assertAndOpenSession();
 	QSqlQuery q(mainDatabase);
 
-#ifdef DEBUG
-	detrace_METHFRECALL("runQuery " << sqlquery);
-#endif
+	if (AppSettings->dbTracing)
+		detrace_METHFRECALL("runQuery " << sqlquery);
 	q.exec(sqlquery);
 	if (q.lastError().isValid())
 	{
-#ifdef DEBUG
-		detrace_METHPERROR("executeQuery", "error executing sql -> " << sqlquery << "<- " << q.lastError().text());
-#endif
+		if (AppSettings->dbTracing)
+			detrace_METHPERROR("executeQuery", "error executing sql -> " 
+				<< sqlquery << "<- " << q.lastError().text());
+
 		assertAndCloseSession();
 		return false;
 	}
@@ -44,16 +41,13 @@ bool SqliteDataProvider::executeWithinSession(const QString& sqlquery)
 		isSessionOpened = true;
 	}
 	QSqlQuery q(mainDatabase);
-
-#ifdef DEBUG
-	detrace_METHFRECALL("runQuery " << sqlquery);
-#endif
+	if (AppSettings->dbTracing)
+		detrace_METHFRECALL("runQuery " << sqlquery);
 	q.exec(sqlquery);
 	if (q.lastError().isValid())
 	{
-#ifdef DEBUG
-		detrace_METHPERROR("executeQuery", "error executing sql -> " << sqlquery << "<- " << q.lastError().text());
-#endif
+		if (AppSettings->dbTracing)
+			detrace_METHPERROR("executeQuery", "error executing sql -> " << sqlquery << "<- " << q.lastError().text());
 		mainDatabase.close();
 		isSessionOpened = false;
 		return false;
@@ -67,16 +61,14 @@ QueryPtr SqliteDataProvider::runQuery(const QString& sqlquery)
 	if (sqlquery.isEmpty() || sqlquery.isNull())
 		return nullptr;
 	assertAndOpenSession();
-#ifdef DEBUG
-	detrace_METHFRECALL("runQuery " << sqlquery);
-#endif
+	if (AppSettings->dbTracing)
+		detrace_METHFRECALL("runQuery " << sqlquery);
 	QueryPtr query(new QSqlQuery(mainDatabase));
 	query->exec(sqlquery);
 	if (query->lastError().isValid())
 	{
-#ifdef DEBUG
-		detrace_METHPERROR("executeQuery", "error executing sql -> " << sqlquery << "<- " << query->lastError().text());
-#endif
+		if (AppSettings->dbTracing)
+			detrace_METHPERROR("executeQuery", "error executing sql -> " << sqlquery << "<- " << query->lastError().text());
 		query->clear();
 		assertAndCloseSession();
 		return QueryPtr(nullptr);
@@ -111,6 +103,17 @@ SqliteDataProvider::~SqliteDataProvider()
 {
 	QSqlDatabase::removeDatabase(DATABASE_NAME);
 	mainDatabase;
+}
+
+SqliteDataProvider* SqliteDataProvider::_instanse = nullptr;
+
+SqliteDataProvider* SqliteDataProvider::instanse()
+{
+	if (_instanse == nullptr)
+	{
+		_instanse = new SqliteDataProvider(nullptr);
+	}
+	return _instanse;
 }
 
 bool SqliteDataProvider::storeEntity(const DataEntity entity)
@@ -166,7 +169,7 @@ bool SqliteDataProvider::createTable(const QString querydef)
 	return executeQuery(QStringLiteral("create table ") + querydef);
 }
 
-bool SqliteDataProvider::createTableFor(const DataEntity entity)
+bool SqliteDataProvider::createTableFor(const  DataEntity entity)
 {
 	executeQuery(entity->getAssociatedTable()->definition());
 	return executeQuery(entity->getAssociatedTable()->makeIndex());
@@ -259,6 +262,47 @@ void SqliteDataProvider::forcedCommit()
 	isSessionOpened = false;
 }
 
+QVector<DataEntity> SqliteDataProvider::loadDataAs(DataEntity prototype, const QString& filter, QString table)
+{
+	assertAndOpenSession();
+	QVector<DataEntity> toreturn;
+	QueryPtr newQuery;
+	if (filter.isNull())
+	{
+		newQuery = runQuery(prototype->getAssociatedTable()->select_all(table));
+	}
+	else
+	{
+		newQuery = runQuery(prototype->getAssociatedTable()->select_filtered(filter, table));
+	}
+	if (newQuery == nullptr)
+	{
+		assertAndCloseSession();
+		return toreturn;
+	}
+	while (prototype->fromSqlQuery(newQuery))
+	{
+		toreturn.push_back(DataEntity(prototype->clone()));
+	}
+	assertAndCloseSession();
+	return toreturn;
+}
+
+bool SqliteDataProvider::recreateTable(DataEntity prototype)
+{
+	assertAndOpenSession();
+	if (mainDatabase.tables().contains(prototype->getAssociatedTable()->declaration()))
+	{
+		executeQuery(prototype->getAssociatedTable()->drop());
+	}
+	return executeQuery(prototype->getAssociatedTable()->definition());
+}
+
+bool SqliteDataProvider::removeEntitiesFiltered(DataEntity prototype, const QString filter, const QString another_name)
+{
+	return executeQuery(prototype->getAssociatedTable()->delete_filtered(filter, another_name));
+}
+
 bool SqliteDataProvider::pushData(const QVector<DataEntity>& data)
 {
 	assertAndOpenSession();
@@ -337,7 +381,6 @@ QHash<IdInt, int> SqliteDataProvider::loadIdPairs(const QString& filter)
 		buffer2 = q->value(1).toInt(&ok);
 		if (!ok) continue;
 		temp[buffer] = buffer2;
-		//detrace_METHEXPL("Loaded data: " << QString::number(buffer) << " " << QString::number(buffer2) << "\n");
 	}
 	assertAndCloseSession();
 	return temp;

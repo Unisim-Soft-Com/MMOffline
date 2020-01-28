@@ -130,9 +130,6 @@
     <ClCompile Include="Widgets\parents\inframedWidget.cpp">
       <Filter>Source Files\widgets\parents</Filter>
     </ClCompile>
-    <ClCompile Include="Networking\dataupdateengine.cpp">
-      <Filter>Source Files\Networking</Filter>
-    </ClCompile>
     <ClCompile Include="Networking\dataupdateengine-http.cpp">
       <Filter>Source Files\Networking</Filter>
     </ClCompile>
@@ -146,9 +143,6 @@
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="Widgets\utils\GlobalAppSettings.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="Widgets\utils\ApplicationDataWorkset.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="Dataprovider\Entities\abs_entity.cpp">
@@ -177,9 +171,6 @@
     </ClCompile>
     <ClCompile Include="Dataprovider\Entities\ProductEntity.cpp">
       <Filter>Source Files\LocalDataProviders\DataEntities</Filter>
-    </ClCompile>
-    <ClCompile Include="Networking\queryTemplates.cpp">
-      <Filter>Source Files\LocalDataProviders</Filter>
     </ClCompile>
     <ClCompile Include="Dataprovider\SqliteDataProvider.cpp">
       <Filter>Source Files\LocalDataProviders</Filter>
@@ -277,6 +268,9 @@
     <ClCompile Include="Widgets\ExtendedDelegates\DelegateUtility.cpp">
       <Filter>Source Files\widgets\ExtendedDelegates</Filter>
     </ClCompile>
+    <ClCompile Include="Networking\queryTemplates.cpp">
+      <Filter>Source Files\Networking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MMOffline.qrc">
@@ -291,9 +285,6 @@
       <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="Widgets\utils\GlobalAppSettings.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="Widgets\utils\ApplicationDataWorkset.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="Networking\queryTemplates.h">
@@ -344,6 +335,9 @@
     <ClInclude Include="Dataprovider\IdGenerator.h">
       <Filter>Header Files\LocalDataProviders</Filter>
     </ClInclude>
+    <ClInclude Include="Dataprovider\Entities\DocumentEntity.h">
+      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Widgets\parents\inframedWidget.h">
@@ -354,9 +348,6 @@
     </QtMoc>
     <QtMoc Include="Widgets\ElementWidgets\MegaIconButton.h">
       <Filter>Header Files\widgets\Elements</Filter>
-    </QtMoc>
-    <QtMoc Include="Networking\dataupdateengine.h">
-      <Filter>Header Files\Networking</Filter>
     </QtMoc>
     <QtMoc Include="Networking\dataupdateengine-http.h">
       <Filter>Header Files\Networking</Filter>
@@ -395,9 +386,6 @@
       <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
     </QtMoc>
     <QtMoc Include="Dataprovider\DataEntities.h">
-      <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
-    </QtMoc>
-    <QtMoc Include="Dataprovider\Entities\DocumentEntity.h">
       <Filter>Header Files\LocalDataProviders\DataEntities</Filter>
     </QtMoc>
     <QtMoc Include="Widgets\ExtendedDelegates\ClientsDelegate.h">
@@ -442,11 +430,14 @@
     <QtMoc Include="Widgets\MultibranchWidgets\ProductSelectionBranch.h">
       <Filter>Header Files\widgets\Multibranch</Filter>
     </QtMoc>
-    <QtMoc Include="Dataprovider\FileParser.h">
-      <Filter>Header Files\LocalDataProviders</Filter>
-    </QtMoc>
     <QtMoc Include="Widgets\ModeDefining\AssertionLabel.h">
       <Filter>Header Files\widgets\ModeDefining</Filter>
     </QtMoc>
+    <QtMoc Include="Dataprovider\FileParser.h">
+      <Filter>Header Files\LocalDataProviders</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MMOffline_a.pro" />
   </ItemGroup>
 </Project>

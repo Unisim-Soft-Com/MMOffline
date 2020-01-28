@@ -105,6 +105,11 @@ bool NamedIdEntity::compare(abs_entity* another) const
 	return id == temp->id;
 }
 
+bool NamedIdEntity::higherThan(const abs_entity* another) const
+{
+	return id > another->getId();
+}
+
 int findNamedId(const QString& qstr, const NamedIdList& list)
 {
 	for (int i = 0; i < list.count(); ++i)

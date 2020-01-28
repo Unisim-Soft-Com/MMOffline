@@ -49,6 +49,7 @@ namespace filters
 		void backRequired();
 	};
 	class LineEditHelper : public QObject
+		// this helper is used to autoconfirm inputMethod in line edit when necessary
 	{
 		Q_OBJECT
 	protected:
@@ -57,6 +58,7 @@ namespace filters
 		LineEditHelper(QObject* ob) : QObject(ob) {};
 	};
 	class SpinboxHelper : public QObject
+		// this filter allows focusing into spinbox, while selecting all and showing keyboard
 	{
 		Q_OBJECT
 	protected:

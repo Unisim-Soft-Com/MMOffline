@@ -1,13 +1,15 @@
 #include "SyncInfoWidget.h"
 #include "Widgets/utils/GlobalAppSettings.h"
 #include "Widgets/utils/ElementsStyles.h"
-#define DEBUG
 #ifdef DEBUG
 #include "debugtrace.h"
 #endif
 
+// color used in gradient when logins are equal
 const QColor freshLogin(Qt::green);
+// color used in gradient when logins are not equal
 const QColor oldLogin(Qt::red);
+
 void SyncInfoWidget::setDate()
 {
 	int diff = AppSettings->lastSyncDate.daysTo(QDate::currentDate());
@@ -23,6 +25,7 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	uploadInfo(new QLabel(this)), downloadProgress(new QProgressBar(this)),
 	uploadProgress(new QProgressBar(this))
 {
+	// emplacing subwidgets on the grid
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(currentLogin, 0, 0);
 	mainLayout->addWidget(previousLogin, 0, 1);
@@ -34,10 +37,12 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	mainLayout->addWidget(uploadInfo, 5, 0, 1, 0);
 	mainLayout->addWidget(uploadProgress, 6, 0, 1, 0);
 
+	// removing margins to save some space
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setSpacing(0);
-	previousLogin->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
+	// setting labels appearance
+	previousLogin->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	pendingChanges->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 	currentLogin->setStyleSheet(FRAMED_LABEL_STYLESHEET);
 	currentLogin->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -56,6 +61,8 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	errorLog->setWordWrap(true);
 	downloadInfo->setAlignment(Qt::AlignCenter);
 	uploadInfo->setAlignment(Qt::AlignCenter);
+
+	// setting up progress bars
 	downloadProgress->setValue(0);
 	downloadProgress->setMaximum(100);
 	downloadProgress->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
@@ -67,11 +74,11 @@ SyncInfoWidget::SyncInfoWidget(QWidget* parent)
 	setDate();
 }
 
-void SyncInfoWidget::setInfopack(QString& newLogin, QString pendingChange)
+void SyncInfoWidget::setInfopack(QString& newLogin,QString& oldLogin, QString pendingChange)
 {
 	currentLogin->setText(tr("Current user: ") + newLogin);
-	previousLogin->setText(tr("Old user: ") + AppSettings->localLogin);
-	if (newLogin != AppSettings->localLogin)
+	previousLogin->setText(tr("Old user: ") + oldLogin);
+	if (newLogin != oldLogin)
 		previousLogin->setStyleSheet(ERROR_TEXT_STYLESHEET);
 	pendingChanges->setText(tr("Pending changes: ") + pendingChange);
 }

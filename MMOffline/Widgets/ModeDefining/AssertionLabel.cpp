@@ -34,6 +34,7 @@ AssertionLabel::AssertionLabel(QWidget* parent)
 }
 
 void AssertionLabel::setErrorlist(const QStringList& errors)
+// will never create more than 4 rows to avoid off-screen labels
 {
 	switch (errors.count())
 	{

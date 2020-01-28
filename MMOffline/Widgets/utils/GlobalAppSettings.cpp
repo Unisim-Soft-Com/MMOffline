@@ -2,7 +2,6 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/qapplication.h>
 // utility
-#define DEBUG
 
 GlobalAppSettings* GlobalAppSettings::_instance = nullptr;
 

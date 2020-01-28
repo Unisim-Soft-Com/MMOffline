@@ -5,17 +5,23 @@
 #include "qsortfilterproxymodel.h"
 #include "DelegateUtility.h"
 #include <cmath>
+
 void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	// get Client
 	Client temp = upcastItem<ClientEntity>(index);
 	if (temp == nullptr)
 	{
 		return;
 	}
+	// try to get quantity
 	bool QuantityGiven = false;
 	int qty = index.data(DataEntityListModel::QuantityView).toInt(&QuantityGiven);
 	QuantityGiven = (QuantityGiven) ? qty != 0 : QuantityGiven;
+	
+	// painting begins
 	painter->save();
+	// drawing first textbox
 	QRect textbox(option.rect.topLeft(), QSize(
 		((QuantityGiven) ?
 			option.rect.width() / 2 : option.rect.width()), option.fontMetrics.height() + 6));
@@ -24,6 +30,7 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 	painter->drawRect(textbox);
 	painter->drawText(textbox, Qt::AlignCenter, QString::number(temp->id));
 	if (QuantityGiven)
+		// if quantity given - draw second textbox
 	{
 		textbox.setTopLeft(textbox.topRight());
 		textbox.setBottomRight(QPoint(option.rect.bottomRight().x(), option.rect.topRight().y() + option.fontMetrics.height() + 6));
@@ -31,11 +38,14 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 		painter->drawRect(textbox);
 		painter->drawText(textbox, Qt::AlignCenter, tr("Quantity:") + QString::number(qty));
 	}
+	// draw bottom textbox
 	textbox.setTopRight(textbox.bottomRight());
 	textbox.setBottomLeft(option.rect.bottomLeft());
 	painter->setBrush(bright_delegate_color);
 	painter->drawRect(textbox);
 	painter->drawText(textbox, Qt::TextWordWrap | Qt::AlignCenter, temp->name);
+
+	// draw selection
 	if (option.state.testFlag(QStyle::State_Selected))
 	{
 		painter->setBrush(option.palette.highlight());
@@ -47,6 +57,7 @@ void ClientsDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
 
 QSize ClientsDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+	// final size - 1.8 * font height for top panel + enough space to fully wrap text
 	Client c = upcastItem<ClientEntity>(index);
 	if (c == nullptr)
 		return QSize(100, 50);

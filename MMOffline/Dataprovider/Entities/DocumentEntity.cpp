@@ -189,6 +189,11 @@ void DocumentEntity::cleanEntryField()
 	}
 }
 
+bool DocumentEntity::higherThan(const abs_entity* another) const
+{
+	return documentId > another->getId();
+}
+
 bool DocumentEntity::compare(abs_entity* another) const
 {
 	auto temp = dynamic_cast<DocumentEntity*>(another);
@@ -220,34 +225,3 @@ bool DocumentEntity::hisEntry(DocumentEntry e)
 	return e->parentDocId == documentId;
 }
 
-DocumentsListModel::DocumentsListModel(const DocumentsList& doclist, QWidget* parent)
-	: QAbstractListModel(parent), innerList(doclist)
-{
-}
-
-int DocumentsListModel::rowCount(const QModelIndex& parent) const
-{
-	return innerList.count();
-}
-
-QVariant DocumentsListModel::data(const QModelIndex& index, int role) const
-{
-	if (!index.isValid())
-		return QVariant();
-	if (index.row() >= rowCount())
-		return QVariant();
-	if (role == Qt::DisplayRole)
-	{
-		QVariant temp;
-		temp.setValue<Document>(innerList.at(index.row()));
-		return temp;
-	}
-	return QVariant();
-}
-
-QVariant DocumentsListModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	return QVariant();
-}
-const QString documentIdAssertionQuery =
-QStringLiteral("select documentId from Documents where documentId = %1 ;");

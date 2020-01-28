@@ -1,11 +1,11 @@
 #include "DocumentEntrySelectionSubbranch.h"
 #include "Widgets/utils/ElementsStyles.h"
 #include "Widgets/ExtendedDelegates/EntryDelegate.h"
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
 #include <qmessagebox.h>
 #include <QScroller>
 
-EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
+DocumentRedactingSubbranch::DocumentRedactingSubbranch(QWidget* parent)
 	: inframedWidget(parent), mainLayout(new QVBoxLayout(this)),
 	innerWidget(new inframedWidget(this)), innerLayout(new QVBoxLayout(innerWidget)),
 	docInfo(new QLabel(innerWidget)), headerPanel(new QHBoxLayout(innerWidget)),
@@ -19,6 +19,7 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	entryCreation(new EntryCreationScreen(this)), productSelection(new ProductSelectionBranch(this)),
 	currentDocument(nullptr)
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
 	innerWidget->setLayout(innerLayout);
@@ -38,6 +39,7 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	mainLayout->addWidget(entryCreation);
 	mainLayout->addWidget(productSelection);
 
+	// saving space by removing margins
 	mainLayout->setSpacing(0);
 	innerLayout->setSpacing(0);
 	buttonsLayout->setSpacing(0);
@@ -47,36 +49,25 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	buttonsLayout->setContentsMargins(0, 0, 0, 0);
 	headerPanel->setContentsMargins(0, 0, 0, 0);
 	headerPanel->setMargin(2);
+
+	// activating abstract node interfaces. innerWidget now considered inner-view of this widget
 	current = innerWidget;
 	untouchable = innerWidget;
 	main = this;
+	// hiding not required widgets
 	entryCreation->hide();
 	productSelection->hide();
-
+	
+	//scaling fonts
 	entriesView->setFont(QFont("Times new Roman", 20, 20));
 	docInfo->setFont(makeFont(1.5));
+
+	// setting labels and buttons appearance
 	docInfo->setAlignment(Qt::AlignCenter);
 	docInfo->setWordWrap(true);
-
-	summPaidField->setDecimals(2);
-	summPaidField->setMinimum(0);
-	summPaidField->setMaximum(1000000);
-	summPaidField->setButtonSymbols(QAbstractSpinBox::NoButtons);
-
-	doctypes = AppWorkset->dataprovider.loadEntities<NamedIdEntity>(QString::null, "Tips");
-	for (NamedId dtype : doctypes)
-	{
-		doctypeField->addItem(dtype->name);
-	}
-
 	searchInfo->setText(tr("Search:"));
 	searchInfo->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum));
-
-	filterModel->setSourceModel(innerModel);
-	filterModel->setFilterRole(DataEntityListModel::SearchRole);
-	entriesView->setModel(filterModel);
-	entriesView->setItemDelegate(new EntryDelegate(this));
-
+	
 	backButton->setText(tr("back"));
 	editButton->setText(tr("edit"));
 	deleteButton->setText(tr("delete"));
@@ -92,37 +83,60 @@ EntryRedactingSubbranch::EntryRedactingSubbranch(QWidget* parent)
 	deleteButton->setStyleSheet(DELETE_BUTTONS_STYLESHEET);
 	addButton->setStyleSheet(COMMIT_BUTTONS_STYLESHEET);
 
+	// setting up spinbox options
+	summPaidField->setDecimals(2);
+	summPaidField->setMinimum(0);
+	summPaidField->setMaximum(1000000);
+	summPaidField->setButtonSymbols(QAbstractSpinBox::NoButtons);
+
+	// loading combo box data
+	doctypes = AppData->loadEntities<NamedIdEntity>(QString::null, "Tips");
+	for (NamedId dtype : doctypes)
+	{
+		doctypeField->addItem(dtype->name);
+	}
+
+	// setting up models and view
+	filterModel->setSourceModel(innerModel);
+	filterModel->setFilterRole(DataEntityListModel::SearchRole);
+	entriesView->setModel(filterModel);
+	
+	// changing view appearance and adding scroll	
 	QScroller::grabGesture(entriesView, QScroller::LeftMouseButtonGesture);
 	entriesView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	entriesView->setItemDelegate(new EntryDelegate(this));
+
+	// connecting slots
 	QObject::connect(searchField, &QLineEdit::textChanged, filterModel, &DataEntityFilterModel::setFilterFixedString);
+	QObject::connect(backButton, &MegaIconButton::clicked, this, &DocumentRedactingSubbranch::finishRedacting);
+	QObject::connect(editButton, &MegaIconButton::clicked, this, &DocumentRedactingSubbranch::handleEdit);
+	QObject::connect(deleteButton, &MegaIconButton::clicked, this, &DocumentRedactingSubbranch::handleDelete);
+	QObject::connect(addButton, &MegaIconButton::clicked, this, &DocumentRedactingSubbranch::handleAdd);
+	QObject::connect(entryCreation, &EntryCreationScreen::entryCreated, this, &DocumentRedactingSubbranch::handleEditedEntry);
+	QObject::connect(entryCreation, &EntryCreationScreen::backRequired, this, &DocumentRedactingSubbranch::hideCurrent);
+	QObject::connect(productSelection, &ProductSelectionBranch::backRequired, this, &DocumentRedactingSubbranch::hideCurrent);
+	QObject::connect(productSelection, &ProductSelectionBranch::selectionDone, this, &DocumentRedactingSubbranch::handleSelectedProduct);
+	QObject::connect(entriesView, &QListView::doubleClicked, this, &DocumentRedactingSubbranch::handleEdit);
+	QObject::connect(searchField, &QLineEdit::returnPressed, qApp->inputMethod(), &QInputMethod::hide);
+	// on android prediction is disabled for search string to allow instant search
 #ifdef Q_OS_ANDROID
 	searchField->setInputMethodHints(Qt::InputMethodHint::ImhNoPredictiveText);
 #endif
-	QObject::connect(backButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::finishRedacting);
-	QObject::connect(editButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::handleEdit);
-	QObject::connect(deleteButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::handleDelete);
-	QObject::connect(addButton, &MegaIconButton::clicked, this, &EntryRedactingSubbranch::handleAdd);
-	QObject::connect(entryCreation, &EntryCreationScreen::entryCreated, this, &EntryRedactingSubbranch::handleEditedEntry);
-	QObject::connect(entryCreation, &EntryCreationScreen::backRequired, this, &EntryRedactingSubbranch::hideCurrent);
-	QObject::connect(productSelection, &ProductSelectionBranch::backRequired, this, &EntryRedactingSubbranch::hideCurrent);
-	QObject::connect(productSelection, &ProductSelectionBranch::selectionDone, this, &EntryRedactingSubbranch::handleSelectedProduct);
-	QObject::connect(entriesView, &QListView::doubleClicked, this, &EntryRedactingSubbranch::handleEdit);
-	QObject::connect(searchField, &QLineEdit::returnPressed, qApp->inputMethod(), &QInputMethod::hide);
 }
 
-void EntryRedactingSubbranch::setDocument(Document doc)
+void DocumentRedactingSubbranch::setDocument(Document doc)
 {
 	currentDocument = doc;
 	summPaidField->setValue(doc->alreadyPaid);
 	doctypeField->setCurrentIndex(findNamedId(doc->documentTypeName, doctypes));
 	docInfo->setText(doc->clientName);
-	innerModel->setData(AppWorkset->dataprovider.loadDataAs<DocumentEntryEntity>(
+	innerModel->setData(AppData->loadDataAs(DataEntity(new DocumentEntryEntity()),
 		QStringLiteral(" parentDocId = ") + QString::number(doc->documentId)
 		));
 	searchField->clear();
 }
 
-void EntryRedactingSubbranch::clearContents()
+void DocumentRedactingSubbranch::clearContents()
 {
 	currentDocument = nullptr;
 	summPaidField->setValue(0);
@@ -131,7 +145,7 @@ void EntryRedactingSubbranch::clearContents()
 	innerModel->reset();
 }
 
-void EntryRedactingSubbranch::handleDelete()
+void DocumentRedactingSubbranch::handleDelete()
 {
 	if (entriesView->currentIndex().isValid())
 	{
@@ -144,14 +158,14 @@ void EntryRedactingSubbranch::handleDelete()
 			entriesView->currentIndex().data(DataEntityListModel::DataCopyRole).value<DataEntity>();
 		if (temp != nullptr)
 		{
-			AppWorkset->dataprovider.removeOneEntity(temp);
+			AppData->removeOneEntity(temp);
 			innerModel->removeDataEntity(filterModel->mapToSource(entriesView->currentIndex()));
 		}
 	}
 	entriesView->clearSelection();
 }
 
-void EntryRedactingSubbranch::handleEdit()
+void DocumentRedactingSubbranch::handleEdit()
 {
 	if (entriesView->currentIndex().isValid())
 	{
@@ -165,25 +179,25 @@ void EntryRedactingSubbranch::handleEdit()
 	entriesView->clearSelection();
 }
 
-void EntryRedactingSubbranch::handleEditedEntry(DocumentEntry e)
+void DocumentRedactingSubbranch::handleEditedEntry(DocumentEntry e)
 {
-	AppWorkset->dataprovider.replaceData(e);
-	innerModel->setData(AppWorkset->dataprovider.loadDataAs<DocumentEntryEntity>(
+	AppData->replaceData(e);
+	innerModel->setData(AppData->loadDataAs(DataEntity(new DocumentEntryEntity()),
 		QStringLiteral(" parentDocId = ") + QString::number(currentDocument->documentId)
 		));
 	searchField->clear();
 	_hideCurrent(untouchable);
 }
 
-void EntryRedactingSubbranch::handleAdd()
+void DocumentRedactingSubbranch::handleAdd()
 {
 	if (currentDocument == nullptr)
 		return;
-	productSelection->primeSelection(AppWorkset->dataprovider.loadEntityById<ClientEntity>(currentDocument->clientId));
+	productSelection->primeSelection(AppData->loadEntityById<ClientEntity>(currentDocument->clientId));
 	_hideAny(productSelection);
 }
 
-void EntryRedactingSubbranch::handleSelectedProduct(Product p)
+void DocumentRedactingSubbranch::handleSelectedProduct(Product p)
 {
 	if (currentDocument == nullptr || p == nullptr)
 		return;
@@ -191,12 +205,12 @@ void EntryRedactingSubbranch::handleSelectedProduct(Product p)
 	_hideAny(entryCreation);
 }
 
-void EntryRedactingSubbranch::hideCurrent()
+void DocumentRedactingSubbranch::hideCurrent()
 {
 	_hideCurrent(untouchable);
 }
 
-void EntryRedactingSubbranch::finishRedacting()
+void DocumentRedactingSubbranch::finishRedacting()
 {
 	bool isReplaceRequired = false;
 	if (currentDocument->alreadyPaid != summPaidField->value())

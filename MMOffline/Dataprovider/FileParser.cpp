@@ -17,22 +17,22 @@ bool CsvFileParser::doParsing()
 {
 	if (!isReady)
 		return false;
-	if (!_getEntity<ClientEntity>("clients.csv", 2))
+	if (!_getEntity<ClientEntity>(QStringLiteral("clients.csv"), 2))
 		return false;
-	if (!_getEntity<ProductEntity>("products.csv", fieldPredefinitions::fieldsOfProductEntity.count()))
+	if (!_getEntity<ProductEntity>(QStringLiteral("products.csv"), fieldPredefinitions::fieldsOfProductEntity.count()))
 		return false;
-	if (!_getEntity<GroupEntity>("groups.csv", fieldPredefinitions::fieldsOfGroupEntity.count()))
+	if (!_getEntity<GroupEntity>(QStringLiteral("groups.csv"), fieldPredefinitions::fieldsOfGroupEntity.count()))
 		return false;
-	if (!_getEntity<NamedIdEntity>("measures.csv", fieldPredefinitions::fieldsOfNamedIdEntity.count(),
+	if (!_getEntity<NamedIdEntity>(QStringLiteral("measures.csv"), fieldPredefinitions::fieldsOfNamedIdEntity.count(),
 		QStringLiteral("Measures")))
 		return false;
-	if (!_getEntity<NamedIdEntity>("types.csv", fieldPredefinitions::fieldsOfNamedIdEntity.count(),
+	if (!_getEntity<NamedIdEntity>(QStringLiteral("types.csv"), fieldPredefinitions::fieldsOfNamedIdEntity.count(),
 		QStringLiteral("Tips")))
 		return false;
-	if (!_getEntity<NamedIdEntity>("options.csv", fieldPredefinitions::fieldsOfNamedIdEntity.count(),
+	if (!_getEntity<NamedIdEntity>(QStringLiteral("options.csv"), fieldPredefinitions::fieldsOfNamedIdEntity.count(),
 		QStringLiteral("Options")))
 		return false;
-	if (!_getEntity<NamedIdEntity>("depozits.csv", fieldPredefinitions::fieldsOfNamedIdEntity.count(),
+	if (!_getEntity<NamedIdEntity>(QStringLiteral("depozits.csv"), fieldPredefinitions::fieldsOfNamedIdEntity.count(),
 		QStringLiteral("Depozits")))
 		return false;
 	return true;

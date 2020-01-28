@@ -1,7 +1,7 @@
 #include "GroupSelectionWidget.h"
 #include "Widgets/ExtendedDelegates/GroupDelegate.h"
 #include <QtWidgets/qheaderview.h>
-#include "Widgets/utils/ApplicationDataWorkset.h"
+#include "Dataprovider/SqliteDataProvider.h"
 #include <QScroller>
 #include "Widgets/utils/ElementsStyles.h"
 
@@ -12,6 +12,7 @@ GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
 	buttonLayout(new QHBoxLayout(this)),
 	backButton(new MegaIconButton(this)), okButton(new MegaIconButton(this))
 {
+	// emplacing widgets
 	this->setLayout(mainLayout);
 	mainLayout->addWidget(info);
 	mainLayout->addWidget(groupView);
@@ -19,15 +20,18 @@ GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
 	buttonLayout->addWidget(backButton);
 	buttonLayout->addWidget(okButton);
 
+	// removing margins to avoid space loss
 	mainLayout->setSpacing(0);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
-
 	buttonLayout->setSpacing(0);
 	buttonLayout->setContentsMargins(0, 0, 0, 0);
 
+	// setting up model
 	innerModel->setList(
-		AppWorkset->dataprovider.loadEntitiesWithForcedQuery<GroupEntity>(
+		AppData->loadEntitiesWithForcedQuery<GroupEntity>(
 			ComplexFilters::TruncateGroupsWithoutProducts));
+	
+	// setting up view appearance
 	groupView->setModel(innerModel);
 	groupView->verticalHeader()->hide();
 	groupView->horizontalHeader()->hide();
@@ -36,6 +40,11 @@ GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
 	groupView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	groupView->setFont(makeFont(1));
 	groupView->setShowGrid(false);
+	QScroller::grabGesture(groupView, QScroller::LeftMouseButtonGesture);
+	groupView->setVerticalScrollMode(QTableView::ScrollPerPixel);
+
+	
+	// setting up buttons appearance
 	backButton->setIcon(QIcon(":/res/back.png"));
 	backButton->setText(tr("back"));
 	backButton->setStyleSheet(BACK_BUTTONS_STYLESHEET);
@@ -43,9 +52,7 @@ GroupSelectionWidget::GroupSelectionWidget(QWidget* parent)
 	okButton->setIcon(QIcon(":/res/submit.png"));
 	okButton->setStyleSheet(OK_BUTTONS_STYLESHEET);
 
-	QScroller::grabGesture(groupView, QScroller::LeftMouseButtonGesture);
-	groupView->setVerticalScrollMode(QTableView::ScrollPerPixel);
-
+	// connecting slots	
 	QObject::connect(groupView, &QTableView::doubleClicked, innerModel, &GroupTreeModel::stepToNextLayer);
 	QObject::connect(backButton, &MegaIconButton::clicked, innerModel, &GroupTreeModel::stepToUpperLevel);
 	QObject::connect(innerModel, &GroupTreeModel::backRequired, this, &GroupSelectionWidget::backRequired);
