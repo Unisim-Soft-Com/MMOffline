@@ -3,6 +3,8 @@
 # ------------------------------------------------------
 
 TEMPLATE = app
+QT += widgets network sql
+
 TARGET = MMOffline
 DESTDIR = ../Win32/Release
 CONFIG += release
