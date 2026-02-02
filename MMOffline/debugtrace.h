@@ -29,7 +29,8 @@
 		better naming of macros variables
   */
 #ifdef Q_OS_ANDROID
-#define FOUTPATH "/storage/emulated/0/log.txt"
+#define FOUTPATH ""  // Pe Android, vom seta calea dinamic sau vom folosi doar qDebug
+#define ANDROID_SKIP_FILE_LOG  // Flag pentru a sări peste logarea în fișier
 #endif
 #ifdef Q_OS_WIN32
 #define FOUTPATH "log.txt"
@@ -191,7 +192,12 @@ public:
 	debugtrace& operator<<(const char);
 	void changeOutputMode(const OutputMode, OutputMode[], int); // changes outmethod to corresponding
 	QString getCurrentString(); // returns outstring
-	~debugtrace() { fout.flush(); }
+    ~debugtrace() {
+#ifndef ANDROID_SKIP_FILE_LOG
+        if (outfile.isOpen())
+            fout.flush();
+#endif
+    }
 };
 // This is main static object of this module. You should not create more
 // instances of it, instead use macroses.

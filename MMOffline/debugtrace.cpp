@@ -1,4 +1,5 @@
 #include "debugtrace.h"
+#include <stdexcept>
 
 void debugtrace::printToFile(const QString& str)
 {
@@ -107,19 +108,28 @@ void debugtrace::flushBuffer()
 }
 
 debugtrace::debugtrace(DebugPriority priority, OutputMode mode,
-	OutputMode  onlyOutputTo[], int oolen,
-	DebugPriority  Blacklist[], int blen, bool blackAswhite, bool nosp)
-	:outfile(FOUTPATH), fout(&outfile), priorityLvl(priority),
-	msgPriorityLvl(notImportantMessage),
-	omode(mode), outstring("debugtrace:\n"), sout(&outstring)
-	, outmethod(&debugtrace::printToQDebug), blacklist(Blacklist), bllen(blen),
-	omode_united(), blackaswhite(blackAswhite), nospaces(nosp)
+                       OutputMode  onlyOutputTo[], int oolen,
+                       DebugPriority  Blacklist[], int blen, bool blackAswhite, bool nosp)
+    :outfile(FOUTPATH), fout(&outfile), priorityLvl(priority),
+    msgPriorityLvl(notImportantMessage),
+    omode(mode), outstring("debugtrace:\n"), sout(&outstring)
+    , outmethod(&debugtrace::printToQDebug), blacklist(Blacklist), bllen(blen),
+    omode_united(), blackaswhite(blackAswhite), nospaces(nosp)
 {
-	outfile.open(QIODevice::WriteOnly | QIODevice::Text);
-	if (!outfile.isOpen())
-		throw std::exception("file not open!");
-	fout.setDevice(&outfile);
-	changeOutputMode(omode, onlyOutputTo, oolen);
+#ifdef ANDROID_SKIP_FILE_LOG
+    // Pe Android, nu încercăm să deschidem fișier - folosim doar qDebug
+    // Forțăm modul qDebug pentru că scrierea în fișiere externe e restricționată
+    omode = qDeb;
+    outmethod = &debugtrace::printToQDebug;
+    changeOutputMode(omode, onlyOutputTo, oolen);
+#else
+    // Pe alte platforme, încercăm să deschidem fișierul
+    outfile.open(QIODevice::WriteOnly | QIODevice::Text);
+    if (!outfile.isOpen())
+        throw std::runtime_error("file not open!");
+    fout.setDevice(&outfile);
+    changeOutputMode(omode, onlyOutputTo, oolen);
+#endif
 }
 debugtrace& debugtrace::operator<<(const DebugPriority pri)
 {

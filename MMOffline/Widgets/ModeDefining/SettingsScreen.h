@@ -5,61 +5,110 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QComboBox>
-#include "Widgets/ElementWidgets/MegaIconButton.h"
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/qspinbox.h>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QFrame>
 #include "Widgets/ModeDefining/AssertionLabel.h"
 
 /*
-	This widget represents screen for setting up system variables. It 
-	also allows user to load database from file. Here are displayed version 
-	and it's prefix. Here is possible to switch debugging mode which echoes 
-	all queries into log file. 
+    This widget represents screen for setting up system variables. It
+    also allows user to load database from file. Here are displayed version
+    and it's prefix. Here is possible to switch debugging mode which echoes
+    all queries into log file.
 
-	Affected tables: 
-	EV			All outer
+    REDESIGNED: Modern card-based UI with header and footer buttons.
+
+    Affected tables:
+    EV			All outer
 */
-
 
 class SettingsScreen : public inframedWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 protected:
-	QVBoxLayout* mainLayout;
-	QLabel* appInfo;
-	QLabel* urlBaseInfo;
-	QComboBox* urlBaseField;
-	QHBoxLayout* buttonsLayout;
-	MegaIconButton* backButton;
-	MegaIconButton* okButton;
-	QLineEdit* filepathField;
-	MegaIconButton* makeLoadFromFile;
-	MegaIconButton* translateButton;
-	QLabel* timeoutInfo;
-	QSpinBox* timeoutField;
-	MegaIconButton* debugMode;
-	AssertionLabel* errorLog;
+    // Main layout
+    QVBoxLayout* mainLayout;
 
-	// cached language icons
-	QIcon langIcons[3];
-	// currently selected language
-	Translations::Languages currentLanguage;
+    // Header bar
+    QFrame* headerBar;
+    QLabel* headerTitle;
 
-	// translates all text on this page
-	void fillTexts();
+    // Content area with scroll capability
+    QWidget* contentWidget;
+    QVBoxLayout* contentLayout;
+
+    // Card 1: Sync settings
+    QFrame* cardSync;
+    QLabel* lblSyncCaption;
+    QLabel* urlBaseInfo;
+    QComboBox* urlBaseField;
+    QLabel* lblPathCaption;
+    QLineEdit* filepathField;
+
+    QFrame* makeLoadFromFile;
+    QLabel* loadFileIcon;
+    QLabel* loadFileText;
+
+    // Card 2: Language & Timeout
+    QFrame* cardLocale;
+    QLabel* lblLangCaption;
+    QLabel* langValueLabel;
+    QPushButton* translateButton;
+    QLabel* timeoutInfo;
+    QSpinBox* timeoutField;
+
+    // Card 3: Debug
+    QFrame* cardDebug;
+    QPushButton* debugMode;
+
+    // Error log
+    AssertionLabel* errorLog;
+
+    // Footer bar
+    QFrame* footerBar;
+    QHBoxLayout* footerLayout;
+    QPushButton* backButton;
+    QPushButton* okButton;
+
+    // Version info
+    QLabel* appInfo;
+
+    // Language icons (kept for compatibility, but using emoji now)
+    QIcon langIcons[3];
+    // Currently selected language
+    Translations::Languages currentLanguage;
+
+    // Language display names
+    QString langDisplayNames[3];
+    // Language emoji flags
+    QString langFlags[3];
+
+    // Translates all text on this page
+    void fillTexts();
+
+    // Apply stylesheet to this widget
+    void applyStyles();
+
+    // Create a styled card frame
+    QFrame* createCard();
+
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
 public:
-	SettingsScreen(QWidget* parent);
+    SettingsScreen(QWidget* parent);
 
 private slots:
-	// saves everything
-	void allConfirmed();
-	// attempts to create CSVParser and load database from provided path
-	void loadFromFile();
-	// saves url picked in combobox 
-	void urlPicked(QString url);
-	// changes language button state, translates application and emits retranslation signal
-	void translateAll();
+    // Saves everything
+    void allConfirmed();
+    // Attempts to create CSVParser and load database from provided path
+    void loadFromFile();
+    // Saves url picked in combobox
+    void urlPicked(QString url);
+    // Changes language button state, translates application and emits retranslation signal
+    void translateAll();
+
 signals:
-	// notificates outer branches that retranslation required
-	void translating(int lang);
+    // Notifies outer branches that retranslation required
+    void translating(int lang);
 };

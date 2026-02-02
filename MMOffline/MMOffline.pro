@@ -69,7 +69,8 @@ HEADERS += ./MMOffline.h \
     ./Dataprovider/Entities/ProductEntity.h \
     ./Dataprovider/DataEntities.h \
     ./Dataprovider/Entities/ClientEntity.h \
-    ./Dataprovider/Entities/GroupEntity.h
+    ./Dataprovider/Entities/GroupEntity.h \
+    Widgets/ElementWidgets/StatusDialog.h
 SOURCES += ./main.cpp \
     ./MMOffline.cpp \
     ./Widgets/ElementWidgets/BigButtonsSpinbox.cpp \
@@ -122,5 +123,6 @@ SOURCES += ./main.cpp \
     ./Dataprovider/Entities/FieldTablesPredefines.cpp \
     ./Dataprovider/Entities/GroupEntity.cpp \
     ./Dataprovider/Entities/NamedIdEntity.cpp \
-    ./Dataprovider/Entities/ProductEntity.cpp
+    ./Dataprovider/Entities/ProductEntity.cpp \
+    Widgets/ElementWidgets/StatusDialog.cpp
 RESOURCES += MMOffline.qrc
