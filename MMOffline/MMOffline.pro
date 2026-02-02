@@ -126,3 +126,6 @@ SOURCES += ./main.cpp \
     ./Dataprovider/Entities/ProductEntity.cpp \
     Widgets/ElementWidgets/StatusDialog.cpp
 RESOURCES += MMOffline.qrc
+
+DISTFILES += \
+    res/settings1.png

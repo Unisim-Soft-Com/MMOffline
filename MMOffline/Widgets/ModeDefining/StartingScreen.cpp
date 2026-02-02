@@ -11,7 +11,7 @@ StartingScreen::StartingScreen(QWidget* parent)
 	onlineLogin(new OnlineLoginWidget(this)), settings(new SettingsScreen(this))
 {
 	// emplacing widgets
-	this->setLayout(mainLayout);
+    this->setLayout(mainLayout);
 	mainLayout->addWidget(innerWidget);
 	mainLayout->addWidget(onlineLogin);
 	mainLayout->addWidget(settings);
