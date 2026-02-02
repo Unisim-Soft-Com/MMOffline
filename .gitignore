@@ -338,3 +338,22 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# ===== Qt / qmake =====
+*.pro.user
+*.pro.user.*
+
+# build outputs
+build/
+build-*/
+release/
+debug/
+Win32/
+x64/
+
+# generated files
+GeneratedFiles/
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
