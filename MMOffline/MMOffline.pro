@@ -4,6 +4,7 @@
 
 TEMPLATE = app
 QT += widgets network sql
+QT += svg
 
 TARGET = MMOffline
 DESTDIR = ../Win32/Release
@@ -70,7 +71,10 @@ HEADERS += ./MMOffline.h \
     ./Dataprovider/DataEntities.h \
     ./Dataprovider/Entities/ClientEntity.h \
     ./Dataprovider/Entities/GroupEntity.h \
-    Widgets/ElementWidgets/StatusDialog.h
+    Widgets/ElementWidgets/CardMenuButton.h \
+    Widgets/ElementWidgets/FooterButton.h \
+    Widgets/ElementWidgets/StatusDialog.h \
+    Widgets/utils/SvgHelper.h
 SOURCES += ./main.cpp \
     ./MMOffline.cpp \
     ./Widgets/ElementWidgets/BigButtonsSpinbox.cpp \
@@ -124,6 +128,8 @@ SOURCES += ./main.cpp \
     ./Dataprovider/Entities/GroupEntity.cpp \
     ./Dataprovider/Entities/NamedIdEntity.cpp \
     ./Dataprovider/Entities/ProductEntity.cpp \
+    Widgets/ElementWidgets/CardMenuButton.cpp \
+    Widgets/ElementWidgets/FooterButton.cpp \
     Widgets/ElementWidgets/StatusDialog.cpp
 RESOURCES += MMOffline.qrc
 

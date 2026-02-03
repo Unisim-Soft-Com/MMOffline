@@ -377,7 +377,7 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location line="+273"/>
+        <location line="+286"/>
         <source>Please enter a file path</source>
         <translation>Введите путь к файлу</translation>
     </message>
@@ -402,7 +402,7 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-313"/>
+        <location line="-326"/>
         <source>Timeout interval</source>
         <translation>Период ожидания</translation>
     </message>
@@ -410,7 +410,7 @@
 <context>
     <name>StartingScreen</name>
     <message>
-        <location filename="../Widgets/ModeDefining/StartingScreen.cpp" line="+67"/>
+        <location filename="../Widgets/ModeDefining/StartingScreen.cpp" line="+184"/>
         <source>New document</source>
         <translation>Новый документ</translation>
     </message>
@@ -431,8 +431,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Quit!</source>
-        <translation>Выйти!</translation>
+        <source>Quit</source>
+        <translation>Выход</translation>
     </message>
     <message>
         <location line="+35"/>

@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
 	FontAdapter(20, 60, 0.03);
 #endif
 	// must be here. DO NOT DELETE. DO NOT MOVE LATER THAN QApplication
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	QApplication a(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication a(argc, argv);
 	// window icon
 	a.setWindowIcon(QIcon(":/res/UNAOrders.png"));
 	// creating root widget

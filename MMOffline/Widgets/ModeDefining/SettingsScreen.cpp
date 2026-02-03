@@ -417,12 +417,12 @@ SettingsScreen::SettingsScreen(QWidget* parent)
     QHBoxLayout* langRow = new QHBoxLayout();
     langRow->setContentsMargins(0, 0, 0, 0);
     langValueLabel->setMinimumHeight(40);
-    langRow->addWidget(langValueLabel, 0, Qt::AlignVCenter);
-    langRow->addStretch(1);
+    langValueLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    langRow->addWidget(langValueLabel);
 
     translateButton->setMinimumHeight(48);
-    translateButton->setMinimumWidth(80);
-    langRow->addWidget(translateButton, 0, Qt::AlignRight);
+    translateButton->setFixedWidth(80);
+    langRow->addWidget(translateButton);
 
     localeLayout->addLayout(langRow);
 
