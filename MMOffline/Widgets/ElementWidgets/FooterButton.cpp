@@ -60,42 +60,87 @@ void FooterButton::leaveEvent(QEvent* event)
 
 QColor FooterButton::backgroundColor() const
 {
-    if (m_style == Primary)
+    switch (m_style)
+    {
+    case Primary:
         return QColor("#2A7BE4");
-    else
+    case Secondary:
+        return QColor("#EBF4FF");
+    case Danger:
         return QColor("#FFEAEC");
+    case Success:
+        return QColor("#38A169");
+    default:
+        return QColor("#2A7BE4");
+    }
 }
 
 QColor FooterButton::backgroundColorHovered() const
 {
-    if (m_style == Primary)
+    switch (m_style)
+    {
+    case Primary:
         return QColor("#1F5BB8");
-    else
+    case Secondary:
+        return QColor("#DBEAFE");
+    case Danger:
         return QColor("#FFD8DB");
+    case Success:
+        return QColor("#2F855A");
+    default:
+        return QColor("#1F5BB8");
+    }
 }
 
 QColor FooterButton::backgroundColorPressed() const
 {
-    if (m_style == Primary)
+    switch (m_style)
+    {
+    case Primary:
         return QColor("#1a4f9e");
-    else
+    case Secondary:
+        return QColor("#BFDBFE");
+    case Danger:
         return QColor("#FFC8CC");
+    case Success:
+        return QColor("#276749");
+    default:
+        return QColor("#1a4f9e");
+    }
 }
 
 QColor FooterButton::borderColor() const
 {
-    if (m_style == Primary)
+    switch (m_style)
+    {
+    case Primary:
         return QColor("#1c5399");
-    else
+    case Secondary:
+        return QColor("#BFDBFE");
+    case Danger:
         return QColor("#FFC3C8");
+    case Success:
+        return QColor("#2F855A");
+    default:
+        return QColor("#1c5399");
+    }
 }
 
 QColor FooterButton::textColor() const
 {
-    if (m_style == Primary)
+    switch (m_style)
+    {
+    case Primary:
         return QColor("#FFFFFF");
-    else
+    case Secondary:
+        return QColor("#2A7BE4");
+    case Danger:
         return QColor("#B3261E");
+    case Success:
+        return QColor("#FFFFFF");
+    default:
+        return QColor("#FFFFFF");
+    }
 }
 
 // ==================== Paint ====================

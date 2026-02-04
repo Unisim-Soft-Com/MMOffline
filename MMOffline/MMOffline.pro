@@ -134,4 +134,13 @@ SOURCES += ./main.cpp \
 RESOURCES += MMOffline.qrc
 
 DISTFILES += \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/res/values/libs.xml \
     res/settings1.png
+
+android {
+    ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+    QT += androidextras
+}
+

@@ -1,57 +1,117 @@
 #pragma once
 #include "Networking/RequestAwaiter.h"
+#include "Widgets/ElementWidgets/FooterButton.h"
 #include "Widgets/parents/abstractNodeInterface.h"
 #include "Widgets/Syncing/SyncMenuWidget.h"
 #include <QtWidgets/QLineEdit>
+#include <QFrame>
+#include <QScrollArea>
 
 /*
-	This branch is concentrated over network actions. It has synchronisation subbranch and 
-	connection to database. Warning - synchronization causes database drops.
-	This widget itself is not affecting database. This widget inherits from abstract
-	node interfaces for branching. This widget has his own awaiter. This widget hides
-	after first succesfull login, but be aware that server closes session in 10 mins, so 
-	sync will fail after 10 mins without new login. Possibly it must be fixed. 
+    Modern login widget with card-based design.
+    Features:
+    - Header with title
+    - Logo display
+    - Card container with styled inputs
+    - Icon indicators for username/password
+    - Show/hide password toggle
+    - Footer buttons (Back/Login)
+    - Error display via StatusDialog
 */
 class OnlineLoginWidget : public inframedWidget, abstractNode
 {
-	Q_OBJECT
+    Q_OBJECT
 protected:
-	// elements
-	QVBoxLayout* mainLayout;
-	inframedWidget* innerWidget;
-	QVBoxLayout* innerLayout;
-	QLabel* errorLog;
-	QLabel* loginInfo;
-	QLineEdit* loginField;
-	QLabel* passwordInfo;
-	QLineEdit* passwordField;
-	QHBoxLayout* buttonLayout;
-	MegaIconButton* okButton;
-	MegaIconButton* backButton;
+    // Main layout elements
+    QVBoxLayout* mainLayout;
 
-	//network tools
-	RequestAwaiter* awaiter;
-	QString pendingLogin;
+    // Header
+    QFrame* headerFrame;
+    QLabel* headerTitle;
 
-	// synchronization subbranch
-	SyncMenuWidget* syncMenu;
+    // Content area
+    inframedWidget* contentWidget;
+    QVBoxLayout* contentLayout;
+
+    // Logo section
+    QFrame* logoFrame;
+    QLabel* logoIcon;
+    QLabel* appNameLabel;
+    QLabel* versionLabel;
+    QWidget* logoContainer;
+
+    // Login card
+    QFrame* loginCard;
+    QVBoxLayout* cardLayout;
+
+    // Username field
+    QLabel* loginLabel;
+    QFrame* loginInputFrame;
+    QHBoxLayout* loginInputLayout;
+    QLabel* loginIconLabel;
+    QLineEdit* loginField;
+
+    // Password field
+    QLabel* passwordLabel;
+    QFrame* passwordInputFrame;
+    QHBoxLayout* passwordInputLayout;
+    QLabel* passwordIconLabel;
+    QLineEdit* passwordField;
+    QPushButton* togglePasswordBtn;
+
+    // Footer buttons
+    QWidget* footerWidget;
+    QHBoxLayout* footerLayout;
+    FooterButton* backButton;
+    FooterButton* okButton;
+
+    // Network tools
+    RequestAwaiter* awaiter;
+    QString pendingLogin;
+
+    // Password visibility state
+    bool passwordVisible;
+
+    // Synchronization subbranch
+    SyncMenuWidget* syncMenu;
+
+    // Scrolling
+    QScrollArea* scrollArea;
 
 public:
-	OnlineLoginWidget(QWidget* parent);
+    OnlineLoginWidget(QWidget* parent);
 
-	// sets focus on right field
-	virtual void show() override;
-	// reloads text with actual translation
-	void fillTexts();
+    // Sets focus on right field
+    virtual void show() override;
+
+    // Reloads text with actual translation
+    void fillTexts();
+
 protected slots:
-	// activated on password confirmation, asserts login and password and sends login request
-	void passwordConfirmed();
-	// asserts response, if there is session id and user id - continues to synchroniztion
-	void processResponse();
-	// activated on request timeouts
-	void was_timeout();
-	// performs back
-	void hideCurrent();
+    // Activated on password confirmation
+    void passwordConfirmed();
+
+    // Asserts response, continues to synchronization if successful
+    void processResponse();
+
+    // Activated on request timeouts
+    void was_timeout();
+
+    // Performs back navigation
+    void hideCurrent();
+
+    // Toggle password visibility
+    void togglePasswordVisibility();
+
 signals:
-	void loginReady(QString);
+    void loginReady(QString);
+
+private:
+    void setupHeader();
+    void setupContent();
+    void setupLogo();
+    void setupLoginCard();
+    void setupFooter();
+    void applyStyles();
+    void updatePasswordToggleIcon();
 };

@@ -3,14 +3,18 @@
 #include <QIcon>
 
 /*
-    Footer action button for StartingScreen.
-    Supports two styles: Primary (blue/settings) and Danger (red/exit).
+    Footer action button for screens.
+    Supports three styles: Primary (blue), Secondary (light blue), and Danger (red).
     Displays icon above text with rounded corners.
 
     Usage:
         FooterButton* settingsBtn = new FooterButton(FooterButton::Primary, parent);
         settingsBtn->setIcon(SvgHelper::iconFromSvg(SvgHelper::SVG_SETTINGS, "#FFFFFF"));
         settingsBtn->setText(tr("Setări"));
+
+        FooterButton* backBtn = new FooterButton(FooterButton::Secondary, parent);
+        backBtn->setIcon(SvgHelper::iconFromSvg(SvgHelper::SVG_ARROW_LEFT, "#2A7BE4"));
+        backBtn->setText(tr("Înapoi"));
 
         FooterButton* exitBtn = new FooterButton(FooterButton::Danger, parent);
         exitBtn->setIcon(SvgHelper::iconFromSvg(SvgHelper::SVG_EXIT, "#B3261E"));
@@ -23,8 +27,10 @@ class FooterButton : public QPushButton
 
 public:
     enum Style {
-        Primary,    // Blue filled (Settings)
-        Danger      // Red outline (Exit/Quit)
+        Primary,    // Blue filled (Settings, Confirm)
+        Secondary,  // Light blue (Back, Cancel)
+        Danger,     // Red outline (Exit/Quit)
+        Success     // Green filled (OK, Save)
     };
 
     explicit FooterButton(Style style = Primary, QWidget* parent = nullptr);

@@ -24,6 +24,10 @@ int main(int argc, char* argv[])
 #endif
 	// must be here. DO NOT DELETE. DO NOT MOVE LATER THAN QApplication
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents, true);
+    QCoreApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents, true);
+
+
     QApplication a(argc, argv);
 	// window icon
 	a.setWindowIcon(QIcon(":/res/UNAOrders.png"));
