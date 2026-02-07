@@ -308,7 +308,7 @@
         <translation>Închide</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Show more (%1 of %2)...</source>
         <translation>Afișează mai multe (%1 din %2)...</translation>
     </message>
@@ -324,39 +324,64 @@
 <context>
     <name>EntryCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+27"/>
-        <source>Price: </source>
-        <translation>Pret: </translation>
+        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+205"/>
+        <source>Product details</source>
+        <translation>Detalii produs</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Measure</source>
+        <translation>Măsură</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Option</source>
+        <translation>Opţiune</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Quantity</source>
+        <translation>Cantitate</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Comment</source>
+        <translation>Comentariu</translation>
+    </message>
+    <message>
+        <location line="+172"/>
+        <source>Product editing</source>
+        <translation>Editarea produsului</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Measure: </source>
-        <translation>Unitate de masura: </translation>
+        <source>Back</source>
+        <translation>Înapoi</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Quantity: </source>
-        <translation>Cantitatea: </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Option: </source>
-        <translation>Optional: </translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Comment: </source>
-        <translation>Comentariu: </translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>back</source>
-        <translation>Inapoi</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Ok</source>
+        <source>OK</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add a comment (optional)...</source>
+        <translation>Adăugați un comentariu (opțional)...</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>ID: %1</source>
+        <translation>ID: %1</translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Select Measure</source>
+        <translation>Selectați măsura</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Option</source>
+        <translation>Selectați opțiunea</translation>
     </message>
 </context>
 <context>

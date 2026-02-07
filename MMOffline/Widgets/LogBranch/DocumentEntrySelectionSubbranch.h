@@ -1,6 +1,11 @@
 #pragma once
 #include "Widgets/DocumentBranch/EntryCreationScreen.h"
 #include "Widgets/MultibranchWidgets/ProductSelectionBranch.h"
+#include "Widgets/DocumentBranch/EntryCreationScreen.h"
+#include "Widgets/MultibranchWidgets/ProductSelectionBranch.h"
+#include <QComboBox>
+#include <QDoubleSpinBox>
+#include "Widgets/ElementWidgets/MegaIconButton.h"
 
 /*
 	This widget is representing full subbranch containing everything for redacting document.
@@ -23,7 +28,7 @@ protected:
 	QVBoxLayout* innerLayout;
 	QLabel* docInfo;
 	QHBoxLayout* headerPanel;
-	QDoubleSpinBox* summPaidField;
+    QDoubleSpinBox* summPaidField;
 	QComboBox* doctypeField;
 	QHBoxLayout* searchPanel;
 	QLabel* searchInfo;

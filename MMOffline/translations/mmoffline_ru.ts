@@ -308,7 +308,7 @@
         <translation>Закрывать</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Show more (%1 of %2)...</source>
         <translation>Показать больше (%1 из %2)...</translation>
     </message>
@@ -324,39 +324,64 @@
 <context>
     <name>EntryCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+27"/>
-        <source>Price: </source>
-        <translation>Цена: </translation>
+        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+205"/>
+        <source>Product details</source>
+        <translation>Информация о продукте</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Measure</source>
+        <translation>Мера</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Option</source>
+        <translation>Вариант</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Quantity</source>
+        <translation>Количество</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Comment</source>
+        <translation>Комментарий</translation>
+    </message>
+    <message>
+        <location line="+172"/>
+        <source>Product editing</source>
+        <translation>Редактирование товара</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Measure: </source>
-        <translation>Мера измерения: </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Quantity: </source>
-        <translation>Количество: </translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Option: </source>
-        <translation>Дополнительно: </translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Comment: </source>
-        <translation>Комментарий: </translation>
-    </message>
-    <message>
-        <location line="+23"/>
-        <source>back</source>
+        <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Ok</source>
+        <location line="+1"/>
+        <source>OK</source>
         <translation>Далее</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Add a comment (optional)...</source>
+        <translation>Добавить комментарий (необязательно)...</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>ID: %1</source>
+        <translation>ID: %1</translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Select Measure</source>
+        <translation>Выберите меру</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Option</source>
+        <translation>Выберите вариант</translation>
     </message>
 </context>
 <context>

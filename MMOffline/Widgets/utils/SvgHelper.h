@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 #include <QIcon>
 #include <QPixmap>
 #include <QPainter>
@@ -191,6 +191,23 @@ const QString SVG_CLOCK = R"(
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
         <circle cx="12" cy="12" r="10"/>
         <polyline points="12 6 12 12 16 14"/>
+    </svg>
+)";
+
+// Comment/Chat bubble - for comment fields
+const QString SVG_COMMENT = R"(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+)";
+
+// Hash/Number - for quantity fields
+const QString SVG_HASH = R"(
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+        <line x1="4" y1="9" x2="20" y2="9"/>
+        <line x1="4" y1="15" x2="20" y2="15"/>
+        <line x1="10" y1="3" x2="8" y2="21"/>
+        <line x1="16" y1="3" x2="14" y2="21"/>
     </svg>
 )";
 

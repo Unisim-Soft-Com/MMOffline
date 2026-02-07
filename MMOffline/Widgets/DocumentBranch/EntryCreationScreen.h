@@ -1,65 +1,115 @@
 #pragma once
-#include <QtWidgets/qboxlayout.h>
-#include <QLineEdit>
-#include <QComboBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
-#include <QtWidgets/QFormLayout>
-#include "Widgets/ElementWidgets/MegaIconButton.h"
-#include "Widgets/ElementWidgets/BigButtonsSpinbox.h"
+#include <QLineEdit>
+#include <QFrame>
+#include <QScrollArea>
 #include "Widgets/parents/inframedWidget.h"
+#include "Widgets/ElementWidgets/OutlineActionButton.h"
+#include "Widgets/ElementWidgets/ModernAmountStepper.h"
 #include "Dataprovider/DataEntities.h"
+#include "Widgets/utils/ElidedComboBox.h"
 
 /*
-	This widget is representing a form for creating or editing entries. This widget
-	will not insert entry into database.  This widget performs unique check on old entries.
-	Creation can be primed with old entry or with product - document pair. This object 
-	loads all data during creation. This widget	has unused option fields. 
-	They can be usefull later.
-	Tables affected:
-	V		Measures, Options, Entries
-	signals:
-		entryCreated(DocumentEntry)
+    Modern product entry creation/editing screen.
+    Card-based layout matching the app's modernized design language.
+    Uses ElidedComboBox + eventFilter + ModernSelectionDialog for dropdowns.
+
+    REDESIGNED: Following exact DocumentCreationScreen patterns:
+    - ObjectName-based styling via applyStyles()
+    - Gradient header with adaptive height
+    - Product info banner (like customer banner)
+    - Form cards with #formCard objectName
+    - Shadow only on non-Android
+    - Modern footer with OutlineActionButtons
+
+    Tables affected:
+    V		Measures, Options, Entries
+    signals:
+        entryCreated(DocumentEntry)
 */
 class EntryCreationScreen : public inframedWidget
-	//This class allows user to create or edit document entry
 {
-	Q_OBJECT
+    Q_OBJECT
 protected:
-	// Subwidgets
-	QVBoxLayout* mainLayout;
-	QLabel* productInfo;
-	QFormLayout* formLayout;
-	QLabel* priceInfo;
-	QComboBox* measureField;
-	BigButtonsSpinbox* quantitySpinbox;
-	QComboBox* foptionField;
-	QComboBox* soptionField;
-	QComboBox* toptionField;
-	QLineEdit* commentField;
-	QHBoxLayout* buttonLayout;
-	MegaIconButton* backButton;
-	MegaIconButton* okButton;
+    // Main layout
+    QVBoxLayout* mainLayout;
 
-	// combo box contents
-	NamedIdList measures;
-	NamedIdList options;
+    // Header
+    QFrame* headerFrame;
+    QLabel* headerTitle;
 
-	// product link
-	Product operatedProduct;
+    // Product banner
+    QFrame* productBanner;
+    QLabel* productAvatar;
+    QLabel* productNameLabel;
+    QLabel* productCodeLabel;
+    QLabel* productPriceBadge;
 
-	// current entry, wiped after editing end
-	DocumentEntry currentEntry;
+    // Content (scrollable)
+    QScrollArea* scrollArea;
+    QWidget* contentWidget;
+    QVBoxLayout* contentLayout;
+
+    // Card: Details (measure + option)
+    QFrame* detailsCard;
+    ElidedComboBox* measureField;
+    ElidedComboBox* optionField;
+
+    // Card: Quantity
+    QFrame* quantityCard;
+    ModernAmountStepper* quantityStepper;
+
+    // Card: Comment
+    QFrame* commentCard;
+    QLineEdit* commentField;
+
+    // Footer
+    QWidget* footerWidget;
+    QHBoxLayout* footerLayout;
+    OutlineActionButton* backButton;
+    OutlineActionButton* okButton;
+
+    // Data
+    NamedIdList measures;
+    NamedIdList options;
+    Product operatedProduct;
+    DocumentEntry currentEntry;
+
+    // Hidden option indices for data compatibility
+    int currentSOptionIndex;
+    int currentTOptionIndex;
+
+    // Setup methods
+    void setupHeader();
+    void setupProductBanner();
+    void setupContent();
+    void setupDetailsCard();
+    void setupQuantityCard();
+    void setupCommentCard();
+    void setupFooter();
+    void applyStyles();
+    void updateProductBanner();
+
+    bool eventFilter(QObject* obj, QEvent* event) override;
+
 public:
-	EntryCreationScreen(QWidget* parent);
-	// Creates new entry filling it with data from product and document
-	void primeEntryCreation(Product p, Document d);
-	// Creates new entry using data from old one
-	void primeEntryCreation(DocumentEntry);
-	// Sets focus on quantity
-	virtual void show() override;
+    EntryCreationScreen(QWidget* parent);
+
+    // Creates new entry filling it with data from product and document
+    void primeEntryCreation(Product p, Document d);
+    // Creates new entry using data from old one
+    void primeEntryCreation(DocumentEntry);
+    // Sets focus on quantity
+    virtual void show() override;
+
+    // Translate all visible texts
+    void fillTexts();
+
 protected slots:
-	// fills entry object from form and emits it
-	void confirmed();
+    void confirmed();
+
 signals:
-	void entryCreated(DocumentEntry);
+    void entryCreated(DocumentEntry);
 };

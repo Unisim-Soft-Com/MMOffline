@@ -1,6 +1,9 @@
 #include "ModernAmountStepper.h"
 #include "Widgets/utils/ElementsStyles.h"
 #include <QLocale>
+#include <QGuiApplication>
+#include <QInputMethod>
+#include <QLineEdit>
 
 ModernAmountStepper::ModernAmountStepper(QWidget* parent)
     : QWidget(parent), m_step(1.0)
@@ -31,6 +34,22 @@ void ModernAmountStepper::init()
     m_spinBox->setAlignment(Qt::AlignCenter);
     m_spinBox->setMinimumHeight(48);
     m_spinBox->setKeyboardTracking(false);
+
+#ifdef Q_OS_ANDROID
+    // Inchide tastatura la Enter (fara alte actiuni / fara navigare)
+    QObject::connect(m_spinBox, &QAbstractSpinBox::editingFinished, this, [this]() {
+        m_spinBox->clearFocus();
+        QGuiApplication::inputMethod()->hide();
+    });
+
+    // Extra-sigur: prindem direct Enter din QLineEdit-ul intern
+    if (auto le = m_spinBox->findChild<QLineEdit*>()) {
+        QObject::connect(le, &QLineEdit::returnPressed, this, [this]() {
+            m_spinBox->clearFocus();
+            QGuiApplication::inputMethod()->hide();
+        });
+    }
+#endif
 
     // Plus button
     m_plusBtn = new QPushButton("+", this);

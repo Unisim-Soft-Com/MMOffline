@@ -308,7 +308,7 @@
         <translation>Cancel</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+41"/>
         <source>Show more (%1 of %2)...</source>
         <translation>Show more (%1 of %2)...</translation>
     </message>
@@ -324,39 +324,64 @@
 <context>
     <name>EntryCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+27"/>
-        <source>Price: </source>
+        <location filename="../Widgets/DocumentBranch/EntryCreationScreen.cpp" line="+205"/>
+        <source>Product details</source>
+        <translation>Product details</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Measure</source>
         <translation></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Option</source>
+        <translation>Option</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Quantity</source>
+        <translation>Quantity</translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Comment</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="+172"/>
+        <source>Product editing</source>
+        <translation>Product editing</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Measure: </source>
-        <translation></translation>
+        <source>Back</source>
+        <translation>Back</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Quantity: </source>
-        <translation></translation>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Option: </source>
+        <source>Add a comment (optional)...</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Comment: </source>
-        <translation></translation>
+        <location line="+10"/>
+        <source>ID: %1</source>
+        <translation>ID: %1</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>back</source>
-        <translation></translation>
+        <location line="+24"/>
+        <source>Select Measure</source>
+        <translation>Select Measure</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Ok</source>
-        <translation></translation>
+        <location line="+1"/>
+        <source>Select Option</source>
+        <translation>Select Option</translation>
     </message>
 </context>
 <context>
