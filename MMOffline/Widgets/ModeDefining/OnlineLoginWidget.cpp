@@ -14,6 +14,7 @@
 #include <QInputMethod>
 #include <QGuiApplication>
 
+
 OnlineLoginWidget::OnlineLoginWidget(QWidget* parent)
     : inframedWidget(parent), abstractNode(), passwordVisible(false)
 {
@@ -93,9 +94,17 @@ void OnlineLoginWidget::setupContent()
     scrollArea->setFocusPolicy(Qt::NoFocus);
 
 #ifdef Q_OS_ANDROID
-    // IMPORTANT: Pe Android, dezactivăm touch events pe viewport
-    // pentru a permite focus imediat pe input fields la primul tap
-    scrollArea->viewport()->setAttribute(Qt::WA_AcceptTouchEvents, false);
+    // Permitem touch pe viewport (altfel nu merge scroll-ul cu degetul)
+    scrollArea->viewport()->setAttribute(Qt::WA_AcceptTouchEvents, true);
+
+    // Scroll "telefon" (kinetic) cu degetul
+    QScroller::grabGesture(scrollArea->viewport(), QScroller::TouchGesture);
+
+    auto scroller = QScroller::scroller(scrollArea->viewport());
+    QScrollerProperties props = scroller->scrollerProperties();
+    props.setScrollMetric(QScrollerProperties::DragVelocitySmoothingFactor, 0.6);
+    props.setScrollMetric(QScrollerProperties::DecelerationFactor, 0.05);
+    scroller->setScrollerProperties(props);
 #else
     // Pe desktop, folosim QScroller pentru scroll cu mouse
     QScroller::grabGesture(scrollArea->viewport(), QScroller::LeftMouseButtonGesture);
@@ -205,6 +214,15 @@ void OnlineLoginWidget::setupLoginCard()
     loginField->setFrame(false);
     loginField->setFocusPolicy(Qt::StrongFocus);
 
+#ifdef Q_OS_ANDROID
+    loginField->setContextMenuPolicy(Qt::NoContextMenu);
+    loginField->setInputMethodHints(Qt::ImhNoPredictiveText | Qt::ImhNoAutoUppercase | Qt::ImhSensitiveData);
+    connect(loginField, &QLineEdit::selectionChanged, this, [this]() {
+        loginField->deselect();
+        loginField->setCursorPosition(loginField->text().length());
+    });
+#endif
+
     loginInputLayout->addWidget(loginIconLabel);
     loginInputLayout->addWidget(loginField, 1);
 
@@ -232,6 +250,15 @@ void OnlineLoginWidget::setupLoginCard()
     passwordField->setFrame(false);
     passwordField->setEchoMode(QLineEdit::Password);
     passwordField->setFocusPolicy(Qt::StrongFocus);
+
+#ifdef Q_OS_ANDROID
+    passwordField->setContextMenuPolicy(Qt::NoContextMenu);
+    passwordField->setInputMethodHints(Qt::ImhNoPredictiveText | Qt::ImhNoAutoUppercase | Qt::ImhSensitiveData);
+    connect(passwordField, &QLineEdit::selectionChanged, this, [this]() {
+        passwordField->deselect();
+        passwordField->setCursorPosition(passwordField->text().length());
+    });
+#endif
 
     connect(qApp, &QApplication::focusChanged, this, [this](QWidget* old, QWidget* now) {
         // Ignoră dacă widget-ul tocmai s-a deschis (old e nullptr sau nu e din acest widget)
@@ -319,7 +346,7 @@ void OnlineLoginWidget::applyStyles()
 
         /* Header */
         #headerFrame {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1a3a5c, stop:1 #2c5282);
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #1976D2, stop:1 #1565C0);
         }
         #headerTitle {
             color: #FFFFFF;
@@ -421,16 +448,17 @@ void OnlineLoginWidget::show()
 
 void OnlineLoginWidget::fillTexts()
 {
-    headerTitle->setText(tr("Autentificare"));
-    versionLabel->setText(tr("versiunea 0.52 beta"));
-    loginLabel->setText(tr("Nume utilizator"));
-    loginField->setPlaceholderText(tr("Introduceți numele"));
-    passwordLabel->setText(tr("Parolă"));
-    passwordField->setPlaceholderText(tr("Introduceți parola"));
-    backButton->setText(tr("Înapoi"));
-    okButton->setText(tr("Autentificare"));
+    headerTitle->setText(tr("Login"));
+    versionLabel->setText(tr("version 0.52 beta"));
+    loginLabel->setText(tr("Username"));
+    loginField->setPlaceholderText(tr("Enter username"));
+    passwordLabel->setText(tr("Password"));
+    passwordField->setPlaceholderText(tr("Enter password"));
+    backButton->setText(tr("Back"));
+    okButton->setText(tr("Login"));
     syncMenu->fillTexts();
 }
+
 
 void OnlineLoginWidget::togglePasswordVisibility()
 {
@@ -452,7 +480,7 @@ void OnlineLoginWidget::processResponse()
     if (resp.isError)
     {
         StatusDialog dlg(resp.error, this);
-        dlg.setTitle(tr("Eroare autentificare"));
+        dlg.setTitle(tr("Authentication error"));
         dlg.setDangerMode(true);
         dlg.hideCancelButton();
         dlg.setOkText(tr("OK"));
@@ -474,8 +502,10 @@ void OnlineLoginWidget::processResponse()
 
 void OnlineLoginWidget::was_timeout()
 {
-    StatusDialog dlg(tr("A expirat timpul de așteptare: ") + QString::number(awaiter->getInterval()) + tr(" secunde"), this);
-    dlg.setTitle(tr("Eroare conexiune"));
+    StatusDialog dlg(
+    tr("Connection timeout: ") + QString::number(awaiter->getInterval()) + tr(" seconds"),this);
+    dlg.setTitle(tr("Connection error"));
+
     dlg.setWarningMode(true);
     dlg.smartExec(this);
 }
@@ -492,8 +522,8 @@ void OnlineLoginWidget::passwordConfirmed()
 {
     if (loginField->text().isEmpty() || passwordField->text().isEmpty())
     {
-        StatusDialog dlg(tr("Vă rugăm să introduceți numele de utilizator și parola!"), this);
-        dlg.setTitle(tr("Câmpuri incomplete"));
+        StatusDialog dlg(tr("Please enter your username and password!"), this);
+        dlg.setTitle(tr("Incomplete fields"));
         dlg.setWarningMode(true);
         dlg.smartExec(this);
         return;

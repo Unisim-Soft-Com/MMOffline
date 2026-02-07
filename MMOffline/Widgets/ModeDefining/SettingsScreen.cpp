@@ -46,7 +46,7 @@ void SettingsScreen::applyStyles()
     // Header bar style
     headerBar->setStyleSheet(R"CSS(
         QFrame#settingsHeaderBar {
-            background: #0F2D5C;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #1976D2, stop:1 #1565C0);
             border: 0;
         }
     )CSS");
@@ -306,18 +306,6 @@ SettingsScreen::SettingsScreen(QWidget* parent)
     headerLayout->setColumnStretch(1, 0);
     headerLayout->setColumnStretch(2, 1);
 
-
-    // Version info (small, left side)
-    appInfo->setText(VERSION_TEMPLATE.arg(VERSION).arg(SUFFIX));
-    QFont versionFont = appInfo->font();
-#ifdef Q_OS_ANDROID
-    versionFont.setPointSize(10);
-#else
-    versionFont.setPointSize(8);
-#endif
-    appInfo->setFont(versionFont);
-    appInfo->setStyleSheet("color: rgba(255,255,255,0.7);");
-
     // Title (center)
     QFont headerFont = headerTitle->font();
 #ifdef Q_OS_ANDROID
@@ -340,7 +328,8 @@ SettingsScreen::SettingsScreen(QWidget* parent)
 
     // === CONTENT AREA ===
     contentWidget->setObjectName("settingsContent");
-    contentLayout->setContentsMargins(8, 12, 8, 12);
+    contentWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    contentLayout->setContentsMargins(16, 16, 16, 16);
     contentLayout->setSpacing(12);
 
     // --- CARD 1: Sync Settings ---
@@ -467,7 +456,7 @@ SettingsScreen::SettingsScreen(QWidget* parent)
 
     // Dezactivăm scroll-ul orizontal complet
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     // Activăm touch scrolling optimizat
     QScroller::grabGesture(scrollArea->viewport(), QScroller::TouchGesture);

@@ -6,6 +6,8 @@
 #include "Widgets/ElementWidgets/MegaIconButton.h"
 #include <QtWidgets/QListView>
 #include <Dataprovider/DataEntities.h>
+#include "Widgets/ElementWidgets/OutlineActionButton.h"
+#include "Widgets/utils/SvgHelper.h"
 
 /*
 	This widget is created for client selection screen. It implements list widget with search string
@@ -34,10 +36,11 @@ protected:
 	QLineEdit* searchLine;
 	QListView* clientView;
 	QHBoxLayout* buttonPanel;
-	MegaIconButton* backButton;
-	MegaIconButton* okButton;
+    OutlineActionButton* backButton;
+    OutlineActionButton* okButton;
 	DataCountingDataModel* innerModel;
 	DataEntityFilterModel* searchProxy;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 public:
 	ClientSelectionWidget(QWidget* parent);
@@ -48,6 +51,9 @@ protected slots:
 	void clientClicked(DataEntity);
 	// chooses currently selected client and emits it as it was clicked
 	void okClicked();
+
+    void onReportClicked(const QModelIndex& index);
 signals:
 	void clientSelected(ClientEntity);
+    void reportRequested(ClientEntity client);
 };

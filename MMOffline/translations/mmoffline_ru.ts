@@ -12,32 +12,42 @@
 <context>
     <name>ClientSelectionWidget</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+47"/>
+        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+48"/>
         <source>Select client</source>
         <translation>Выберите контрагента</translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>back</source>
+        <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>OK</source>
         <translation>Далее</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Search: </source>
         <translation>Поиск: </translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Search...</source>
+        <translation>Поиск...</translation>
     </message>
 </context>
 <context>
     <name>ClientsDelegate</name>
     <message>
-        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+39"/>
-        <source>Quantity:</source>
-        <translation>КВО:</translation>
+        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+102"/>
+        <source>QTY: %1</source>
+        <translation>КОЛ: %1</translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Report</source>
+        <translation>Отчёт</translation>
     </message>
 </context>
 <context>
@@ -71,49 +81,124 @@
 <context>
     <name>DocumentCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+24"/>
-        <source>Client id: </source>
-        <translation>Код контрагента: </translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+205"/>
         <source>Shipping date</source>
         <translation>Дата поставки</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>depozit</source>
-        <translation>Склад</translation>
+        <location line="+62"/>
+        <source>Deposit</source>
+        <translation>Депозит</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Document type</source>
+        <translation>Тип документа</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Amount paid</source>
+        <translation>Сумa оплаты</translation>
+    </message>
+    <message>
+        <location line="+168"/>
+        <source>Monday</source>
+        <translation>Понедельник</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>tip</source>
-        <translation>Тип</translation>
+        <source>Tuesday</source>
+        <translation>Вторник</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>summ paid</source>
-        <translation>Оплачено</translation>
+        <source>Wednesday</source>
+        <translation>Среда</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Ok</source>
-        <translation>Далее</translation>
+        <location line="+1"/>
+        <source>Thursday</source>
+        <translation>Четверг</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>back</source>
+        <location line="+1"/>
+        <source>Friday</source>
+        <translation>Пятница</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Saturday</source>
+        <translation>Суббота</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sunday</source>
+        <translation>Воскресенье</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>tomorrow</source>
+        <translation>завтра</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>in %1 days</source>
+        <translation>в %1 дней</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tomorrow</source>
+        <translation>Завтра</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 days</source>
+        <translation>%1 дней</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Order Details</source>
+        <translation>Детали заказа</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+1"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>No client</source>
         <translation>Контрагент не выбран</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+12"/>
+        <source>Client ID: %1</source>
+        <translation>ID клиента: %1</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Can not create doc without client</source>
         <translation>Невозможно создать документ без контрагента</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Select delivery date</source>
+        <translation>Выберите дату доставки</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Select Deposit</source>
+        <translation>Выберите депозит</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Document Type</source>
+        <translation>Выберите тип документа</translation>
     </message>
 </context>
 <context>
@@ -157,29 +242,75 @@
 <context>
     <name>DocumentSelectionWidget</name>
     <message>
-        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+38"/>
+        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+138"/>
         <source>back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>edit</source>
-        <translation>Поменять</translation>
+        <location line="-98"/>
+        <source>Accumulated info</source>
+        <translation>Накопленная информация</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+18"/>
+        <source>Search...</source>
+        <translation>Поиск...</translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Show more...</source>
+        <translation>Показать больше...</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+5"/>
+        <source>confirm</source>
+        <translation>Далее</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Please select a document before continuing.</source>
+        <translation>Пожалуйста, выберите документ, прежде чем продолжить.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+25"/>
+        <source>No selection</source>
+        <translation>Выбор отсутствует</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Please select a document to delete.</source>
+        <translation>Пожалуйста, выберите документ для удаления.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Are you sure you want to delete this document?</source>
+        <translation>Вы уверены, что хотите удалить этот документ?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Delete document</source>
         <translation>Удаление документа</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Sure you want to delete?</source>
-        <translation>Вы уверены что хотите удалить документ?</translation>
+        <location line="+2"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>Закрывать</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Show more (%1 of %2)...</source>
+        <translation>Показать больше (%1 из %2)...</translation>
     </message>
 </context>
 <context>
@@ -263,36 +394,146 @@
     </message>
 </context>
 <context>
-    <name>OnlineLoginWidget</name>
+    <name>ModernDatePickerDialog</name>
     <message>
-        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+82"/>
-        <source>write your login:</source>
-        <translation>Введите свой логин:</translation>
+        <location filename="../Widgets/utils/ModernDatePickerDialog.cpp" line="+183"/>
+        <source>Selected date</source>
+        <translation>Выбранная дата</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Delivery</source>
+        <translation>Доставка</translation>
+    </message>
+    <message>
+        <location line="+156"/>
+        <source>Today</source>
+        <translation>Сегодня</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>back</source>
-        <translation>Назад</translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>Ok!</source>
-        <translation>Войти!</translation>
+        <source>Tomorrow</source>
+        <translation>Завтра</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>write your password:</source>
-        <translation>Введите ваш пароль:</translation>
+        <source>In %1 days</source>
+        <translation>В %1 дней</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 days ago</source>
+        <translation>%1 дней назад</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirm</source>
+        <translation>Подтверждать</translation>
+    </message>
+</context>
+<context>
+    <name>ModernDocumentsDelegate</name>
+    <message>
+        <location filename="../Widgets/ExtendedDelegates/ModernDocumentsDelegate.cpp" line="+149"/>
+        <source>CREATED</source>
+        <translation>СОЗДАННЫЙ</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>PAID</source>
+        <translation>ОПЛАЧЕННЫЙ</translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>was timeout with delay: </source>
+        <source>DELIVERY DATE</source>
+        <translation>ДАТА ДОСТАВКИ</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>CODE</source>
+        <translation>КОД</translation>
+    </message>
+</context>
+<context>
+    <name>ModernSelectionDialog</name>
+    <message>
+        <location filename="../Widgets/utils/ModernSelectionDialog.cpp" line="+102"/>
+        <source>Search...</source>
+        <translation>Поиск...</translation>
+    </message>
+</context>
+<context>
+    <name>OnlineLoginWidget</name>
+    <message>
+        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+451"/>
+        <location line="+7"/>
+        <source>Login</source>
+        <translation>Вход</translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>version 0.52 beta</source>
+        <translation>версия 0.52 бета</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Username</source>
+        <translation>Имя пользователя</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter username</source>
+        <translation>Введите имя пользователя</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter password</source>
+        <translation>Введите пароль</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
+        <translation>Назад</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Authentication error</source>
+        <translation>Ошибка аутентификации</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Connection timeout: </source>
         <translation>Время ожидания истекло: </translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Please enter your login and password!</source>
-        <translation>Пожалуйста введите свой логин и пароль!</translation>
+        <location line="+0"/>
+        <source> seconds</source>
+        <translation> секунд</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Connection error</source>
+        <translation>Ошибка соединения</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Please enter your username and password!</source>
+        <translation>Пожалуйста, введите имя пользователя и пароль!</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Incomplete fields</source>
+        <translation>Незаполненные поля</translation>
+    </message>
+    <message>
+        <location line="-40"/>
+        <source>OK</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -377,7 +618,7 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location line="+286"/>
+        <location line="+275"/>
         <source>Please enter a file path</source>
         <translation>Введите путь к файлу</translation>
     </message>
@@ -402,7 +643,7 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location line="-326"/>
+        <location line="-315"/>
         <source>Timeout interval</source>
         <translation>Период ожидания</translation>
     </message>

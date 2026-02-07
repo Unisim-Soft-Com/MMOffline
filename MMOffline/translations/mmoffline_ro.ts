@@ -12,32 +12,42 @@
 <context>
     <name>ClientSelectionWidget</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+47"/>
+        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+48"/>
         <source>Select client</source>
-        <translation>Selectati clientul</translation>
+        <translation>Selectați clientul</translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>back</source>
-        <translation>Inapoi</translation>
+        <source>Back</source>
+        <translation>Înapoi</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Search: </source>
         <translation>Cautare: </translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Search...</source>
+        <translation>Căutare...</translation>
     </message>
 </context>
 <context>
     <name>ClientsDelegate</name>
     <message>
-        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+39"/>
-        <source>Quantity:</source>
-        <translation>CNT:</translation>
+        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+102"/>
+        <source>QTY: %1</source>
+        <translation>CANT: %1</translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Report</source>
+        <translation>Raport</translation>
     </message>
 </context>
 <context>
@@ -71,49 +81,124 @@
 <context>
     <name>DocumentCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+24"/>
-        <source>Client id: </source>
-        <translation>Codul clientului: </translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+205"/>
         <source>Shipping date</source>
-        <translation>Data livrarii</translation>
+        <translation>Data livrării</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>depozit</source>
+        <location line="+62"/>
+        <source>Deposit</source>
         <translation>Depozit</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>tip</source>
-        <translation>Tipul documentului</translation>
+        <location line="+15"/>
+        <source>Document type</source>
+        <translation>Tip document</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Amount paid</source>
+        <translation>Suma achitată</translation>
+    </message>
+    <message>
+        <location line="+168"/>
+        <source>Monday</source>
+        <translation>Luni</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>summ paid</source>
-        <translation>Suma achitata</translation>
+        <source>Tuesday</source>
+        <translation>Marți</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Ok</source>
+        <location line="+1"/>
+        <source>Wednesday</source>
+        <translation>Miercuri</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Thursday</source>
+        <translation>Joi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Friday</source>
+        <translation>Vineri</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Saturday</source>
+        <translation>Sâmbătă</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sunday</source>
+        <translation>Duminică</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>tomorrow</source>
+        <translation>mâine</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>in %1 days</source>
+        <translation>în %1 zile</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tomorrow</source>
+        <translation>Mâine</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 days</source>
+        <translation>%1 zile</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Order Details</source>
+        <translation>Detalii comandă</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
+        <translation>Înapoi</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>back</source>
-        <translation>Inapoi</translation>
-    </message>
-    <message>
-        <location line="+30"/>
+        <location line="+9"/>
         <source>No client</source>
         <translation>Lipseste clientul</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+12"/>
+        <source>Client ID: %1</source>
+        <translation>ID client: %1</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Can not create doc without client</source>
-        <translation>Nu poate fi creat document fara client</translation>
+        <translation>Nu poate fi creat document fară client</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Select delivery date</source>
+        <translation>Selectați data livrării</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Select Deposit</source>
+        <translation>Selectați Depozit</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Document Type</source>
+        <translation>Selectați tipul de document</translation>
     </message>
 </context>
 <context>
@@ -157,29 +242,75 @@
 <context>
     <name>DocumentSelectionWidget</name>
     <message>
-        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+38"/>
+        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+138"/>
         <source>back</source>
-        <translation>Inapoi</translation>
+        <translation>Înapoi</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>edit</source>
-        <translation>Editare</translation>
+        <location line="-98"/>
+        <source>Accumulated info</source>
+        <translation>Informații acumulate</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+18"/>
+        <source>Search...</source>
+        <translation>Căutare...</translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Show more...</source>
+        <translation>Afișează mai multe...</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>delete</source>
-        <translation>Sterge</translation>
+        <translation>Șterge</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+5"/>
+        <source>confirm</source>
+        <translation>Confirmă</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Please select a document before continuing.</source>
+        <translation>Vă rugăm să selectați un document înainte de a continua.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+25"/>
+        <source>No selection</source>
+        <translation>Fără selecție</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Please select a document to delete.</source>
+        <translation>Vă rugăm să selectați un document pentru ștergere.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Are you sure you want to delete this document?</source>
+        <translation>Sigur vrei să ștergi acest document?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Delete document</source>
         <translation>Sterge documentul</translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Sure you want to delete?</source>
-        <translation>Sunteti sigur ca doriti sa stergeti documentul?</translation>
+        <location line="+2"/>
+        <source>Delete</source>
+        <translation>Șterge</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>Închide</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Show more (%1 of %2)...</source>
+        <translation>Afișează mai multe (%1 din %2)...</translation>
     </message>
 </context>
 <context>
@@ -263,36 +394,146 @@
     </message>
 </context>
 <context>
-    <name>OnlineLoginWidget</name>
+    <name>ModernDatePickerDialog</name>
     <message>
-        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+82"/>
-        <source>write your login:</source>
-        <translation>Introduceti numele utilizatorului:</translation>
+        <location filename="../Widgets/utils/ModernDatePickerDialog.cpp" line="+183"/>
+        <source>Selected date</source>
+        <translation>Data selectată</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Delivery</source>
+        <translation>Livrare</translation>
+    </message>
+    <message>
+        <location line="+156"/>
+        <source>Today</source>
+        <translation>Astăzi</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>back</source>
-        <translation>Inapoi</translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>Ok!</source>
-        <translation>OK!</translation>
+        <source>Tomorrow</source>
+        <translation>Mâine</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>write your password:</source>
-        <translation>Introduceti parola:</translation>
+        <source>In %1 days</source>
+        <translation>În %1 zile</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 days ago</source>
+        <translation>Acum %1 zile</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirm</source>
+        <translation>Confirmă</translation>
+    </message>
+</context>
+<context>
+    <name>ModernDocumentsDelegate</name>
+    <message>
+        <location filename="../Widgets/ExtendedDelegates/ModernDocumentsDelegate.cpp" line="+149"/>
+        <source>CREATED</source>
+        <translation>CREAT</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>PAID</source>
+        <translation>PLĂTIT</translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>was timeout with delay: </source>
-        <translation>Timp de asteptare expirat: </translation>
+        <source>DELIVERY DATE</source>
+        <translation>DATA DE LIVRARE</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Please enter your login and password!</source>
-        <translation>Va rugam sa introduceti numele si parola utilizatorului!</translation>
+        <location line="+4"/>
+        <source>CODE</source>
+        <translation>COD</translation>
+    </message>
+</context>
+<context>
+    <name>ModernSelectionDialog</name>
+    <message>
+        <location filename="../Widgets/utils/ModernSelectionDialog.cpp" line="+102"/>
+        <source>Search...</source>
+        <translation>Căutare...</translation>
+    </message>
+</context>
+<context>
+    <name>OnlineLoginWidget</name>
+    <message>
+        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+451"/>
+        <location line="+7"/>
+        <source>Login</source>
+        <translation>Autentificare</translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>version 0.52 beta</source>
+        <translation>versiunea 0.52 beta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Username</source>
+        <translation>Nume utilizator</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter username</source>
+        <translation>Introduceți numele</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Password</source>
+        <translation>Parolă</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter password</source>
+        <translation>Introduceți parola</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
+        <translation>Înapoi</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Authentication error</source>
+        <translation>Eroare autentificare</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Connection timeout: </source>
+        <translation>A expirat timpul de așteptare: </translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source> seconds</source>
+        <translation> secunde</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Connection error</source>
+        <translation>Eroare conexiune</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Please enter your username and password!</source>
+        <translation>Vă rugăm să introduceți numele de utilizator și parola!</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Incomplete fields</source>
+        <translation>Câmpuri incomplete</translation>
+    </message>
+    <message>
+        <location line="-40"/>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -377,7 +618,7 @@
         <translation>Salvează</translation>
     </message>
     <message>
-        <location line="+286"/>
+        <location line="+275"/>
         <source>Please enter a file path</source>
         <translation>Introduceți calea fișierului</translation>
     </message>
@@ -402,7 +643,7 @@
         <translation>Eroare</translation>
     </message>
     <message>
-        <location line="-326"/>
+        <location line="-315"/>
         <source>Timeout interval</source>
         <translation>Interval de asteptare</translation>
     </message>

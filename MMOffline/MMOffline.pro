@@ -73,7 +73,13 @@ HEADERS += ./MMOffline.h \
     ./Dataprovider/Entities/GroupEntity.h \
     Widgets/ElementWidgets/CardMenuButton.h \
     Widgets/ElementWidgets/FooterButton.h \
+    Widgets/ElementWidgets/Modernamountstepper.h \
+    Widgets/ElementWidgets/OutlineActionButton.h \
     Widgets/ElementWidgets/StatusDialog.h \
+    Widgets/ExtendedDelegates/ModernDocumentsDelegate.h \
+    Widgets/utils/ElidedComboBox.h \
+    Widgets/utils/ModernDatePickerDialog.h \
+    Widgets/utils/ModernSelectionDialog.h \
     Widgets/utils/SvgHelper.h
 SOURCES += ./main.cpp \
     ./MMOffline.cpp \
@@ -130,7 +136,12 @@ SOURCES += ./main.cpp \
     ./Dataprovider/Entities/ProductEntity.cpp \
     Widgets/ElementWidgets/CardMenuButton.cpp \
     Widgets/ElementWidgets/FooterButton.cpp \
-    Widgets/ElementWidgets/StatusDialog.cpp
+    Widgets/ElementWidgets/Modernamountstepper.cpp \
+    Widgets/ElementWidgets/OutlineActionButton.cpp \
+    Widgets/ElementWidgets/StatusDialog.cpp \
+    Widgets/ExtendedDelegates/ModernDocumentsDelegate.cpp \
+    Widgets/utils/ModernDatePickerDialog.cpp \
+    Widgets/utils/ModernSelectionDialog.cpp
 RESOURCES += MMOffline.qrc
 
 DISTFILES += \

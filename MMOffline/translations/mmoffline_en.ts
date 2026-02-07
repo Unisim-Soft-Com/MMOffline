@@ -12,32 +12,42 @@
 <context>
     <name>ClientSelectionWidget</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+47"/>
+        <location filename="../Widgets/DocumentBranch/ClientSelectionWidget.cpp" line="+48"/>
         <source>Select client</source>
         <translation></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>back</source>
-        <translation></translation>
+        <source>Back</source>
+        <translation>Back</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+3"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+2"/>
         <source>Search: </source>
         <translation></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Search...</source>
+        <translation>Search...</translation>
     </message>
 </context>
 <context>
     <name>ClientsDelegate</name>
     <message>
-        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+39"/>
-        <source>Quantity:</source>
-        <translation>QTY:</translation>
+        <location filename="../Widgets/ExtendedDelegates/ClientsDelegate.cpp" line="+102"/>
+        <source>QTY: %1</source>
+        <translation>QTY: %1</translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Report</source>
+        <translation>Report</translation>
     </message>
 </context>
 <context>
@@ -71,49 +81,124 @@
 <context>
     <name>DocumentCreationScreen</name>
     <message>
-        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+24"/>
-        <source>Client id: </source>
-        <translation></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location filename="../Widgets/DocumentBranch/DocumentCreationScreen.cpp" line="+205"/>
         <source>Shipping date</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>depozit</source>
-        <translation>Warehouse</translation>
+        <location line="+62"/>
+        <source>Deposit</source>
+        <translation>Deposit</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Document type</source>
+        <translation>Document type</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Amount paid</source>
+        <translation>Amount paid</translation>
+    </message>
+    <message>
+        <location line="+168"/>
+        <source>Monday</source>
+        <translation>Monday</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>tip</source>
-        <translation>Type</translation>
+        <source>Tuesday</source>
+        <translation>Tuesday</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>summ paid</source>
-        <translation>Client paid</translation>
+        <source>Wednesday</source>
+        <translation>Wednesday</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Ok</source>
-        <translation></translation>
+        <location line="+1"/>
+        <source>Thursday</source>
+        <translation>Thursday</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>back</source>
-        <translation></translation>
+        <location line="+1"/>
+        <source>Friday</source>
+        <translation>Friday</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+1"/>
+        <source>Saturday</source>
+        <translation>Saturday</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sunday</source>
+        <translation>Sunday</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>tomorrow</source>
+        <translation>tomorrow</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>in %1 days</source>
+        <translation>in %1 days</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Tomorrow</source>
+        <translation>Tomorrow</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>%1 days</source>
+        <translation>%1 days</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Order Details</source>
+        <translation>Order Details</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>No client</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+12"/>
+        <source>Client ID: %1</source>
+        <translation>Client ID: %1</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Can not create doc without client</source>
         <translation>Can not create document without client</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Select delivery date</source>
+        <translation>Select delivery date</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Select Deposit</source>
+        <translation>Select Deposit</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select Document Type</source>
+        <translation>Select Document Type</translation>
     </message>
 </context>
 <context>
@@ -157,29 +242,75 @@
 <context>
     <name>DocumentSelectionWidget</name>
     <message>
-        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+38"/>
+        <location filename="../Widgets/MultibranchWidgets/DocumentSelectionWidget.cpp" line="+138"/>
         <source>back</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>edit</source>
-        <translation></translation>
+        <location line="-98"/>
+        <source>Accumulated info</source>
+        <translation>Accumulated info</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+18"/>
+        <source>Search...</source>
+        <translation>Search...</translation>
+    </message>
+    <message>
+        <location line="+51"/>
+        <source>Show more...</source>
+        <translation>Show more...</translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>delete</source>
-        <translation></translation>
+        <translation>delete</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+5"/>
+        <source>confirm</source>
+        <translation>confirm</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Please select a document before continuing.</source>
+        <translation>Please select a document before continuing.</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+25"/>
+        <source>No selection</source>
+        <translation>No selection</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Please select a document to delete.</source>
+        <translation>Please select a document to delete.</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Are you sure you want to delete this document?</source>
+        <translation>Are you sure you want to delete this document?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Delete document</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+0"/>
-        <source>Sure you want to delete?</source>
-        <translation>Are you sure you want to delete this document?</translation>
+        <location line="+2"/>
+        <source>Delete</source>
+        <translation>Delete</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Show more (%1 of %2)...</source>
+        <translation>Show more (%1 of %2)...</translation>
     </message>
 </context>
 <context>
@@ -263,36 +394,146 @@
     </message>
 </context>
 <context>
-    <name>OnlineLoginWidget</name>
+    <name>ModernDatePickerDialog</name>
     <message>
-        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+82"/>
-        <source>write your login:</source>
-        <translation>Enter your login here:</translation>
+        <location filename="../Widgets/utils/ModernDatePickerDialog.cpp" line="+183"/>
+        <source>Selected date</source>
+        <translation>Selected date</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Delivery</source>
+        <translation>Delivery</translation>
+    </message>
+    <message>
+        <location line="+156"/>
+        <source>Today</source>
+        <translation>Today</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>back</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location line="-1"/>
-        <source>Ok!</source>
-        <translation></translation>
+        <source>Tomorrow</source>
+        <translation>Tomorrow</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>write your password:</source>
-        <translation>Please enter your password:</translation>
+        <source>In %1 days</source>
+        <translation>In %1 days</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%1 days ago</source>
+        <translation>%1 days ago</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Confirm</source>
+        <translation>Confirm</translation>
+    </message>
+</context>
+<context>
+    <name>ModernDocumentsDelegate</name>
+    <message>
+        <location filename="../Widgets/ExtendedDelegates/ModernDocumentsDelegate.cpp" line="+149"/>
+        <source>CREATED</source>
+        <translation>CREATED</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>PAID</source>
+        <translation>PAID</translation>
     </message>
     <message>
         <location line="+25"/>
-        <source>was timeout with delay: </source>
-        <translation></translation>
+        <source>DELIVERY DATE</source>
+        <translation>DELIVERY DATE</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>Please enter your login and password!</source>
-        <translation></translation>
+        <location line="+4"/>
+        <source>CODE</source>
+        <translation>CODE</translation>
+    </message>
+</context>
+<context>
+    <name>ModernSelectionDialog</name>
+    <message>
+        <location filename="../Widgets/utils/ModernSelectionDialog.cpp" line="+102"/>
+        <source>Search...</source>
+        <translation>Search...</translation>
+    </message>
+</context>
+<context>
+    <name>OnlineLoginWidget</name>
+    <message>
+        <location filename="../Widgets/ModeDefining/OnlineLoginWidget.cpp" line="+451"/>
+        <location line="+7"/>
+        <source>Login</source>
+        <translation>Login</translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>version 0.52 beta</source>
+        <translation>version 0.52 beta</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Username</source>
+        <translation>Username</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter username</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Password</source>
+        <translation>Password</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter password</source>
+        <translation>Enter password</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Back</source>
+        <translation>Back</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Authentication error</source>
+        <translation>Authentication error</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Connection timeout: </source>
+        <translation>Connection timeout: </translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source> seconds</source>
+        <translation> seconds</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Connection error</source>
+        <translation>Connection error</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Please enter your username and password!</source>
+        <translation>Please enter your username and password!</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Incomplete fields</source>
+        <translation>Incomplete fields</translation>
+    </message>
+    <message>
+        <location line="-40"/>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
@@ -377,7 +618,7 @@
         <translation>Save</translation>
     </message>
     <message>
-        <location line="+286"/>
+        <location line="+275"/>
         <source>Please enter a file path</source>
         <translation>Please enter a file path</translation>
     </message>
@@ -402,7 +643,7 @@
         <translation>Error</translation>
     </message>
     <message>
-        <location line="-326"/>
+        <location line="-315"/>
         <source>Timeout interval</source>
         <translation>Timeout interval</translation>
     </message>
